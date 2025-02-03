@@ -23,6 +23,9 @@ version = "1.0"
 group= "assets.rivalrebels.rivalrebelsrevived" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "rivalrebelsrevived"
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "eclipse"
@@ -62,6 +65,8 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.withType(JavaCompile) {

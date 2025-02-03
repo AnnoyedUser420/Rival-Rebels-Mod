@@ -4,24 +4,22 @@
  * are made available under the terms of the Mozilla Public License Version 2.0
  * which accompanies this distribution, and is available at
  * https://www.mozilla.org/en-US/MPL/2.0/
- *
+ * <p>
  * Rival Rebels Mod. All code, art, and design by Rodol Phito.
- *
+ * <p>
  * http://RivalRebels.com/
  *******************************************************************************/
 package assets.rivalrebels.common.item;
 
-import net.minecraft.item.Item;
 import assets.rivalrebels.RivalRebels;
+import net.minecraft.item.Item;
 
-public class ItemCore extends Item
-{
-	public float	timemult	= 0;
-	
-	public ItemCore()
-	{
-		super();
-		maxStackSize = 1;
-		setCreativeTab(RivalRebels.rralltab);
-	}
+public class ItemCore extends Item {
+    public float timemult = 0;
+
+    public ItemCore() {
+        super();
+        maxStackSize = 1;
+        setCreativeTab(RivalRebels.rralltab);
+    }
 }

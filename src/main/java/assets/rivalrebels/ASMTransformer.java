@@ -4,53 +4,46 @@
  * are made available under the terms of the Mozilla Public License Version 2.0
  * which accompanies this distribution, and is available at
  * https://www.mozilla.org/en-US/MPL/2.0/
- *
+ * <p>
  * Rival Rebels Mod. All code, art, and design by Rodol Phito.
- *
+ * <p>
  * http://RivalRebels.com/
  *******************************************************************************/
 package assets.rivalrebels;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 
-public class ASMTransformer implements IClassTransformer
-{
-	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes)
-	{
-		if(transformedName.equals("net.minecraft.network.NetHandlerPlayServer"))
-		{
-			int d = 3;
-			for (int i = 0; i < bytes.length - 8 && d != 0; i++)
-			{
-				if(bytes[i+2] == 0x00
-				&& bytes[i+3] == 0x00
-				&& bytes[i+4] == 0x00
-				&& bytes[i+5] == 0x00
-				&& bytes[i+6] == 0x00
-				&& bytes[i+7] == 0x00)
-				{
-					if (bytes[i] == (byte) 0x40 && bytes[i+1] == (byte) 0x59) //Moved too quickly
-					{
-						bytes[i]   = (byte) 0x7f;
-						bytes[i+1] = (byte) 0xf0;
-						d--;
-					}
-					else if (bytes[i] == (byte) 0x3f && bytes[i+1] == (byte) 0xb0) //Moved wrongly
-					{
-						bytes[i]   = (byte) 0x40;
-						bytes[i+1] = (byte) 0x50;
-						d--;
-					}
-					else if (bytes[i] == (byte) 0xbf && bytes[i+1] == (byte) 0xa0) //Flying
-					{
-						bytes[i]   = (byte) 0x7f;
-						bytes[i+1] = (byte) 0xf0;
-						d--;
-					}
-				}
-			}
-		}
+public class ASMTransformer implements IClassTransformer {
+    @Override
+    public byte[] transform(String name, String transformedName, byte[] bytes) {
+        if (transformedName.equals("net.minecraft.network.NetHandlerPlayServer")) {
+            int d = 3;
+            for (int i = 0; i < bytes.length - 8 && d != 0; i++) {
+                if (bytes[i + 2] == 0x00
+                        && bytes[i + 3] == 0x00
+                        && bytes[i + 4] == 0x00
+                        && bytes[i + 5] == 0x00
+                        && bytes[i + 6] == 0x00
+                        && bytes[i + 7] == 0x00) {
+                    if (bytes[i] == (byte) 0x40 && bytes[i + 1] == (byte) 0x59) //Moved too quickly
+                    {
+                        bytes[i] = (byte) 0x7f;
+                        bytes[i + 1] = (byte) 0xf0;
+                        d--;
+                    } else if (bytes[i] == (byte) 0x3f && bytes[i + 1] == (byte) 0xb0) //Moved wrongly
+                    {
+                        bytes[i] = (byte) 0x40;
+                        bytes[i + 1] = (byte) 0x50;
+                        d--;
+                    } else if (bytes[i] == (byte) 0xbf && bytes[i + 1] == (byte) 0xa0) //Flying
+                    {
+                        bytes[i] = (byte) 0x7f;
+                        bytes[i + 1] = (byte) 0xf0;
+                        d--;
+                    }
+                }
+            }
+        }
 		/*
 		if (transformedName.equals("net.minecraft.world.biome.BiomeGenBase"))
 		{
@@ -75,6 +68,6 @@ public class ASMTransformer implements IClassTransformer
 			}
 		}
 		//*/
-		return bytes;
-	}
+        return bytes;
+    }
 }
