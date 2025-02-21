@@ -42,15 +42,15 @@ public class BatteryRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etbattery);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.8f, 0.3f, -0.03f);
-        GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
-        GL11.glScalef(0.3f, 0.3f, 0.3f);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.8f, 0.3f, -0.03f);
+        GlStateManager.rotate(35, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(90, 0.0F, 1.0F, 0.0F);
+        GlStateManager.scale(0.3f, 0.3f, 0.3f);
 
         battery.render();
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

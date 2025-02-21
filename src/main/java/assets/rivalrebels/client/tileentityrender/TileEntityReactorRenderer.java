@@ -18,8 +18,8 @@ import assets.rivalrebels.client.model.RenderLibrary;
 import assets.rivalrebels.client.objfileloader.ModelFromObj;
 import assets.rivalrebels.common.tileentity.TileEntityMachineBase;
 import assets.rivalrebels.common.tileentity.TileEntityReactor;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -43,7 +43,7 @@ public class TileEntityReactorRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderAModelAt(TileEntityReactor tile, double d, double d1, double d2, float f) {
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
         int var9 = tile.getBlockMetadata();
         short var11 = 0;
         if (var9 == 2) {
@@ -61,24 +61,24 @@ public class TileEntityReactorRenderer extends TileEntitySpecialRenderer {
         if (var9 == 5) {
             var11 = 90;
         }
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 1.1875F, (float) d2 + 0.5F);
-        GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) d + 0.5F, (float) d1 + 1.1875F, (float) d2 + 0.5F);
+        GlStateManager.rotate(var11, 0.0F, 1.0F, 0.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etlaptop);
         ml.renderModel((float) -tile.slide);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etscreen);
         ml.renderScreen((float) -tile.slide);
-        GL11.glPopMatrix();
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
-        GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GlStateManager.rotate(var11, 0.0F, 1.0F, 0.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etreactor);
         mr.renderModel();
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etelectrode);
-        GL11.glTranslatef(0, 2, -0.125f);
-        GL11.glScalef(0.2f, 0.2f, 0.2f);
+        GlStateManager.translate(0, 2, -0.125f);
+        GlStateManager.scale(0.2f, 0.2f, 0.2f);
         mo.render();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         for (int i = 0; i < tile.machines.getSize(); i++) {
             TileEntityMachineBase temb = (TileEntityMachineBase) tile.machines.get(i);
             if (temb.powerGiven > 0) {

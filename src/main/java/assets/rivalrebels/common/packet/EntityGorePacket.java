@@ -13,12 +13,12 @@ package assets.rivalrebels.common.packet;
 
 import assets.rivalrebels.common.core.FileRW;
 import assets.rivalrebels.common.entity.EntityGore;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.Iterator;
 
@@ -72,7 +72,7 @@ public class EntityGorePacket implements IMessage {
     public static class Handler implements IMessageHandler<EntityGorePacket, IMessage> {
         @Override
         public IMessage onMessage(EntityGorePacket m, MessageContext ctx) {
-            Iterator iter = Minecraft.getMinecraft().theWorld.loadedEntityList.iterator();
+            Iterator iter = Minecraft.getMinecraft().world.loadedEntityList.iterator();
             while (iter.hasNext()) {
                 Entity e = (Entity) iter.next();
                 if (e.getEntityId() == m.id && e instanceof EntityGore) {

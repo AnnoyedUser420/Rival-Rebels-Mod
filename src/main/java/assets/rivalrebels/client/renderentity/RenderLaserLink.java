@@ -30,14 +30,14 @@ public class RenderLaserLink extends Render {
             float radius = 0.7F;
             Tessellator tessellator = Tessellator.instance;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-            GL11.glTranslatef((float) x, (float) y, (float) z);
-            GL11.glRotatef(-ell.rotationYaw, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(ell.rotationPitch, 1.0F, 0.0F, 0.0F);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableRescaleNormal();
+            GlStateManager.disableTexture2D();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+            GlStateManager.translate((float) x, (float) y, (float) z);
+            GlStateManager.rotate(-ell.rotationYaw, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(ell.rotationPitch, 1.0F, 0.0F, 0.0F);
 
             for (float o = 0; o <= radius; o += radius / 16) {
                 tessellator.startDrawingQuads();
@@ -70,10 +70,10 @@ public class RenderLaserLink extends Render {
                 tessellator.draw();
             }
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.enableTexture2D();
+            GlStateManager.disableRescaleNormal();
+            GlStateManager.popMatrix();
         }
     }
 

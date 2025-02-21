@@ -37,14 +37,14 @@ public class LaptopRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) 0.3, (float) 0.3, 0);
-        GL11.glRotatef(180, 0, 1, 0);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) 0.3, (float) 0.3, 0);
+        GlStateManager.rotate(180, 0, 1, 0);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etlaptop);
         ml.renderModel(-90);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etubuntu);
         ml.renderScreen(-90);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

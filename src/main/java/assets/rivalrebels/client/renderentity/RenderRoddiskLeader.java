@@ -33,17 +33,17 @@ public class RenderRoddiskLeader extends Render {
         er += 13.46;
         EntityRoddiskLeader erd = (EntityRoddiskLeader) var1;
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etdisk3);
-        GL11.glPushMatrix();
-        GL11.glScalef(0.4f, 0.4f, 0.4f);
-        GL11.glTranslatef((float) var2, (float) var4, (float) var6);
-        GL11.glPushMatrix();
-        GL11.glRotatef(erd.rotationPitch, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(erd.rotationYaw - 90.0f + er, 0.0F, 1.0F, 0.0F);
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(0.4f, 0.4f, 0.4f);
+        GlStateManager.translate((float) var2, (float) var4, (float) var6);
+        GlStateManager.pushMatrix();
+        GlStateManager.rotate(erd.rotationPitch, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(erd.rotationYaw - 90.0f + er, 0.0F, 1.0F, 0.0F);
 
         model.render();
 
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

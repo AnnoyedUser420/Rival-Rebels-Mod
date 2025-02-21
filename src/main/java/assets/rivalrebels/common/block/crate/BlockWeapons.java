@@ -12,8 +12,8 @@
 package assets.rivalrebels.common.block.crate;
 
 import assets.rivalrebels.RivalRebels;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,7 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -57,20 +57,20 @@ public class BlockWeapons extends Block {
 
     public boolean blockActivated(World world, int x, int y, int z, EntityPlayer player) {
         if (world.isRemote) {
-            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("RivalRebels.Inventory")));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.rpg.getUnlocalizedName() + ".name") + ". §9(" + StatCollector.translateToLocal("RivalRebels.consume") + " " + StatCollector.translateToLocal(RivalRebels.rocket.getUnlocalizedName() + ".name") + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.tesla.getUnlocalizedName() + ".name") + ". §9(" + StatCollector.translateToLocal("RivalRebels.consume") + " " + StatCollector.translateToLocal(RivalRebels.hydrod.getUnlocalizedName() + ".name") + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.flamethrower.getUnlocalizedName() + ".name") + ". §9(" + StatCollector.translateToLocal("RivalRebels.consume") + " " + StatCollector.translateToLocal(RivalRebels.fuel.getUnlocalizedName() + ".name") + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.plasmacannon.getUnlocalizedName() + ".name") + ". §9(" + StatCollector.translateToLocal("RivalRebels.consume") + " " + StatCollector.translateToLocal(RivalRebels.battery.getUnlocalizedName() + ".name") + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.einsten.getUnlocalizedName() + ".name") + ". §9(" + StatCollector.translateToLocal("RivalRebels.consume") + " " + StatCollector.translateToLocal(RivalRebels.redrod.getUnlocalizedName() + ".name") + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.roddisk.getUnlocalizedName() + ".name") + ". §9(" + StatCollector.translateToLocal("RivalRebels.message.use") + " /rr)"));
-            // player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.bastion.getUnlocalizedName() + ".name") + ". §9(" +
-            // StatCollector.translateToLocal("RivalRebels.build") + " " + StatCollector.translateToLocal(RivalRebels.barricade.getUnlocalizedName() + ".name") + ")");
-            // player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.tower.getUnlocalizedName() + ".name") + ". §9(" +
-            // StatCollector.translateToLocal("RivalRebels.build") + " " + StatCollector.translateToLocal(RivalRebels.tower.getUnlocalizedName() + ".name") + ")");
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.knife.getUnlocalizedName() + ".name") + ". §9(" + StatCollector.translateToLocal("RivalRebels.opknife") + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.gasgrenade.getUnlocalizedName() + ".name") + ". §9(" + StatCollector.translateToLocal("RivalRebels.chemicalweapon") + ")"));
-            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("RivalRebels.Orders") + " " + StatCollector.translateToLocal("RivalRebels.equipweapons")));
+            player.addChatMessage(new ChatComponentText(I18n.translateToLocal("RivalRebels.Inventory")));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.rpg.getUnlocalizedName() + ".name") + ". §9(" + I18n.translateToLocal("RivalRebels.consume") + " " + I18n.translateToLocal(RivalRebels.rocket.getUnlocalizedName() + ".name") + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.tesla.getUnlocalizedName() + ".name") + ". §9(" + I18n.translateToLocal("RivalRebels.consume") + " " + I18n.translateToLocal(RivalRebels.hydrod.getUnlocalizedName() + ".name") + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.flamethrower.getUnlocalizedName() + ".name") + ". §9(" + I18n.translateToLocal("RivalRebels.consume") + " " + I18n.translateToLocal(RivalRebels.fuel.getUnlocalizedName() + ".name") + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.plasmacannon.getUnlocalizedName() + ".name") + ". §9(" + I18n.translateToLocal("RivalRebels.consume") + " " + I18n.translateToLocal(RivalRebels.battery.getUnlocalizedName() + ".name") + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.einsten.getUnlocalizedName() + ".name") + ". §9(" + I18n.translateToLocal("RivalRebels.consume") + " " + I18n.translateToLocal(RivalRebels.redrod.getUnlocalizedName() + ".name") + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.roddisk.getUnlocalizedName() + ".name") + ". §9(" + I18n.translateToLocal("RivalRebels.message.use") + " /rr)"));
+            // player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.bastion.getUnlocalizedName() + ".name") + ". §9(" +
+            // I18n.translateToLocal("RivalRebels.build") + " " + I18n.translateToLocal(RivalRebels.barricade.getUnlocalizedName() + ".name") + ")");
+            // player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.tower.getUnlocalizedName() + ".name") + ". §9(" +
+            // I18n.translateToLocal("RivalRebels.build") + " " + I18n.translateToLocal(RivalRebels.tower.getUnlocalizedName() + ".name") + ")");
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.knife.getUnlocalizedName() + ".name") + ". §9(" + I18n.translateToLocal("RivalRebels.opknife") + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.gasgrenade.getUnlocalizedName() + ".name") + ". §9(" + I18n.translateToLocal("RivalRebels.chemicalweapon") + ")"));
+            player.addChatMessage(new ChatComponentText(I18n.translateToLocal("RivalRebels.Orders") + " " + I18n.translateToLocal("RivalRebels.equipweapons")));
         }
         if (!world.isRemote) {
             EntityItem ei = new EntityItem(world, x + .5, y + .5, z + .5, new ItemStack(RivalRebels.rpg));

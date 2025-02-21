@@ -13,9 +13,8 @@ package assets.rivalrebels.client.gui;
 
 import assets.rivalrebels.RivalRebels;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiOmegaWin extends GuiScreen {
     public GuiOmegaWin() {
@@ -37,14 +36,13 @@ public class GuiOmegaWin extends GuiScreen {
 
     @Override
     public void drawScreen(int x, int y, float d) {
-        Tessellator tessellator = Tessellator.instance;
-        drawCenteredString(fontRendererObj, StatCollector.translateToLocal("RivalRebels.omegawin.subtitle"), (this.width / 2), (this.height / 2 - 120), 0xffffff);
+        drawCenteredString(fontRenderer, I18n.translateToLocal("RivalRebels.omegawin.subtitle"), (this.width / 2), (this.height / 2 - 120), 0xffffff);
         float scalefactor = 4f;
-        GL11.glScalef(scalefactor, scalefactor, scalefactor);
-        drawCenteredString(fontRendererObj, StatCollector.translateToLocal("RivalRebels.omegawin.title"), (int) ((this.width / 2) / scalefactor), (int) ((this.height / 2 - 100) / scalefactor), 0xffffff);
-        GL11.glScalef(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
+        GlStateManager.scale(scalefactor, scalefactor, scalefactor);
+        drawCenteredString(fontRenderer, I18n.translateToLocal("RivalRebels.omegawin.title"), (int) ((this.width / 2) / scalefactor), (int) ((this.height / 2 - 100) / scalefactor), 0xffffff);
+        GlStateManager.scale(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
 
-        fontRendererObj.drawStringWithShadow("Omega: " + RivalRebels.round.getOmegaWins(), (this.width / 2) - 60, (this.height / 2 + 70), 0x44FF44);
-        fontRendererObj.drawStringWithShadow("Sigma: " + RivalRebels.round.getSigmaWins(), (this.width / 2) + 10, (this.height / 2 + 70), 0x4444FF);
+        fontRenderer.drawStringWithShadow("Omega: " + RivalRebels.round.getOmegaWins(), (this.width / 2) - 60, (this.height / 2 + 70), 0x44FF44);
+        fontRenderer.drawStringWithShadow("Sigma: " + RivalRebels.round.getSigmaWins(), (this.width / 2) + 10, (this.height / 2 + 70), 0x4444FF);
     }
 }

@@ -14,45 +14,48 @@ package assets.rivalrebels.common.command;
 import assets.rivalrebels.common.core.RivalRebelsDamageSource;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.List;
 
 public class CommandKillme extends CommandBase {
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "killme";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName();
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName();
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1) {
+    public boolean checkPermission(MinecraftServer server, ICommandSender par1) {
         return true;
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) throws PlayerNotFoundException {
         EntityPlayer person = getCommandSenderAsPlayer(sender);
         person.attackEntityFrom(RivalRebelsDamageSource.cyanide, 10000);
-        sender.addChatMessage(new ChatComponentText("Do you think the cyanide tasted good?"));
+        sender.sendMessage(new TextComponentString("Do you think the cyanide tasted good?"));
     }
 
     /**
      * Adds the strings available in this command to the given list of tab completion options.
      */
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
-        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames()) : null;
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] par2ArrayOfStr, BlockPos pos) {
+        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, server.getOnlinePlayerNames()) : null;
     }
 }

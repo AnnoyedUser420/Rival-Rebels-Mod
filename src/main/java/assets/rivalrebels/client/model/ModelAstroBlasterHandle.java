@@ -16,7 +16,7 @@ import assets.rivalrebels.client.renderhelper.TextureFace;
 import assets.rivalrebels.client.renderhelper.TextureVertice;
 import assets.rivalrebels.client.renderhelper.Vertice;
 import net.minecraft.client.model.ModelBase;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class ModelAstroBlasterHandle extends ModelBase {
     TextureFace handleside = new TextureFace(
@@ -79,12 +79,12 @@ public class ModelAstroBlasterHandle extends ModelBase {
     Vertice vbb4 = new Vertice(8f, 0f, -2f);
 
     public void render() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableCull();
+        GlStateManager.disableLighting();
 
-        GL11.glPushMatrix();
-        GL11.glScaled(1.3, 1, 1);
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.3, 1, 1);
         // bottom
         RenderHelper.addFace(vbt3, vbt4, vbt1, vbt2, bottombottom);
         RenderHelper.addFace(vbb1, vbt1, vbt4, vbb4, bottomfront);
@@ -92,7 +92,7 @@ public class ModelAstroBlasterHandle extends ModelBase {
         RenderHelper.addFace(vbt2, vbb2, vbb1, vbt1, bottomside);
         RenderHelper.addFace(vbt3, vbb3, vbb4, vbt4, bottomside);
         RenderHelper.addFace(vbb3, vbb4, vbb1, vbb2, bottombottom);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 
         // handle
         RenderHelper.addFace(vht4, vhb4, vhb1, vht1, handlefront);
@@ -100,6 +100,6 @@ public class ModelAstroBlasterHandle extends ModelBase {
         RenderHelper.addFace(vht1, vhb1, vhb2, vht2, handleside);
         RenderHelper.addFace(vht3, vhb3, vhb4, vht4, handleside);
         RenderHelper.addFace(vhb2, vhb1, vhb4, vhb3, handlebottom);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

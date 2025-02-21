@@ -20,12 +20,12 @@ import assets.rivalrebels.common.packet.ResetPacket;
 import assets.rivalrebels.common.round.RivalRebelsClass;
 import assets.rivalrebels.common.round.RivalRebelsPlayer;
 import assets.rivalrebels.common.round.RivalRebelsTeam;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -68,7 +68,7 @@ public class GuiSpawn extends GuiScreen {
         sigmaScroll = new GuiScroll(5, posX + 243, posY + 140, 80);
         playerScroll = new GuiScroll(6, posX + 154, posY + 103, 16);
         gameScroll = new GuiScroll(7, posX + 243, posY + 66, 16);
-        RivalRebelsPlayer nw = RivalRebels.round.rrplayerlist.getForName(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+        RivalRebelsPlayer nw = RivalRebels.round.rrplayerlist.getForName(Minecraft.getMinecraft().player.getName());
         resetButton.enabled = nw.resets > 0 && !nw.isreset;
         omegaButton.enabled = nw.rrteam == RivalRebelsTeam.NONE || nw.rrteam == RivalRebelsTeam.OMEGA;
         sigmaButton.enabled = nw.rrteam == RivalRebelsTeam.NONE || nw.rrteam == RivalRebelsTeam.SIGMA;
@@ -99,7 +99,7 @@ public class GuiSpawn extends GuiScreen {
 
     @Override
     public void drawScreen(int x, int y, float d) {
-        RivalRebelsPlayer nw = RivalRebels.round.rrplayerlist.getForName(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+        RivalRebelsPlayer nw = RivalRebels.round.rrplayerlist.getForName(Minecraft.getMinecraft().player.getName());
         classButton.enabled = nw.isreset;
         omegaButton.enabled = nw.rrteam == RivalRebelsTeam.NONE || nw.rrteam == RivalRebelsTeam.OMEGA;
         sigmaButton.enabled = nw.rrteam == RivalRebelsTeam.NONE || nw.rrteam == RivalRebelsTeam.SIGMA;
@@ -115,7 +115,7 @@ public class GuiSpawn extends GuiScreen {
         drawPanel(posX + 10, posY + 105, 50, playerScroll.getScroll(), playerScroll.limit, new String[]{rrclass.name}, new int[]{rrclass.color});
 
         Random rand = new Random();
-        GL11.glColor3f(1F, 1F, 1F);
+        GlStateManager.color(1F, 1F, 1F);
         this.mc.renderEngine.bindTexture(RivalRebels.guitspawn);
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(posX, posY + ySizeOfTexture, zLevel, 0, ySizeOfTexture * f);
@@ -136,15 +136,15 @@ public class GuiSpawn extends GuiScreen {
 
         super.drawScreen(x, y, d);
 
-        fontRendererObj.drawString("" + RivalRebels.round.getOmegaWins(), posX + 9, posY + 239, 0xFFFFFF);
-        fontRendererObj.drawString("" + RivalRebels.round.getSigmaWins(), posX + 134, posY + 239, 0xFFFFFF);
+        fontRenderer.drawString("" + RivalRebels.round.getOmegaWins(), posX + 9, posY + 239, 0xFFFFFF);
+        fontRenderer.drawString("" + RivalRebels.round.getSigmaWins(), posX + 134, posY + 239, 0xFFFFFF);
 
         if (resetButton.mousePressed(mc, x, y) && resetButton.enabled) {
             drawGradientRect(x, y, x + 120, y + 20, 0xaa111111, 0xaa111111);
             float scalefactor = 0.666f;
-            GL11.glScalef(scalefactor, scalefactor, scalefactor);
-            fontRendererObj.drawSplitString(LanguageRegistry.instance().getStringLocalization("RivalRebels.spawn.resetwarning"), (int) ((x + 2) / scalefactor), (int) ((y + 2) / scalefactor), (int) (116 / scalefactor), 0xFF0000);
-            GL11.glScalef(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
+            GlStateManager.scale(scalefactor, scalefactor, scalefactor);
+            fontRenderer.drawSplitString(LanguageRegistry.instance().getStringLocalization("RivalRebels.spawn.resetwarning"), (int) ((x + 2) / scalefactor), (int) ((y + 2) / scalefactor), (int) (116 / scalefactor), 0xFF0000);
+            GlStateManager.scale(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
         }
 
         if (Mouse.isButtonDown(0) && !prevClick) {
@@ -200,7 +200,7 @@ public class GuiSpawn extends GuiScreen {
                     b /= 2;
                 }
                 color = (r << 16) | (g << 8) | b;
-                drawString(fontRendererObj, nlist[i].username, x, y + Y, color);
+                drawString(fontRenderer, nlist[i].username, x, y + Y, color);
             }
         }
         // RivalRebelsPlayer[] list = RivalRebels.rrplayerlist.getArray();
@@ -232,7 +232,7 @@ public class GuiSpawn extends GuiScreen {
             int Y = dist + (i * 10);
             if (!shouldScroll) Y -= dist;
             if (Y > -9 && Y < height + 9)
-                drawString(fontRendererObj, StatCollector.translateToLocal(display[i]), x, y + Y, color[i]);
+                drawString(fontRenderer, I18n.translateToLocal(display[i]), x, y + Y, color[i]);
         }
     }
 
@@ -240,17 +240,17 @@ public class GuiSpawn extends GuiScreen {
         int length = 10;
         int dist = (int) (-((float) scroll / (float) scrolllimit) * (((length) * 10) - height));
         float scalefactor = 0.6666f;
-        GL11.glScalef(scalefactor, scalefactor, scalefactor);
-        fontRendererObj.drawSplitString(display, (int) (x * 1.5), (int) ((y + dist) * 1.5), (int) (width * 1.5), 0xffffff);
-        GL11.glScalef(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
+        GlStateManager.scale(scalefactor, scalefactor, scalefactor);
+        fontRenderer.drawSplitString(display, (int) (x * 1.5), (int) ((y + dist) * 1.5), (int) (width * 1.5), 0xffffff);
+        GlStateManager.scale(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
     }
 
     protected boolean isOnline(String user) {
-        if (Minecraft.getMinecraft().getNetHandler() == null || Minecraft.getMinecraft().getNetHandler().playerInfoList == null)
+        if (Minecraft.getMinecraft().getConnection() == null || Minecraft.getMinecraft().getConnection().getPlayerInfoMap() == null)
             return false;
-        Iterator iter = Minecraft.getMinecraft().getNetHandler().playerInfoList.iterator();
+        Iterator<NetworkPlayerInfo> iter = Minecraft.getMinecraft().getConnection().getPlayerInfoMap().iterator();
         while (iter.hasNext()) {
-            if (user.equals(((GuiPlayerInfo) iter.next()).name)) return true;
+            if (Minecraft.getMinecraft().getConnection().getPlayerInfo(user) != null) return true;
         }
         return false;
     }

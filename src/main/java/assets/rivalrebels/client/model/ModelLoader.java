@@ -170,8 +170,8 @@ public class ModelLoader {
     Vertice vcside6 = new Vertice(-0.4375f, 0.4375f, -0.40625f);
 
     public void renderA() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
         RenderHelper.addFace(lloader1, lloader12, rloader12, rloader1, l1f, l12s, r12s, r1f);
         RenderHelper.addFace(lloader2, lloader1, rloader1, rloader2, l2, l1s, r1s, r2);
         RenderHelper.addFace(lloader3, lloader2, rloader2, rloader3, l3f, l2, r2, r3f);
@@ -194,13 +194,13 @@ public class ModelLoader {
         RenderHelper.addFace(rloader4, rloader3, rloader10, rloader9, rs10, rs9, rs4, rs3);
         RenderHelper.addFace(rloader5, rloader4, rloader9, rloader8, rs11, rs10, rs3, rs2);
         RenderHelper.addFace(rloader6, rloader5, rloader8, rloader7, rs12, rs11, rs2, rs1);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     public void renderB(float slide) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(slide * 0.9f, 0, 0);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(slide * 0.9f, 0, 0);
+        GlStateManager.disableLighting();
         RenderHelper.addFace(vfront1, vfront2, vfront3, vfront4, front1, front2, front3, front4);
         RenderHelper.addFace(vfront5, vfront1, vfront4, vfront6, front5, front1, front4, front6);
         RenderHelper.addFace(vpanel5, vpanel6, vpanel7, vpanel8, panel5, panel6, panel7, panel8);
@@ -214,6 +214,6 @@ public class ModelLoader {
         RenderHelper.addFace(vfront4, vfront3, vcside4, vcside5, cside2, cside3, cside4, cside5);
         RenderHelper.addFace(vcside1, vfront5, vfront6, vcside6, ctop4, ctop1, ctop2, ctop3);
         RenderHelper.addFace(vfront2, vcside3, vcside4, vfront3, ctop2, ctop3, ctop4, ctop1);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

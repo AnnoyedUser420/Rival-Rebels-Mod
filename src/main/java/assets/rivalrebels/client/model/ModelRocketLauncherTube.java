@@ -13,8 +13,8 @@ package assets.rivalrebels.client.model;
 
 import assets.rivalrebels.client.renderhelper.RenderHelper;
 import assets.rivalrebels.client.renderhelper.Vertice;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -44,7 +44,7 @@ public class ModelRocketLauncherTube {
     float ty2 = 0.09375f;
 
     public void render() {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
 
         RenderHelper.addFace(vpx1, vpx2, vpxpz2, vpxpz1, tx1, tx2, ty1, ty2);
         RenderHelper.addFace(vpxpz1, vpxpz2, vpz2, vpz1, tx1, tx2, ty1, ty2);
@@ -60,6 +60,6 @@ public class ModelRocketLauncherTube {
         RenderHelper.addFace(vnx1, vnxnz1, vnz1, vy1, tx4, tx5, ty1, ty2);
         RenderHelper.addFace(vnz1, vpxnz1, vpx1, vy1, tx4, tx5, ty1, ty2);
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

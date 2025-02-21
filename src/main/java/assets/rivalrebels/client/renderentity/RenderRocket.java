@@ -14,8 +14,8 @@ package assets.rivalrebels.client.renderentity;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.model.ModelRocket;
 import assets.rivalrebels.common.entity.EntityRocket;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -31,15 +31,15 @@ public class RenderRocket extends Render {
     }
 
     public void renderRocket(EntityRocket rocket, double par2, double par4, double par6, float par8, float par9) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-        GL11.glRotatef(rocket.rotationYaw - 90.0f, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(rocket.rotationPitch - 90.0f, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(rocket.rotation, 0.0F, 1.0F, 0.0F);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) par2, (float) par4, (float) par6);
+        GlStateManager.rotate(rocket.rotationYaw - 90.0f, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(rocket.rotationPitch - 90.0f, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(rocket.rotation, 0.0F, 1.0F, 0.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etrocket);
         md.render(rocket.fins);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     /**

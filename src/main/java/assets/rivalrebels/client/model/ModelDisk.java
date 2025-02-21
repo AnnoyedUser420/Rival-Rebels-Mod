@@ -47,8 +47,8 @@ public class ModelDisk {
 
     public void render() {
         for (float i = 0; i < 360; i += 360 / numOfSegs) {
-            GL11.glPushMatrix();
-            GL11.glRotatef(i, 0, 1, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(i, 0, 1, 0);
             RenderHelper.addFace(v2, v1, v6, v7, t4, t9, t10, t5);
             if (i == 0 || i == 16) {
                 RenderHelper.addFace(v3, v2, v7, v8, t2, t7, t8, t3);
@@ -61,7 +61,7 @@ public class ModelDisk {
                 RenderHelper.addFace(v5, v4, v9, v10, t1, t6, t7, t2);
                 RenderHelper.addFace(v1, v5, v10, v6, t1, t6, t7, t2);
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 }

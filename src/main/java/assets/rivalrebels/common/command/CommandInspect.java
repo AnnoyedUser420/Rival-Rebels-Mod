@@ -15,24 +15,26 @@ import assets.rivalrebels.common.packet.InspectPacket;
 import assets.rivalrebels.common.packet.ModListPacket;
 import assets.rivalrebels.common.packet.PacketDispatcher;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
 public class CommandInspect extends CommandBase {
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rrinspect";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName() + " <player>";
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName() + " <player>";
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
@@ -42,9 +44,9 @@ public class CommandInspect extends CommandBase {
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) throws CommandException {
         ModListPacket.asker = getCommandSenderAsPlayer(sender);
-        PacketDispatcher.packetsys.sendTo(new InspectPacket(), getPlayer(sender, array[0]));
+        PacketDispatcher.packetsys.sendTo(new InspectPacket(), getPlayer(server, sender, array[0]));
         //RivalRebelsServerPacketHandler.sendPacket(21, sender.getCommandSenderName().equals("Server") ? -1 : getCommandSenderAsPlayer(sender).getEntityId(), getPlayer(sender, array[0]));
     }
 
@@ -52,7 +54,7 @@ public class CommandInspect extends CommandBase {
      * Adds the strings available in this command to the given list of tab completion options.
      */
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
-        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames()) : null;
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] par2ArrayOfStr, BlockPos pos) {
+        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, server.getOnlinePlayerNames()) : null;
     }
 }

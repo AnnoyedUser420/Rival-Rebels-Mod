@@ -23,11 +23,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class TileEntityLaptop extends TileEntity implements IInventory {
+public class TileEntityLaptop extends TileEntity implements IInventory, ITickable {
     public String username = null;
     public RivalRebelsTeam rrteam = null;
     public double slide = 0;
@@ -35,7 +37,7 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
     public int b2carpet = 0;
     public int numUsingPlayers;
     double test = Math.PI;
-    private ItemStack[] chestContents = new ItemStack[14];
+    private NonNullList<ItemStack> chestContents = NonNullList.withSize(14, ItemStack.EMPTY);
     private int ticksSinceSync;
     private boolean listed;
 
@@ -47,62 +49,75 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
         return 14;
     }
 
+    @Override
+    public boolean isEmpty() {
+        for (ItemStack itemstack : this.chestContents) {
+            if (!itemstack.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Returns the stack in slot i
      */
     @Override
-    public ItemStack getStackInSlot(int par1) {
-        return this.chestContents[par1];
+    public ItemStack getStackInSlot(int index) {
+        return this.chestContents.get(index);
     }
 
     /**
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a new stack.
      */
     @Override
-    public ItemStack decrStackSize(int par1, int par2) {
-        if (this.chestContents[par1] != null) {
-            ItemStack var3;
+    public ItemStack decrStackSize(int index, int count) {
+        if (!this.chestContents.get(index).isEmpty()) {
+            ItemStack stack;
 
-            if (this.chestContents[par1].stackSize <= par2) {
-                var3 = this.chestContents[par1];
-                this.chestContents[par1] = null;
-                return var3;
+            if (this.chestContents.get(index).getCount() <= count) {
+                stack = this.chestContents.get(index);
+                this.chestContents.set(index, ItemStack.EMPTY);
+                return stack;
             } else {
-                var3 = this.chestContents[par1].splitStack(par2);
+                stack = this.chestContents.get(index).splitStack(count);
 
-                if (this.chestContents[par1].stackSize == 0) {
-                    this.chestContents[par1] = null;
+                if (this.chestContents.get(index).getCount() == 0) {
+                    this.chestContents.set(index, ItemStack.EMPTY);
                 }
 
-                return var3;
+                return stack;
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem - like when you close a workbench GUI.
      */
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1) {
-        if (this.chestContents[par1] != null) {
-            ItemStack var2 = this.chestContents[par1];
-            this.chestContents[par1] = null;
-            return var2;
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack stack = this.chestContents.get(index);
+        if (!stack.isEmpty()) {
+            this.chestContents.set(index, ItemStack.EMPTY);
+            return stack;
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-        this.chestContents[par1] = par2ItemStack;
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        this.chestContents.set(index, stack);
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        if (stack != null && stack.getCount() > this.getInventoryStackLimit()) {
+            stack.setCount(this.getInventoryStackLimit());
         }
+
+        markDirty();
     }
 
     /**
@@ -112,14 +127,14 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-        this.chestContents = new ItemStack[this.getSizeInventory()];
+        this.chestContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbt1 = nbttaglist.getCompoundTagAt(i);
-            int j = nbt1.getByte("Slot") & 255;
+            NBTTagCompound tag = nbttaglist.getCompoundTagAt(i);
+            int slot = tag.getByte("Slot") & 255;
 
-            if (j >= 0 && j < this.chestContents.length) {
-                this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbt1);
+            if (slot < this.chestContents.size()) {
+                this.chestContents.set(slot, new ItemStack(tag));
             }
         }
 
@@ -128,23 +143,24 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        NBTTagList nbttaglist = new NBTTagList();
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        nbt = super.writeToNBT(nbt);
+        NBTTagList items = new NBTTagList();
 
-        for (int i = 0; i < this.chestContents.length; ++i) {
-            if (this.chestContents[i] != null) {
-                NBTTagCompound nbt1 = new NBTTagCompound();
-                nbt1.setByte("Slot", (byte) i);
-                this.chestContents[i].writeToNBT(nbt1);
-                nbttaglist.appendTag(nbt1);
+        for (int i = 0; i < this.chestContents.size(); ++i) {
+            if (!this.chestContents.get(i).isEmpty()) {
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setByte("Slot", (byte) i);
+                this.chestContents.get(i).writeToNBT(tag);
+                items.appendTag(tag);
             }
         }
 
-        nbt.setTag("Items", nbttaglist);
+        nbt.setTag("Items", items);
 
         nbt.setInteger("b2spirit", b2spirit);
         nbt.setInteger("b2carpet", b2carpet);
+        return nbt;
     }
 
     /**
@@ -159,8 +175,8 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return this.world.getTileEntity(getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     public void onGoButtonPressed() {
@@ -198,11 +214,11 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
         for (int j = 0; j < 4; j++) {
             if (getStackInSlot(j) == null) r = false;
             else {
-                if (getStackInSlot(j).stackTagCompound == null)
-                    getStackInSlot(j).stackTagCompound = new NBTTagCompound();
+                if (getStackInSlot(j).getTagCompound() == null)
+                    getStackInSlot(j).setTagCompound(new NBTTagCompound());
                 if (rrteam == RivalRebelsTeam.NONE)
-                    rrteam = RivalRebelsTeam.getForID(getStackInSlot(j).stackTagCompound.getInteger("team"));
-                else if (rrteam != RivalRebelsTeam.getForID(getStackInSlot(j).stackTagCompound.getInteger("team")))
+                    rrteam = RivalRebelsTeam.getForID(getStackInSlot(j).getTagCompound().getInteger("team"));
+                else if (rrteam != RivalRebelsTeam.getForID(getStackInSlot(j).getTagCompound().getInteger("team")))
                     r = false;
             }
         }
@@ -213,8 +229,7 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count ticks and creates a new spawn inside its implementation.
      */
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
         ++this.ticksSinceSync;
 
         slide = (Math.cos(test) + 1) * 45;
@@ -224,12 +239,12 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
         ItemBinoculars.add(this);
         //	listed = true;
         //}
-        List players = worldObj.playerEntities;
+        List players = world.playerEntities;
         Iterator iter = players.iterator();
         boolean i = false;
         while (iter.hasNext()) {
             EntityPlayer player = (EntityPlayer) iter.next();
-            if (player.getDistanceSq(xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f) <= 9) {
+            if (player.getDistanceSq(getPos().getX() + 0.5f, getPos().getY() + 0.5f, getPos().getZ() + 0.5f) <= 9) {
                 i = true;
             }
         }
@@ -275,27 +290,47 @@ public class TileEntityLaptop extends TileEntity implements IInventory {
     }
 
     @Override
-    public String getInventoryName() {
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        this.chestContents.clear();
+    }
+
+    @Override
+    public String getName() {
         return "Laptop";
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {
 
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer player) {
 
     }
 
     public void refreshTasks() {
-        PacketDispatcher.packetsys.sendToAll(new LaptopRefreshPacket(xCoord, yCoord, zCoord, b2spirit, b2carpet));
+        PacketDispatcher.packetsys.sendToAll(new LaptopRefreshPacket(getPos(), b2spirit, b2carpet));
     }
 
     public boolean isReady() {

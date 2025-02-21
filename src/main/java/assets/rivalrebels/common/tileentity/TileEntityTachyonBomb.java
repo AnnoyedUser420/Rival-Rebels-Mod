@@ -17,8 +17,8 @@ import assets.rivalrebels.common.entity.EntityTachyonBomb;
 import assets.rivalrebels.common.packet.PacketDispatcher;
 import assets.rivalrebels.common.packet.TextPacket;
 import assets.rivalrebels.common.round.RivalRebelsTeam;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -256,8 +256,8 @@ public class TileEntityTachyonBomb extends TileEntity implements IInventory {
                 this.chestContents[0] = null;
                 PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.WARNING " + username));
                 PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.Status " + (rrteam == RivalRebelsTeam.OMEGA ? RivalRebels.omegaobj.getUnlocalizedName() : rrteam == RivalRebelsTeam.SIGMA ? RivalRebels.sigmaobj.getUnlocalizedName() : "NONE") + ".name RivalRebels.Defuse RivalRebels.tsar.tsar"));
-                // ChatMessageComponent.createFromText(StatCollector.translateToLocal("RivalRebels.spawn.join" + rrteam.name().toLowerCase()) + " " +
-                // StatCollector.translateToLocal("RivalRebels.nukedefuse")));
+                // ChatMessageComponent.createFromText(I18n.translateToLocal("RivalRebels.spawn.join" + rrteam.name().toLowerCase()) + " " +
+                // I18n.translateToLocal("RivalRebels.nukedefuse")));
             }
         } else {
             countdown = RivalRebels.nuclearBombCountdown * 20;

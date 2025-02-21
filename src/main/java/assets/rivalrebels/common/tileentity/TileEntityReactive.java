@@ -20,7 +20,8 @@ public class TileEntityReactive extends TileEntityMachineBase {
 
     @Override
     public float powered(float power, float distance) {
-        int metadata = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+
+        int metadata = world.getBlockState(xCoord, yCoord, zCoord).getBlock().getMetaFromState();
         if (metadata > 0) {
             if (cooldown <= 0) {
                 worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, metadata - 1, 2);

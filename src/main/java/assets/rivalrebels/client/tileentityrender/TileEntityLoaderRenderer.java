@@ -15,8 +15,8 @@ import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.model.ModelLoader;
 import assets.rivalrebels.client.objfileloader.ModelFromObj;
 import assets.rivalrebels.common.tileentity.TileEntityLoader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -40,9 +40,9 @@ public class TileEntityLoaderRenderer extends TileEntitySpecialRenderer {
      * Renders the TileEntity for the chest at a position.
      */
     public void renderLoaderAt(TileEntityLoader tile, double par2, double par4, double par6, float par8) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) par2 + 0.5F, (float) par4 + 0.5F, (float) par6 + 0.5F);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) par2 + 0.5F, (float) par4 + 0.5F, (float) par6 + 0.5F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etloader);
         int var9 = tile.getBlockMetadata();
         short var11 = 0;
@@ -62,25 +62,25 @@ public class TileEntityLoaderRenderer extends TileEntitySpecialRenderer {
             var11 = 0;
         }
 
-        GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(var11, 0.0F, 1.0F, 0.0F);
         loaderModel.renderA();
         loaderModel.renderB((float) tile.slide);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         for (int i = 0; i < tile.machines.getSize(); i++) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) par2 + 0.5F, (float) par4 + 0.5F, (float) par6 + 0.5F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) par2 + 0.5F, (float) par4 + 0.5F, (float) par6 + 0.5F);
             int xdif = tile.machines.get(i).xCoord - tile.xCoord;
             int zdif = tile.machines.get(i).zCoord - tile.zCoord;
-            GL11.glRotated(-90 + (Math.atan2(xdif, zdif) / Math.PI) * 180, 0, 1, 0);
-            GL11.glTranslatef(-1f, -0.40f, 0);
+            GlStateManager.rotate(-90 + (Math.atan2(xdif, zdif) / Math.PI) * 180, 0, 1, 0);
+            GlStateManager.translate(-1f, -0.40f, 0);
             Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettube);
             GL11.glScaled(0.5, 0.15, 0.15);
             int dist = (int) Math.sqrt((xdif * xdif) + (zdif * zdif));
             for (int d = 0; d < dist; d++) {
-                GL11.glTranslatef(2, 0, 0);
+                GlStateManager.translate(2, 0, 0);
                 tube.render();
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 

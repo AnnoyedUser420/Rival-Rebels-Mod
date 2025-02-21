@@ -38,15 +38,15 @@ public class BlockAutoTemplate extends BlockFalling {
         RivalRebelsSoundPlayer.playSound(world, 1, 0, x, y, z, 10, 1);
     }
 
-    public void placeBlockCarefully(World world, int i, int j, int z, Block block) {
-        if (!BlackList.autobuild(world.getBlock(i, j, z))) {
-            world.setBlock(i, j, z, block);
+    public void placeBlockCarefully(World world, int x, int y, int z, Block block) {
+        if (!BlackList.autobuild(world.getBlock(x, y, z))) {
+            world.setBlock(x, y, z, block);
         }
     }
 
-    public void placeBlockCarefully(World world, int i, int j, int z, Block block, int m, int f) {
-        if (!BlackList.autobuild(world.getBlock(i, j, z))) {
-            world.setBlock(i, j, z, block, m, f);
+    public void placeBlockCarefully(World world, int x, int y, int z, Block block, int data, int flags) {
+        if (!BlackList.autobuild(world.getBlock(x, y, z))) {
+            world.setBlockState(x, y, z, block, data, flags);
         }
     }
 

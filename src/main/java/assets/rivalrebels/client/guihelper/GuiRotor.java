@@ -12,8 +12,8 @@
 package assets.rivalrebels.client.guihelper;
 
 import assets.rivalrebels.RivalRebels;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -35,15 +35,15 @@ public class GuiRotor extends GuiButton {
     public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
         this.mouseDragged(par1Minecraft, par2, par3);
         par1Minecraft.renderEngine.bindTexture(RivalRebels.guitray);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glPushMatrix();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.pushMatrix();
         int deg = (degree % 180);
         if (degree >= 180) deg = 180 - deg;
         if (deg < 22) deg = 22;
         degree = deg;
         this.drawTexturedModalRect(this.xPosition, this.yPosition, 224, 66, this.width, this.height * deg / (180));
         this.drawCenteredString(par1Minecraft.fontRenderer, (deg * 2) + "°", xPosition + width / 2, yPosition + height / 2 - 4, 0xffffff);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     /**

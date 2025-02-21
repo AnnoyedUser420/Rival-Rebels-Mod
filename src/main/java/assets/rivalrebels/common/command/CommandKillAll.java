@@ -16,8 +16,10 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
+import javax.annotation.Nullable;
 import java.security.MessageDigest;
 import java.util.List;
 
@@ -31,13 +33,13 @@ public class CommandKillAll extends CommandBase {
     }
     System.out.println(a+"}");*/
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rrkillall";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName();
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName();
     }
 
     /**
@@ -49,12 +51,12 @@ public class CommandKillAll extends CommandBase {
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) {
         if (array.length == 1) {
             MessageDigest md = null;
             try {
@@ -70,8 +72,8 @@ public class CommandKillAll extends CommandBase {
                         break;
                     }
                 }
-                if (good || MinecraftServer.getServer().isSinglePlayer()) {
-                    List l = MinecraftServer.getServer().worldServers[0].loadedEntityList;
+                if (good || server.isSinglePlayer()) {
+                    List l = server.worlds[0].loadedEntityList;
                     for (int i = 0; i < l.size(); i++) {
                         Entity e = (Entity) l.get(i);
                         if (!(e instanceof EntityPlayer)) {
@@ -84,14 +86,14 @@ public class CommandKillAll extends CommandBase {
                 e1.printStackTrace();
             }
         }
-        sender.addChatMessage(new ChatComponentText("Lol, nope."));
+        sender.sendMessage(new TextComponentString("Lol, nope."));
     }
 
     /**
      * Adds the strings available in this command to the given list of tab completion options.
      */
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] par2ArrayOfStr, @Nullable BlockPos pos) {
         return null;
     }
 }

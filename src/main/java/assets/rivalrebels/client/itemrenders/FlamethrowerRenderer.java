@@ -43,25 +43,25 @@ public class FlamethrowerRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etflamethrower);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-        GL11.glTranslatef(0.7f, 0.1f, 00f);
-        GL11.glRotatef(270, 0.0F, 1.0F, 0.0F);
-        GL11.glScalef(0.18f, 0.18f, 0.18f);
-        // GL11.glTranslatef(0.3f, 0.05f, -0.1f);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.rotate(35, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translate(0.7f, 0.1f, 00f);
+        GlStateManager.rotate(270, 0.0F, 1.0F, 0.0F);
+        GlStateManager.scale(0.18f, 0.18f, 0.18f);
+        // GlStateManager.translate(0.3f, 0.05f, -0.1f);
 
         ft.render();
         if (item.isItemEnchanted()) {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-            GL11.glDisable(GL11.GL_LIGHTING);
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            GlStateManager.disableLighting();
             ft.render();
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_LIGHTING);
+            GlStateManager.disableBlend();
+            GlStateManager.enableLighting();
         }
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

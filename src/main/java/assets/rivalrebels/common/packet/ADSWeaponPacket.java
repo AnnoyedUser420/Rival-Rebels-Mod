@@ -12,49 +12,44 @@
 package assets.rivalrebels.common.packet;
 
 import assets.rivalrebels.common.tileentity.TileEntityReciever;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 
 public class ADSWeaponPacket implements IMessage {
-    int x;
-    int y;
-    int z;
+    BlockPos pos;
     int wep;
 
     public ADSWeaponPacket() {
 
     }
 
-    public ADSWeaponPacket(int X, int Y, int Z, int w) {
-        x = X;
-        y = Y;
-        z = Z;
-        wep = w;
+    public ADSWeaponPacket(BlockPos pos, int w) {
+        this.pos = pos;
+        this.wep = w;
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        x = buf.readInt();
-        y = buf.readInt();
-        z = buf.readInt();
+        pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
         wep = buf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
+        buf.writeInt(pos.getX());
+        buf.writeInt(pos.getY());
+        buf.writeInt(pos.getZ());
         buf.writeInt(wep);
     }
 
     public static class Handler implements IMessageHandler<ADSWeaponPacket, IMessage> {
         @Override
         public IMessage onMessage(ADSWeaponPacket m, MessageContext ctx) {
-            TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(m.x, m.y, m.z);
+            TileEntity te = ctx.getServerHandler().player.world.getTileEntity(m.pos);
             if (te instanceof TileEntityReciever) {
                 TileEntityReciever ter = (TileEntityReciever) te;
                 if (ter.hasWepReqs()) {

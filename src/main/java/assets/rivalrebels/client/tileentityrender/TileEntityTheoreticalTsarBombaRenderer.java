@@ -13,8 +13,8 @@ package assets.rivalrebels.client.tileentityrender;
 
 import assets.rivalrebels.client.model.ModelTheoreticalTsarBomba;
 import assets.rivalrebels.common.tileentity.TileEntityTheoreticalTsarBomba;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
@@ -28,32 +28,32 @@ public class TileEntityTheoreticalTsarBombaRenderer extends TileEntitySpecialRen
     }
 
     public void renderAModelAt(TileEntityTheoreticalTsarBomba tile, double d, double d1, double d2, float f) {
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 1F, (float) d2 + 0.5F);
-        GL11.glScalef(1.3f, 1.3f, 1.3f);
+        GlStateManager.disableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) d + 0.5F, (float) d1 + 1F, (float) d2 + 0.5F);
+        GlStateManager.scale(1.3f, 1.3f, 1.3f);
         int metadata = tile.getBlockMetadata();
 
         if (metadata == 2) {
-            GL11.glRotatef(180, 0, 1, 0);
-            GL11.glRotatef(90, 1, 0, 0);
+            GlStateManager.rotate(180, 0, 1, 0);
+            GlStateManager.rotate(90, 1, 0, 0);
         }
 
         if (metadata == 3) {
-            GL11.glRotatef(90, 1, 0, 0);
+            GlStateManager.rotate(90, 1, 0, 0);
         }
 
         if (metadata == 4) {
-            GL11.glRotatef(-90, 0, 1, 0);
-            GL11.glRotatef(90, 1, 0, 0);
+            GlStateManager.rotate(-90, 0, 1, 0);
+            GlStateManager.rotate(90, 1, 0, 0);
         }
 
         if (metadata == 5) {
-            GL11.glRotatef(90, 0, 1, 0);
-            GL11.glRotatef(90, 1, 0, 0);
+            GlStateManager.rotate(90, 0, 1, 0);
+            GlStateManager.rotate(90, 1, 0, 0);
         }
         model.render();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

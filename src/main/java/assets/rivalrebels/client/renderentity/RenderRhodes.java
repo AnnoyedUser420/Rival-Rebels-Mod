@@ -17,8 +17,8 @@ import assets.rivalrebels.client.objfileloader.ModelFromObj;
 import assets.rivalrebels.client.tileentityrender.TileEntityForceFieldNodeRenderer;
 import assets.rivalrebels.common.entity.EntityRhodes;
 import assets.rivalrebels.common.round.RivalRebelsPlayer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -162,26 +162,26 @@ public class RenderRhodes extends Render {
         if (rhodes.health > 0) {
             float ptt = Math.min((rhodes.ticksSinceLastPacket + tt) / 5f, 1);
             if (rhodes.ticksExisted < 10) ptt = 1;
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) x, (float) y, (float) z);
-            GL11.glScalef(rhodes.scale, rhodes.scale, rhodes.scale);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) x, (float) y, (float) z);
+            GlStateManager.scale(rhodes.scale, rhodes.scale, rhodes.scale);
 
             FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
             float f = 5F;
             float f1 = 0.016666668F * f;
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0, 16, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, 16, 0);
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-            GL11.glScalef(-f1, -f1, f1);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDepthMask(false);
+            GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+            GlStateManager.scale(-f1, -f1, f1);
+            GlStateManager.disableLighting();
+            GlStateManager.depthMask(false);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.enableBlend();
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             Tessellator tessellator = Tessellator.instance;
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GlStateManager.disableTexture2D();
             tessellator.startDrawingQuads();
             String name = rhodes.getName();
             int color = -1;
@@ -209,37 +209,37 @@ public class RenderRhodes extends Render {
             tessellator.addVertex(j + 1, 8, 0.0D);
             tessellator.addVertex(j + 1, -1, 0.0D);
             tessellator.draw();
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GlStateManager.enableTexture2D();
             fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2, 0, color);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            GL11.glDepthMask(true);
+            GlStateManager.depthMask(true);
             fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2, 0, color);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glPopMatrix();
+            GlStateManager.enableLighting();
+            GlStateManager.disableBlend();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.popMatrix();
 
 
             if (rhodes.colorType == 16) {
-                GL11.glPushMatrix();
-                GL11.glRotatef(rhodes.getbodyyaw(ptt), 0, 1, 0);
-                GL11.glTranslatef(0, 10f, 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.rotate(rhodes.getbodyyaw(ptt), 0, 1, 0);
+                GlStateManager.translate(0, 10f, 0);
                 Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etbooster);
                 booster.renderAll();
                 Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
-                GL11.glPushMatrix();
-                GL11.glRotatef(-90f, 1, 0, 0);
-                GL11.glTranslatef(0, 4, -2);
-                GL11.glScalef(2.2f, 2.2f, 2.2f);
+                GlStateManager.pushMatrix();
+                GlStateManager.rotate(-90f, 1, 0, 0);
+                GlStateManager.translate(0, 4, -2);
+                GlStateManager.scale(2.2f, 2.2f, 2.2f);
                 if (rhodes.b2energy > 0) RenderB2Spirit.shuttle.render();
-                GL11.glPopMatrix();
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
+                GlStateManager.popMatrix();
             } else {
                 Minecraft.getMinecraft().renderEngine.bindTexture(texture);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-                GL11.glDisable(GL11.GL_CULL_FACE);
-                GL11.glRotatef(rhodes.getbodyyaw(ptt), 0, 1, 0);
+                GlStateManager.disableCull();
+                GlStateManager.rotate(rhodes.getbodyyaw(ptt), 0, 1, 0);
 
                 float leftlegheight = 7.26756f - 15
                         + (MathHelper.cos((rhodes.getleftthighpitch(ptt) + 11.99684962f) * 0.01745329252f) * 7.331691240f)
@@ -249,141 +249,141 @@ public class RenderRhodes extends Render {
                         + (MathHelper.cos((rhodes.getrightthighpitch(ptt) + rhodes.getrightshinpitch(ptt) - 12.2153067f) * 0.01745329252f) * 8.521366426f);
 
                 //TORSO
-                GL11.glPushMatrix();
-                GL11.glColor3f(colors[rhodes.colorType * 3], colors[rhodes.colorType * 3 + 1], colors[rhodes.colorType * 3 + 2]);
-                GL11.glTranslatef(0, Math.max(leftlegheight, rightlegheight), 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.color(colors[rhodes.colorType * 3], colors[rhodes.colorType * 3 + 1], colors[rhodes.colorType * 3 + 2]);
+                GlStateManager.translate(0, Math.max(leftlegheight, rightlegheight), 0);
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
-                GL11.glPushMatrix();
-                GL11.glRotatef(-90f, 1, 0, 0);
-                GL11.glTranslatef(0, 4, -2);
+                GlStateManager.pushMatrix();
+                GlStateManager.rotate(-90f, 1, 0, 0);
+                GlStateManager.translate(0, 4, -2);
                 if (rhodes.b2energy > 0) md.render();
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+                GlStateManager.enableBlend();
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
                 Minecraft.getMinecraft().renderEngine.bindTexture(flametex);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
                 if (rhodes.jet && rhodes.b2energy > 0) b2jet.render();
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glPopMatrix();
+                GlStateManager.disableBlend();
+                GlStateManager.popMatrix();
                 Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
                 torso.renderAll();
 
 
                 //RIGHT UPPERARM
-                GL11.glPushMatrix();
-                GL11.glTranslatef(-6.4f, 0, 0);
-                GL11.glRotatef(rhodes.getrightarmyaw(ptt), 0, 1, 0);
-                GL11.glScalef(-1, 1, 1);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(-6.4f, 0, 0);
+                GlStateManager.rotate(rhodes.getrightarmyaw(ptt), 0, 1, 0);
+                GlStateManager.scale(-1, 1, 1);
                 upperarm.renderAll();
 
                 //RIGHT LOWERARM
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0, -1.5f, 0);
-                GL11.glRotatef(rhodes.getrightarmpitch(ptt), 1, 0, 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, -1.5f, 0);
+                GlStateManager.rotate(rhodes.getrightarmpitch(ptt), 1, 0, 0);
                 lowerarm.renderAll();
-                GL11.glScalef(-1, 1, 1);
+                GlStateManager.scale(-1, 1, 1);
                 flamethrower.renderAll();
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 
                 //LEFT UPPERARM
-                GL11.glPushMatrix();
-                GL11.glTranslatef(6.4f, 0, 0);
-                GL11.glRotatef(rhodes.getleftarmyaw(ptt), 0, 1, 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(6.4f, 0, 0);
+                GlStateManager.rotate(rhodes.getleftarmyaw(ptt), 0, 1, 0);
                 upperarm.renderAll();
 
                 //LEFT LOWERARM
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0, -1.5f, 0);
-                GL11.glRotatef(rhodes.getleftarmpitch(ptt), 1, 0, 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, -1.5f, 0);
+                GlStateManager.rotate(rhodes.getleftarmpitch(ptt), 1, 0, 0);
                 lowerarm.renderAll();
                 rocketlauncher.renderAll();
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 
                 //RIGHT THIGH
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0, -7.26756f, -0.27904f);
-                GL11.glRotatef(rhodes.getrightthighpitch(ptt), 1, 0, 0);
-                GL11.glScalef(-1, 1, 1);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, -7.26756f, -0.27904f);
+                GlStateManager.rotate(rhodes.getrightthighpitch(ptt), 1, 0, 0);
+                GlStateManager.scale(-1, 1, 1);
                 thigh.renderAll();
 
                 //RIGHT SHIN
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0, -7.17156f, -1.52395f);
-                GL11.glRotatef(rhodes.getrightshinpitch(ptt), 1, 0, 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, -7.17156f, -1.52395f);
+                GlStateManager.rotate(rhodes.getrightshinpitch(ptt), 1, 0, 0);
                 shin.renderAll();
                 if (rhodes.fire) {
-                    GL11.glEnable(GL11.GL_BLEND);
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+                    GlStateManager.enableBlend();
+                    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
                     Minecraft.getMinecraft().renderEngine.bindTexture(flametex);
                     GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
                     GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
                     flame.renderAll();
                     Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-                    GL11.glDisable(GL11.GL_BLEND);
+                    GlStateManager.disableBlend();
                 }
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 
                 //LEFT THIGH
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0, -7.26756f, -0.27904f);
-                GL11.glRotatef(rhodes.getleftthighpitch(ptt), 1, 0, 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, -7.26756f, -0.27904f);
+                GlStateManager.rotate(rhodes.getleftthighpitch(ptt), 1, 0, 0);
                 thigh.renderAll();
 
                 //LEFT SHIN
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0, -7.17156f, -1.52395f);
-                GL11.glRotatef(rhodes.getleftshinpitch(ptt), 1, 0, 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, -7.17156f, -1.52395f);
+                GlStateManager.rotate(rhodes.getleftshinpitch(ptt), 1, 0, 0);
                 shin.renderAll();
                 if (rhodes.fire) {
-                    GL11.glEnable(GL11.GL_BLEND);
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+                    GlStateManager.enableBlend();
+                    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
                     Minecraft.getMinecraft().renderEngine.bindTexture(flametex);
                     flame.renderAll();
                     Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-                    GL11.glDisable(GL11.GL_BLEND);
+                    GlStateManager.disableBlend();
                 }
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 
                 //HEAD
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0, 5.23244f, 0);
-                GL11.glRotatef(rhodes.getheadpitch(ptt), 1, 0, 0);
-                GL11.glRotatef(rhodes.getheadyaw(ptt), 0, 1, 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, 5.23244f, 0);
+                GlStateManager.rotate(rhodes.getheadpitch(ptt), 1, 0, 0);
+                GlStateManager.rotate(rhodes.getheadyaw(ptt), 0, 1, 0);
                 head.renderAll();
                 GL11.glEnable(GL11.GL_CULL_FACE);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glColor4f(1f, 0f, 0f, 0.5f);
+                GlStateManager.enableBlend();
+                GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+                GlStateManager.disableTexture2D();
+                GlStateManager.color(1f, 0f, 0f, 0.5f);
                 if ((rhodes.laserOn & 1) == 1) {
                     laser.renderAll();
                 }
                 if ((rhodes.laserOn & 2) == 2) {
-                    GL11.glScalef(1, -1, 1);
+                    GlStateManager.scale(1, -1, 1);
                     GL11.glCullFace(GL11.GL_FRONT);
                     laser.renderAll();
                     GL11.glCullFace(GL11.GL_BACK);
                 }
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-                GL11.glDisable(GL11.GL_CULL_FACE);
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glPopMatrix();
+                GlStateManager.enableTexture2D();
+                GlStateManager.disableCull();
+                GlStateManager.disableBlend();
+                GlStateManager.popMatrix();
 
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
                 //TORSO
-                GL11.glPushMatrix();
-                GL11.glColor3f(1, 1, 1);
-                GL11.glTranslatef(0, Math.max(leftlegheight, rightlegheight), 0);
+                GlStateManager.pushMatrix();
+                GlStateManager.color(1, 1, 1);
+                GlStateManager.translate(0, Math.max(leftlegheight, rightlegheight), 0);
                 if (rhodes.itexfolder != -1) {
                     try {
                         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RivalRebels.MODID, "textures/" + texfolders[rhodes.itexfolder] + rhodes.itexloc + ".png"));
@@ -394,105 +394,105 @@ public class RenderRhodes extends Render {
                 }
                 if (rhodes.forcefield) {
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
-                    GL11.glEnable(GL11.GL_BLEND);
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-                    GL11.glDisable(GL11.GL_LIGHTING);
+                    GlStateManager.enableBlend();
+                    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+                    GlStateManager.disableLighting();
                     fftorso.renderAll();
                     //RIGHT UPPERARM
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(-6.4f, 0, 0);
-                    GL11.glRotatef(rhodes.getrightarmyaw(ptt), 0, 1, 0);
-                    GL11.glScalef(-1, 1, 1);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(-6.4f, 0, 0);
+                    GlStateManager.rotate(rhodes.getrightarmyaw(ptt), 0, 1, 0);
+                    GlStateManager.scale(-1, 1, 1);
                     ffupperarm.renderAll();
                     //RIGHT LOWERARM
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(0, -1.5f, 0);
-                    GL11.glRotatef(rhodes.getrightarmpitch(ptt), 1, 0, 0);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, -1.5f, 0);
+                    GlStateManager.rotate(rhodes.getrightarmpitch(ptt), 1, 0, 0);
                     fflowerarm.renderAll();
-                    GL11.glPopMatrix();
-                    GL11.glPopMatrix();
+                    GlStateManager.popMatrix();
+                    GlStateManager.popMatrix();
                     //LEFT UPPERARM
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(6.4f, 0, 0);
-                    GL11.glRotatef(rhodes.getleftarmyaw(ptt), 0, 1, 0);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(6.4f, 0, 0);
+                    GlStateManager.rotate(rhodes.getleftarmyaw(ptt), 0, 1, 0);
                     ffupperarm.renderAll();
                     //LEFT LOWERARM
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(0, -1.5f, 0);
-                    GL11.glRotatef(rhodes.getleftarmpitch(ptt), 1, 0, 0);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, -1.5f, 0);
+                    GlStateManager.rotate(rhodes.getleftarmpitch(ptt), 1, 0, 0);
                     fflowerarm.renderAll();
-                    GL11.glPopMatrix();
-                    GL11.glPopMatrix();
+                    GlStateManager.popMatrix();
+                    GlStateManager.popMatrix();
                     //RIGHT THIGH
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(0, -7.26756f, -0.27904f);
-                    GL11.glRotatef(rhodes.getrightthighpitch(ptt), 1, 0, 0);
-                    GL11.glScalef(-1, 1, 1);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, -7.26756f, -0.27904f);
+                    GlStateManager.rotate(rhodes.getrightthighpitch(ptt), 1, 0, 0);
+                    GlStateManager.scale(-1, 1, 1);
                     ffthigh.renderAll();
                     //RIGHT SHIN
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(0, -7.17156f, -1.52395f);
-                    GL11.glRotatef(rhodes.getrightshinpitch(ptt), 1, 0, 0);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, -7.17156f, -1.52395f);
+                    GlStateManager.rotate(rhodes.getrightshinpitch(ptt), 1, 0, 0);
                     ffshin.renderAll();
-                    GL11.glPopMatrix();
-                    GL11.glPopMatrix();
+                    GlStateManager.popMatrix();
+                    GlStateManager.popMatrix();
                     //LEFT THIGH
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(0, -7.26756f, -0.27904f);
-                    GL11.glRotatef(rhodes.getleftthighpitch(ptt), 1, 0, 0);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, -7.26756f, -0.27904f);
+                    GlStateManager.rotate(rhodes.getleftthighpitch(ptt), 1, 0, 0);
                     ffthigh.renderAll();
                     //LEFT SHIN
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(0, -7.17156f, -1.52395f);
-                    GL11.glRotatef(rhodes.getleftshinpitch(ptt), 1, 0, 0);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, -7.17156f, -1.52395f);
+                    GlStateManager.rotate(rhodes.getleftshinpitch(ptt), 1, 0, 0);
                     ffshin.renderAll();
-                    GL11.glPopMatrix();
-                    GL11.glPopMatrix();
+                    GlStateManager.popMatrix();
+                    GlStateManager.popMatrix();
                     //HEAD
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(0, 5.23244f, 0);
-                    GL11.glRotatef(rhodes.getheadpitch(ptt), 1, 0, 0);
-                    GL11.glRotatef(rhodes.getheadyaw(ptt), 0, 1, 0);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, 5.23244f, 0);
+                    GlStateManager.rotate(rhodes.getheadpitch(ptt), 1, 0, 0);
+                    GlStateManager.rotate(rhodes.getheadyaw(ptt), 0, 1, 0);
                     ffhead.renderAll();
-                    GL11.glPopMatrix();
-                    GL11.glDisable(GL11.GL_BLEND);
-                    GL11.glEnable(GL11.GL_LIGHTING);
+                    GlStateManager.popMatrix();
+                    GlStateManager.disableBlend();
+                    GlStateManager.enableLighting();
                 }
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
         if (rhodes.health < 1) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) x, (float) y, (float) z);
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) x, (float) y, (float) z);
+            GlStateManager.disableCull();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+            GlStateManager.disableTexture2D();
             double elev = Math.sin((rhodes.health - tt) * -0.0314159265359) * 15;
-            GL11.glPushMatrix();
-            GL11.glRotatef((float) (elev * 2), 0, 1, 0);
-            GL11.glRotatef((float) (elev * 3), 1, 0, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate((float) (elev * 2), 0, 1, 0);
+            GlStateManager.rotate((float) (elev * 3), 1, 0, 0);
             modelsphere.renderModel((float) elev, 1, 0.25f, 0, 1f);
-            GL11.glPopMatrix();
-            GL11.glPushMatrix();
-            GL11.glRotatef((float) (elev * -2), 0, 1, 0);
-            GL11.glRotatef((float) (elev * 4), 0, 0, 1);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate((float) (elev * -2), 0, 1, 0);
+            GlStateManager.rotate((float) (elev * 4), 0, 0, 1);
             modelsphere.renderModel((float) (elev - 0.2f), 1, 0.5f, 0, 1f);
-            GL11.glPopMatrix();
-            GL11.glPushMatrix();
-            GL11.glRotatef((float) (elev * -3), 1, 0, 0);
-            GL11.glRotatef((float) (elev * 2), 0, 0, 1);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate((float) (elev * -3), 1, 0, 0);
+            GlStateManager.rotate((float) (elev * 2), 0, 0, 1);
             modelsphere.renderModel((float) (elev - 0.4f), 1, 0, 0, 1f);
-            GL11.glPopMatrix();
-            GL11.glPushMatrix();
-            GL11.glRotatef((float) (elev * -1), 0, 1, 0);
-            GL11.glRotatef((float) (elev * 3), 0, 0, 1);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate((float) (elev * -1), 0, 1, 0);
+            GlStateManager.rotate((float) (elev * 3), 0, 0, 1);
             modelsphere.renderModel((float) (elev - 0.6f), 1, 1, 0, 1);
-            GL11.glPopMatrix();
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
+            GlStateManager.enableTexture2D();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 

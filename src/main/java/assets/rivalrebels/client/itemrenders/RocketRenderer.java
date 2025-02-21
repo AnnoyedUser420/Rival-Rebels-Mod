@@ -37,14 +37,14 @@ public class RocketRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etrocket);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.8f, 0.3f, -0.03f);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.8f, 0.3f, -0.03f);
         GL11.glScaled(2, 2, 2);
 
         rock.render(true);
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

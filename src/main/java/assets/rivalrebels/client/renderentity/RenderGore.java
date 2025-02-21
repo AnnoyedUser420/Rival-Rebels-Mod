@@ -36,11 +36,11 @@ public class RenderGore extends Render {
 
     @Override
     public void doRender(Entity entity, double x, double y, double z, float f, float f1) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableLighting();
         GL11.glTranslated(x, y, z);
-        GL11.glRotatef(-entity.rotationYaw + 180, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(entity.rotationPitch, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-entity.rotationYaw + 180, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(entity.rotationPitch, 1.0F, 0.0F, 0.0F);
         EntityGore eg = (EntityGore) entity;
         int mob = eg.mob;
         int type = eg.type;
@@ -67,7 +67,7 @@ public class RenderGore extends Render {
             else if (type == 3) RenderHelper.renderBox(4, 12, 4, 0, 16, 64, 64, 16);
         } else if (mob == 3) {
             Minecraft.getMinecraft().renderEngine.bindTexture(skeleton);
-            GL11.glDisable(GL11.GL_CULL_FACE);
+            GlStateManager.disableCull();
             if (type == 0) RenderHelper.renderBox(8, 8, 8, 0, 0, 64, 32, 16);
             else if (type == 1) RenderHelper.renderBox(4, 12, 8, 16, 16, 64, 32, 16);
             else if (type == 2) RenderHelper.renderBox(2, 10, 2, 40, 16, 64, 32, 16);
@@ -90,12 +90,12 @@ public class RenderGore extends Render {
         } else if (mob == 6) {
             Minecraft.getMinecraft().renderEngine.bindTexture(slime);
             if (type == 0) {
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GlStateManager.enableBlend();
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 RenderHelper.renderBox(8, 8, 8, 0, 0, 64, 32, 16);
             } else if (type == 1) {
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GlStateManager.enableBlend();
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 RenderHelper.renderBox(6, 6, 6, 0, 16, 64, 32, 16);
             }
         } else if (mob == 7) {
@@ -106,15 +106,15 @@ public class RenderGore extends Render {
             Minecraft.getMinecraft().renderEngine.bindTexture(spider);
             if (type == 0) RenderHelper.renderBox(8, 8, 8, 32, 4, 64, 32, 16);
             else if (type == 1) {
-                GL11.glRotatef(90, 0, 1, 0);
+                GlStateManager.rotate(90, 0, 1, 0);
                 RenderHelper.renderBox(8, 12, 10, 4, 12, 64, 32, 16);
             } else if (type == 3) RenderHelper.renderBox(2, 2, 16, 18, 0, 64, 32, 16);
         } else if (mob == 9) {
             Minecraft.getMinecraft().renderEngine.bindTexture(cavespider);
-            GL11.glScalef(0.666f, 0.666f, 0.666f);
+            GlStateManager.scale(0.666f, 0.666f, 0.666f);
             if (type == 0) RenderHelper.renderBox(8, 8, 8, 32, 4, 64, 32, 16);
             else if (type == 1) {
-                GL11.glRotatef(90, 0, 1, 0);
+                GlStateManager.rotate(90, 0, 1, 0);
                 RenderHelper.renderBox(8, 12, 10, 4, 12, 64, 32, 16);
             } else if (type == 3) RenderHelper.renderBox(2, 2, 16, 18, 0, 64, 32, 16);
         } else if (mob == 10) {
@@ -134,7 +134,7 @@ public class RenderGore extends Render {
             else if (type == 3)
                 RenderHelper.renderBox((int) (4 * size), (int) (12 * size), (int) (4 * size), 0, 0, 64, 64, 16);
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

@@ -44,22 +44,22 @@ public class BinocularsRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etbinoculars);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.5f, 0.5f, -0.03f);
-        GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
-        GL11.glScalef(0.35f, 0.35f, 0.35f);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5f, 0.5f, -0.03f);
+        GlStateManager.rotate(35, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(90, 0.0F, 1.0F, 0.0F);
+        GlStateManager.scale(0.35f, 0.35f, 0.35f);
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON && (Mouse.isButtonDown(1))) {
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
             return;
         }
-        GL11.glTranslatef(0.6f, 0.05f, 0.3f);
+        GlStateManager.translate(0.6f, 0.05f, 0.3f);
 
         if (model.name.isEmpty())
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§43D ERROR:§f Cannot find RivalRebels.zip or RivalRebels folder inside mods folder. Please make sure the RivalRebels mod file is named RivalRebels.zip, or visit §2www.rivalrebels.com §ffor support."));
         model.render();
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

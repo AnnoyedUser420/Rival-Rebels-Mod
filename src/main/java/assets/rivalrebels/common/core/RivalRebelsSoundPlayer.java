@@ -235,7 +235,7 @@ public class RivalRebelsSoundPlayer {
 
     public static boolean playSound(Entity entity, int dir, int num, float volume, float pitch) {
         if (entity != null) {
-            return playSound(entity.worldObj, dir, num, entity.posX, entity.posY, entity.posZ, volume, pitch);
+            return playSound(entity.world, dir, num, entity.posX, entity.posY, entity.posZ, volume, pitch);
         } else {
             return false;
         }

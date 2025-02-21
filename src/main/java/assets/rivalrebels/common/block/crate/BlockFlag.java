@@ -12,8 +12,8 @@
 package assets.rivalrebels.common.block.crate;
 
 import assets.rivalrebels.RivalRebels;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -32,7 +32,7 @@ public class BlockFlag extends Block {
     IIcon icon;
 
     public BlockFlag(String name) {
-        super(Material.cloth);
+        super(Material.CLOTH);
         texpath += name;
         //this.setCreativeTab(RivalRebels.rrarmortab);
     }

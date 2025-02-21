@@ -30,7 +30,7 @@
 // import net.minecraft.client.Minecraft;
 // import net.minecraft.client.gui.inventory.GuiContainer;
 // import net.minecraft.entity.player.InventoryPlayer;
-// import net.minecraft.util.StatCollector;
+// import net.minecraft.util.text.translation.I18n;
 // import net.minecraft.util.StringTranslate;
 //
 // import org.lwjgl.opengl.GL11;
@@ -71,14 +71,14 @@
 // super.drawGuiContainerForegroundLayer(par1, par2);
 // int posX = (width - xSize) / 2;
 // int posY = (height - ySize) / 2;
-// Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocal("RivalRebels.controller.B83"), posX + 118, posY + 11, 0xffffff);
-// Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocal("RivalRebels.controller.b2spirit"), posX + 25, posY + 11, 0xffffff);
+// Minecraft.getMinecraft().fontRenderer.drawString(I18n.translateToLocal("RivalRebels.controller.B83"), posX + 118, posY + 11, 0xffffff);
+// Minecraft.getMinecraft().fontRenderer.drawString(I18n.translateToLocal("RivalRebels.controller.b2spirit"), posX + 25, posY + 11, 0xffffff);
 // }
 //
 // @Override
 // protected void drawGuiContainerBackgroundLayer(float par1, int x, int y)
 // {
-// GL11.glColor3f(1, 1, 1);
+// GlStateManager.color(1, 1, 1);
 // Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.guilaptopnuke);
 // int posX = (width - xSize) / 2;
 // int posY = (height - ySize) / 2;
@@ -132,13 +132,14 @@ import assets.rivalrebels.common.container.ContainerLaptop;
 import assets.rivalrebels.common.packet.LaptopButtonPacket;
 import assets.rivalrebels.common.packet.PacketDispatcher;
 import assets.rivalrebels.common.tileentity.TileEntityLaptop;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -195,8 +196,8 @@ public class GuiLaptop extends GuiContainer {
         if (mousex > coordx && mousey > coordy && mousex < coordx + widthx && mousey < coordy + widthy) {
             mousex -= posx;
             mousey -= posy;
-            drawGradientRect(mousex, mousey, mousex + fontRendererObj.getStringWidth("rivalrebels.com") + 3, mousey + 12, 0xaa111111, 0xaa111111);
-            fontRendererObj.drawString("rivalrebels.com", mousex + 2, mousey + 2, 0xFFFFFF);
+            drawGradientRect(mousex, mousey, mousex + fontRenderer.getStringWidth("rivalrebels.com") + 3, mousey + 12, 0xaa111111, 0xaa111111);
+            fontRenderer.drawString("rivalrebels.com", mousex + 2, mousey + 2, 0xFFFFFF);
             if (Desktop.isDesktopSupported() && !buttondown && Mouse.isButtonDown(0)) {
                 try {
                     Desktop.getDesktop().browse(new URI("http://rivalrebels.com"));
@@ -212,18 +213,18 @@ public class GuiLaptop extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        GL11.glColor3f(1, 1, 1);
+        GlStateManager.color(1, 1, 1);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.guilaptopnuke);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
         if (lt.hasChips()) this.drawTexturedModalRect(x + 135, y + 79, 248, 0, 8, 8);
-        Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocal("RivalRebels.controller.B83"), x + 118, y + 11, 0xffffff);
-        Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocal("RivalRebels.controller.b2spirit"), x + 25, y + 11, 0xffffff);
-        Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocal("x" + lt.b2spirit), x + 154, y + 96, 0xffffff);
-        Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocal("x" + lt.b2carpet), x + 154, y + 85, 0xffffff);
+        Minecraft.getMinecraft().fontRenderer.drawString(I18n.translateToLocal("RivalRebels.controller.B83"), x + 118, y + 11, 0xffffff);
+        Minecraft.getMinecraft().fontRenderer.drawString(I18n.translateToLocal("RivalRebels.controller.b2spirit"), x + 25, y + 11, 0xffffff);
+        Minecraft.getMinecraft().fontRenderer.drawString(I18n.translateToLocal("x" + lt.b2spirit), x + 154, y + 96, 0xffffff);
+        Minecraft.getMinecraft().fontRenderer.drawString(I18n.translateToLocal("x" + lt.b2carpet), x + 154, y + 85, 0xffffff);
         if (button.mousePressed(mc, par2, par3) && Mouse.isButtonDown(0) && !prevButtonDown) {
-            PacketDispatcher.packetsys.sendToServer(new LaptopButtonPacket(lt.xCoord, lt.yCoord, lt.zCoord));
+            PacketDispatcher.packetsys.sendToServer(new LaptopButtonPacket(lt.getPos()));
         }
         prevButtonDown = Mouse.isButtonDown(0);
     }

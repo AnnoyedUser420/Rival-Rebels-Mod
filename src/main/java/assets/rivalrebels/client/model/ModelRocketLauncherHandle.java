@@ -78,11 +78,11 @@ public class ModelRocketLauncherHandle {
     Vertice vbb4 = new Vertice(8f, 0f, -2f);
 
     public void render() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableCull();
+        GlStateManager.disableLighting();
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         GL11.glScaled(1.3, 1, 1);
         // bottom
         RenderHelper.addFace(vbt3, vbt4, vbt1, vbt2, bottombottom);
@@ -91,7 +91,7 @@ public class ModelRocketLauncherHandle {
         RenderHelper.addFace(vbt2, vbb2, vbb1, vbt1, bottomside);
         RenderHelper.addFace(vbt3, vbb3, vbb4, vbt4, bottomside);
         RenderHelper.addFace(vbb3, vbb4, vbb1, vbb2, bottombottom);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 
         // handle
         RenderHelper.addFace(vht4, vhb4, vhb1, vht1, handlefront);
@@ -99,6 +99,6 @@ public class ModelRocketLauncherHandle {
         RenderHelper.addFace(vht1, vhb1, vhb2, vht2, handleside);
         RenderHelper.addFace(vht3, vhb3, vhb4, vht4, handleside);
         RenderHelper.addFace(vhb2, vhb1, vhb4, vhb3, handlebottom);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

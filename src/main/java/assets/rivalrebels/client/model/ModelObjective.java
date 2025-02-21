@@ -135,8 +135,8 @@ public class ModelObjective {
     Vertice vcside5 = new Vertice(-0.125f, 0.3125f, -0.3125f);
 
     public void renderA() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
         RenderHelper.addFace(lloader1, lloader12, rloader12, rloader1, l1f, l12s, r12s, r1f);
         RenderHelper.addFace(lloader2, lloader1, rloader1, rloader2, l2, l1s, r1s, r2);
         RenderHelper.addFace(lloader3, lloader2, rloader2, rloader3, l3f, l2, r2, r3f);
@@ -161,19 +161,19 @@ public class ModelObjective {
         RenderHelper.addFace(rloader4, rloader3, rloader10, rloader9, rs10, rs9, rs4, rs3);
         RenderHelper.addFace(rloader5, rloader4, rloader9, rloader8, rs11, rs10, rs3, rs2);
         RenderHelper.addFace(rloader6, rloader5, rloader8, rloader7, rs12, rs11, rs2, rs1);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     public void renderB(float slide, float x, float y, float X, float Y) {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glTranslatef(slide, 0, 0);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
+        GlStateManager.translate(slide, 0, 0);
         addFace(vfront3, vfront4, vfront1, vfront2, x, y);
         addFace(vcside3, vfront2, vfront1, vcside2, X, Y);
         addFace(vcside5, vfront4, vfront3, vcside4, X, Y);
         addFace(vcside2, vfront1, vfront4, vcside5, X, Y);
         addFace(vcside4, vfront3, vfront2, vcside3, X, Y);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     private void addFace(Vertice v1, Vertice v2, Vertice v3, Vertice v4, float x, float y) {

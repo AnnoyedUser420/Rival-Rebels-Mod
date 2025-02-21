@@ -13,35 +13,54 @@ package assets.rivalrebels.client.renderentity;
 
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.entity.EntityAntimatterBomb;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.SimpleModelState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
+
+import java.util.function.Function;
 
 @SideOnly(Side.CLIENT)
 public class RenderAntimatterBomb extends Render {
-    public static IModelCustom bomb;
+    public static IBakedModel bomb;
 
-    public RenderAntimatterBomb() {
-        bomb = AdvancedModelLoader.loadModel(new ResourceLocation(RivalRebels.MODID, "models/t.obj"));
+    public RenderAntimatterBomb(RenderManager renderManager) {
+        super(renderManager);
+        Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+        bomb = ModelLoaderRegistry.getModelOrLogError(new ResourceLocation(RivalRebels.MODID, "models/t.obj"), "Missing model for Antimatter Bomb").bake(new SimpleModelState(ImmutableMap.of()), DefaultVertexFormats.ITEM, spriteFunction);
     }
 
     public void renderB83(EntityAntimatterBomb b83, double x, double y, double z, float par8, float par9) {
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x, (float) y, (float) z);
-        GL11.glScalef(RivalRebels.nukeScale, RivalRebels.nukeScale, RivalRebels.nukeScale);
-        GL11.glRotatef(b83.rotationYaw - 90.0f, 0.0F, 1.0F, 0.0F);
-        //GL11.glRotatef(90.0f, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(b83.rotationPitch, 0.0F, 0.0F, 1.0F);
+        GlStateManager.disableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x, (float) y, (float) z);
+        GlStateManager.scale(RivalRebels.nukeScale, RivalRebels.nukeScale, RivalRebels.nukeScale);
+        GlStateManager.rotate(b83.rotationYaw - 90.0f, 0.0F, 1.0F, 0.0F);
+        //GlStateManager.rotate(90.0f, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(b83.rotationPitch, 0.0F, 0.0F, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etantimatterbomb);
-        bomb.renderAll();
-        GL11.glPopMatrix();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buf = tessellator.getBuffer();
+        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+        for (BakedQuad quad : bomb.getQuads(null, null, 0)) {
+            buf.addVertexData(quad.getVertexData());
+        }
+        tessellator.draw();
+        GlStateManager.popMatrix();
     }
 
     /**

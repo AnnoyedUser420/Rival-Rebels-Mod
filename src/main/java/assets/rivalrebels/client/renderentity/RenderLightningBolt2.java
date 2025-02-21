@@ -26,10 +26,10 @@ public class RenderLightningBolt2 extends Render {
      */
     public void renderLightningBolt2(EntityLightningBolt2 par1EntityLightningBolt2, double par2, double par4, double par6, float par8, float par9) {
         Tessellator var10 = Tessellator.instance;
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableLighting();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         double[] var11 = new double[8];
         double[] var12 = new double[8];
         double var13 = 0.0D;
@@ -120,9 +120,9 @@ public class RenderLightningBolt2 extends Render {
             }
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableBlend();
+        GlStateManager.enableLighting();
+        GlStateManager.enableTexture2D();
     }
 
     /**

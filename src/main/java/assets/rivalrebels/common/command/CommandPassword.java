@@ -18,9 +18,11 @@ import assets.rivalrebels.common.round.RivalRebelsPlayer;
 import assets.rivalrebels.common.round.RivalRebelsRank;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
 import java.security.MessageDigest;
 import java.util.List;
@@ -44,30 +46,30 @@ public class CommandPassword extends CommandBase {
     };
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rr";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName() + " <code> [player]";
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName() + " <code> [player]";
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1) {
+    public boolean checkPermission(MinecraftServer server, ICommandSender par1) {
         return true;
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
-        ChatComponentText message = new ChatComponentText("nope.");
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) throws PlayerNotFoundException {
+        TextComponentString message = new TextComponentString("nope.");
         if (array.length == 0) {
-            sender.addChatMessage(message);
+            sender.sendMessage(message);
             return;
         }
         EntityPlayer person = getCommandSenderAsPlayer(sender);
@@ -78,23 +80,23 @@ public class CommandPassword extends CommandBase {
         RivalRebelsRank rank = RivalRebelsRank.REGULAR;
         if (rhashes[0].equals(encrypted) || rhashes[1].equals(encrypted)) {
             rank = RivalRebelsRank.REBEL;
-            message = new ChatComponentText("Welcome, rebel!");
+            message = new TextComponentString("Welcome, rebel!");
         } else if (ohashes[0].equals(encrypted) || ohashes[1].equals(encrypted)) {
             rank = RivalRebelsRank.OFFICER;
-            message = new ChatComponentText("Welcome, officer!");
+            message = new TextComponentString("Welcome, officer!");
         } else if (lhashes[0].equals(encrypted) || lhashes[1].equals(encrypted)) {
             rank = RivalRebelsRank.LEADER;
-            message = new ChatComponentText("Welcome, leader!");
+            message = new TextComponentString("Welcome, leader!");
         } else if (shashes[0].equals(encrypted) || shashes[1].equals(encrypted)) {
             rank = RivalRebelsRank.REP;
-            message = new ChatComponentText("Welcome, representative!");
+            message = new TextComponentString("Welcome, representative!");
         }
-        RivalRebelsPlayer p = RivalRebels.round.rrplayerlist.getForName(person.getCommandSenderName());
+        RivalRebelsPlayer p = RivalRebels.round.rrplayerlist.getForName(person.getName());
         if (p.rrrank != rank || rank == RivalRebelsRank.REGULAR) {
             p.rrrank = rank;
             RivalRebelsSoundPlayer.playSound(person, 28, rank.snf);
             PacketDispatcher.packetsys.sendToAll(RivalRebels.round.rrplayerlist);
-            sender.addChatMessage(message);
+            sender.sendMessage(message);
         }
     }
 
@@ -122,7 +124,7 @@ public class CommandPassword extends CommandBase {
      * Adds the strings available in this command to the given list of tab completion options.
      */
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
-        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames()) : null;
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] par2ArrayOfStr, BlockPos pos) {
+        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, server.getOnlinePlayerNames()) : null;
     }
 }

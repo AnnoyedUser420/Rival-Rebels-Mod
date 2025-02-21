@@ -17,8 +17,8 @@ import assets.rivalrebels.common.entity.EntityAntimatterBomb;
 import assets.rivalrebels.common.packet.PacketDispatcher;
 import assets.rivalrebels.common.packet.TextPacket;
 import assets.rivalrebels.common.round.RivalRebelsTeam;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -72,19 +72,19 @@ public class TileEntityAntimatterBomb extends TileEntity implements IInventory {
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a new stack.
      */
     @Override
-    public ItemStack decrStackSize(int par1, int par2) {
-        if (this.chestContents[par1] != null) {
+    public ItemStack decrStackSize(int index, int count) {
+        if (this.chestContents[index] != null) {
             ItemStack var3;
 
-            if (this.chestContents[par1].stackSize <= par2) {
-                var3 = this.chestContents[par1];
-                this.chestContents[par1] = null;
+            if (this.chestContents[index].getCount() <= count) {
+                var3 = this.chestContents[index];
+                this.chestContents[index] = null;
                 return var3;
             } else {
-                var3 = this.chestContents[par1].splitStack(par2);
+                var3 = this.chestContents[index].splitStack(count);
 
-                if (this.chestContents[par1].stackSize == 0) {
-                    this.chestContents[par1] = null;
+                if (this.chestContents[index].getCount() == 0) {
+                    this.chestContents[index] = null;
                 }
 
                 return var3;
@@ -112,11 +112,11 @@ public class TileEntityAntimatterBomb extends TileEntity implements IInventory {
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-        this.chestContents[par1] = par2ItemStack;
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        this.chestContents[index] = stack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        if (stack != null && stack.getCount() > this.getInventoryStackLimit()) {
+            stack.setCount(this.getInventoryStackLimit());
         }
 
     }
@@ -174,7 +174,7 @@ public class TileEntityAntimatterBomb extends TileEntity implements IInventory {
      */
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
     /**
@@ -256,8 +256,8 @@ public class TileEntityAntimatterBomb extends TileEntity implements IInventory {
                 this.chestContents[0] = null;
                 PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.WARNING " + username));
                 PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.Status " + (rrteam == RivalRebelsTeam.OMEGA ? RivalRebels.omegaobj.getUnlocalizedName() : rrteam == RivalRebelsTeam.SIGMA ? RivalRebels.sigmaobj.getUnlocalizedName() : "NONE") + ".name RivalRebels.Defuse RivalRebels.tsar.tsar"));
-                // ChatMessageComponent.createFromText(StatCollector.translateToLocal("RivalRebels.spawn.join" + rrteam.name().toLowerCase()) + " " +
-                // StatCollector.translateToLocal("RivalRebels.nukedefuse")));
+                // ChatMessageComponent.createFromText(I18n.translateToLocal("RivalRebels.spawn.join" + rrteam.name().toLowerCase()) + " " +
+                // I18n.translateToLocal("RivalRebels.nukedefuse")));
             }
         } else {
             countdown = RivalRebels.nuclearBombCountdown * 20;

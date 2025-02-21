@@ -13,6 +13,7 @@ package assets.rivalrebels.client.renderentity;
 
 import assets.rivalrebels.RivalRebels;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -23,12 +24,12 @@ public class RenderGoo extends Render {
     @Override
     public void doRender(Entity entity, double x, double y, double z, float f, float f1) {
         if (entity.ticksExisted > 1) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) x, (float) y, (float) z);
-            GL11.glScalef(0.25F, 0.25F, 0.25F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) x, (float) y, (float) z);
+            GlStateManager.scale(0.25F, 0.25F, 0.25F);
             Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etgoo);
             renderFaceMe();
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -37,8 +38,8 @@ public class RenderGoo extends Render {
         float var8 = 0.5F;
         float var9 = 0.25F;
         Tessellator t = Tessellator.instance;
-        GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
         t.startDrawingQuads();
         t.setNormal(0.0F, 1.0F, 0.0F);
         t.addVertexWithUV((0.0F - var8), (0.0F - var9), 0.0D, 0, 0);

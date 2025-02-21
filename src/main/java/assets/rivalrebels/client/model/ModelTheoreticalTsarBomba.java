@@ -31,14 +31,14 @@ public class ModelTheoreticalTsarBomba {
     private final float add = 360 / segments;
 
     public void render() {
-        GL11.glPushMatrix();
-        GL11.glScalef(RivalRebels.nukeScale, RivalRebels.nukeScale, RivalRebels.nukeScale);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(RivalRebels.nukeScale, RivalRebels.nukeScale, RivalRebels.nukeScale);
+        GlStateManager.disableCull();
+        GlStateManager.pushMatrix();
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettheoreticaltsarshell1);
         for (float i = 0; i < segments; i++) {
-            GL11.glPushMatrix();
-            GL11.glRotatef(add * i, 0, 1, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(add * i, 0, 1, 0);
             for (int f = 1; f < tsarx.length; f++) {
                 TextureVertice t1 = new TextureVertice((1f / segments) * i, tsart[f]);
                 TextureVertice t2 = new TextureVertice((1f / segments) * i, tsart[f - 1]);
@@ -49,13 +49,13 @@ public class ModelTheoreticalTsarBomba {
                         new Vertice(tsarx[f - 1] * sin, tsary[f - 1], tsarx[f - 1] * cos),
                         new Vertice(tsarx[f] * sin, tsary[f], tsarx[f] * cos), t1, t2, t3, t4);
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettheoreticaltsarshell2);
         for (float i = 0; i < segments; i++) {
-            GL11.glPushMatrix();
-            GL11.glRotatef(add * i, 0, 1, 0);
-            GL11.glScalef(0.85f, 0.95f, 0.85f);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(add * i, 0, 1, 0);
+            GlStateManager.scale(0.85f, 0.95f, 0.85f);
             for (int f = 1; f < tsarx.length; f++) {
                 TextureVertice t1 = new TextureVertice((1f / segments) * i, tsart[f]);
                 TextureVertice t2 = new TextureVertice((1f / segments) * i, tsart[f - 1]);
@@ -66,13 +66,13 @@ public class ModelTheoreticalTsarBomba {
                         new Vertice(tsarx[f - 1] * sin, tsary[f - 1], tsarx[f - 1] * cos),
                         new Vertice(tsarx[f] * sin, tsary[f], tsarx[f] * cos), t1, t2, t3, t4);
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettsarfins);
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
 
         TextureVertice t5 = new TextureVertice(70f / 256f, 0f);
         TextureVertice t6 = new TextureVertice(134f / 256f, 0f);
@@ -84,9 +84,9 @@ public class ModelTheoreticalTsarBomba {
                 new Vertice(-0.5f, -5f, -0.5f),
                 new Vertice(0.5f, -5f, -0.5f), t5, t6, t7, t8);
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
 
         TextureVertice t1 = new TextureVertice(0f, 0f);
         TextureVertice t2 = new TextureVertice(70f / 256f, 0f);
@@ -98,19 +98,19 @@ public class ModelTheoreticalTsarBomba {
                 new Vertice(0f, -3.5f, -0.5f),
                 new Vertice(0f, -3.5f, -1.4f), t1, t2, t3, t4);
 
-        GL11.glRotatef(120, 0, 1, 0);
+        GlStateManager.rotate(120, 0, 1, 0);
         RenderHelper.addFace(new Vertice(0f, -5f, -1.4f),
                 new Vertice(0f, -5f, -0.5f),
                 new Vertice(0f, -3.5f, -0.5f),
                 new Vertice(0f, -3.5f, -1.4f), t1, t2, t3, t4);
 
-        GL11.glRotatef(120, 0, 1, 0);
+        GlStateManager.rotate(120, 0, 1, 0);
         RenderHelper.addFace(new Vertice(0f, -5f, -1.4f),
                 new Vertice(0f, -5f, -0.5f),
                 new Vertice(0f, -3.5f, -0.5f),
                 new Vertice(0f, -3.5f, -1.4f), t1, t2, t3, t4);
 
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+        GlStateManager.popMatrix();
     }
 }

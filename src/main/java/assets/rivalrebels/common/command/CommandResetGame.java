@@ -15,21 +15,23 @@ import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.packet.PacketDispatcher;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.List;
 
 public class CommandResetGame extends CommandBase {
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rrreset";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName() + " <player>";
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName() + " <player>";
     }
 
     /**
@@ -41,24 +43,24 @@ public class CommandResetGame extends CommandBase {
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) throws PlayerNotFoundException {
         EntityPlayer player = getCommandSenderAsPlayer(sender);
         if (array.length == 1 && array[0].length() > 0) {
             if (array[0].equals("all")) {
                 RivalRebels.round.rrplayerlist.clearTeam();
                 PacketDispatcher.packetsys.sendToAll(RivalRebels.round.rrplayerlist);
-                player.addChatMessage(new ChatComponentText("§7All players have been reset."));
+                player.sendMessage(new TextComponentString("§7All players have been reset."));
             } else if (RivalRebels.round.rrplayerlist.contains(array[0])) {
                 RivalRebels.round.rrplayerlist.getForName(array[0]).clearTeam();
                 PacketDispatcher.packetsys.sendToAll(RivalRebels.round.rrplayerlist);
-                player.addChatMessage(new ChatComponentText("§7Player successfully reset."));
+                player.sendMessage(new TextComponentString("§7Player successfully reset."));
             } else {
-                player.addChatMessage(new ChatComponentText("§7No player by that name."));
+                player.sendMessage(new TextComponentString("§7No player by that name."));
             }
         }
     }
@@ -67,7 +69,7 @@ public class CommandResetGame extends CommandBase {
      * Adds the strings available in this command to the given list of tab completion options.
      */
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
-        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames()) : null;
+    public List getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] par2ArrayOfStr, BlockPos pos) {
+        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, server.getOnlinePlayerNames()) : null;
     }
 }

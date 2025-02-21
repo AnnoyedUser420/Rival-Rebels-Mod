@@ -13,13 +13,13 @@ package assets.rivalrebels.client.gui;
 
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.container.ContainerLoader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.IInventory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.io.IOException;
@@ -53,10 +53,10 @@ public class GuiLoader extends GuiContainer {
      */
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        GL11.glPushMatrix();
-        GL11.glRotated(-13, 0, 0, 1);
-        fontRendererObj.drawString("Loader", 165, 237, 0x444444);
-        GL11.glPopMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.rotate(-13, 0, 0, 1);
+        fontRenderer.drawString("Loader", 165, 237, 0x444444);
+        GlStateManager.popMatrix();
         int mousex = par1;
         int mousey = par2;
         int posx = (width - xSize) / 2;
@@ -68,8 +68,8 @@ public class GuiLoader extends GuiContainer {
         if (mousex > coordx && mousey > coordy && mousex < coordx + widthx && mousey < coordy + widthy) {
             mousex -= posx;
             mousey -= posy;
-            drawGradientRect(mousex, mousey, mousex + fontRendererObj.getStringWidth("rivalrebels.com") + 3, mousey + 12, 0xaa111111, 0xaa111111);
-            fontRendererObj.drawString("rivalrebels.com", mousex + 2, mousey + 2, 0xFFFFFF);
+            drawGradientRect(mousex, mousey, mousex + fontRenderer.getStringWidth("rivalrebels.com") + 3, mousey + 12, 0xaa111111, 0xaa111111);
+            fontRenderer.drawString("rivalrebels.com", mousex + 2, mousey + 2, 0xFFFFFF);
             if (Desktop.isDesktopSupported() && !buttondown && Mouse.isButtonDown(0)) {
                 try {
                     Desktop.getDesktop().browse(new URI("http://rivalrebels.com"));
@@ -88,7 +88,7 @@ public class GuiLoader extends GuiContainer {
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.guitloader);
         this.drawTexturedModalRect(width / 2 - 128, height / 2 - 103, 0, 0, 256, 210);
     }

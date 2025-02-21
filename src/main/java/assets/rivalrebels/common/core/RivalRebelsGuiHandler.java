@@ -14,15 +14,16 @@ package assets.rivalrebels.common.core;
 import assets.rivalrebels.client.gui.*;
 import assets.rivalrebels.common.container.*;
 import assets.rivalrebels.common.tileentity.*;
-import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class RivalRebelsGuiHandler implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
         if (tileEntity instanceof TileEntityTsarBomba) {
             return new ContainerTsar(player.inventory, (TileEntityTsarBomba) tileEntity);
         }
@@ -55,7 +56,7 @@ public class RivalRebelsGuiHandler implements IGuiHandler {
 
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
         if (tileEntity instanceof TileEntityTsarBomba) {
             return new GuiTsar(player.inventory, (TileEntityTsarBomba) tileEntity);
         }

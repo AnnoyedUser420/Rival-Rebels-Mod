@@ -75,7 +75,7 @@ public class EntityDocileFlameFX extends EntityFX {
     public void renderParticle(Tessellator t, float par2, float par3, float par4, float par5, float par6, float par7) {
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etflameball);
         GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL14.glBlendEquation(GL14.GL_FUNC_ADD);
         float f10 = 0.03F * particleScale;
         float f11 = (float) (prevPosX + (posX - prevPosX) * par2 - interpPosX);

@@ -71,32 +71,32 @@ public class ModelLaptop {
     Vertice v4v = new Vertice(-0.375f, 0f, 0.5f);
 
     public void renderModel(float turn) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         RenderHelper.addFace(v11, v12, v9, v10, t4t, t9t, t10t, t5t);
         RenderHelper.addFace(v12, v4, v1, v9, t9t, t13t, t14t, t10t);
         RenderHelper.addFace(v11, v3, v4, v12, t4t, t3t, t8t, t9t);
         RenderHelper.addFace(v10, v2, v3, v11, t5t, t2t, t1t, t4t);
         RenderHelper.addFace(v9, v1, v2, v10, t10t, t11t, t6t, t5t);
         RenderHelper.addFace(v2, v1, v4, v3, t6t, t11t, t12t, t7t);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0, 0.125f, 0);
-        GL11.glRotatef(turn, 0.1875f, 0, 0);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0.125f, 0);
+        GlStateManager.rotate(turn, 0.1875f, 0, 0);
         RenderHelper.addFace(v5, v6, v7, v8, t4, t9, t10, t5);
         RenderHelper.addFace(v8, v4, v1, v5, t9, t13, t14, t10);
         RenderHelper.addFace(v7, v3, v4, v8, t4, t3, t8, t9);
         RenderHelper.addFace(v6, v2, v3, v7, t5, t2, t1, t4);
         RenderHelper.addFace(v5, v1, v2, v6, t10, t11, t6, t5);
         RenderHelper.addFace(v2, v1, v4, v3, t6, t11, t12, t7);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     public void renderScreen(float turn) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0, 0.125f, 0);
-        GL11.glRotatef(turn, 0.1875f, 0, 0);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0.125f, 0);
+        GlStateManager.rotate(turn, 0.1875f, 0, 0);
         RenderHelper.addFace(v2v, v1v, v4v, v3v, t333, t222, t111, t444);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

@@ -14,8 +14,8 @@ package assets.rivalrebels.client.tileentityrender;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.model.ModelJump;
 import assets.rivalrebels.common.tileentity.TileEntityJumpBlock;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -30,12 +30,12 @@ public class TileEntityJumpBlockRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderAModelAt(TileEntityJumpBlock tile, double d, double d1, double d2, float f) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btcrate);
         model.renderModel();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

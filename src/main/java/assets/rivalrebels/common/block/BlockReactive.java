@@ -12,8 +12,10 @@
 package assets.rivalrebels.common.block;
 
 import assets.rivalrebels.common.tileentity.TileEntityReactive;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -32,14 +34,15 @@ public class BlockReactive extends BlockContainer {
     IIcon icontop;
 
     public BlockReactive() {
-        super(Material.iron);
+        super(Material.IRON);
     }
 
     @Override
-    public void breakBlock(World world, int i, int j, int k, Block l, int s) {
-        super.breakBlock(world, i, j, k, l, s);
-        if (s < 15 && s >= 0) {
-            world.setBlock(i, j, k, this, s + 1, 2);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        super.breakBlock(world, pos, state);
+        int data = state.getBlock().getMetaFromState(state);
+        if (data < 15 && data >= 0) {
+            world.setBlockState(pos, this.getStateFromMeta(data + 1), 2);
         }
     }
 
@@ -50,8 +53,8 @@ public class BlockReactive extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-        return (15 - par1IBlockAccess.getBlockMetadata(par2, par3, par4)) * 1118481;
+    public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z) {
+        return (15 - par1IBlockAccess.getBlockMetadata(x, y, z)) * 1118481;
     }
 
     @Override

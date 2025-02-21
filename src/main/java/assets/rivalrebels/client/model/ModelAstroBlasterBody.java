@@ -13,7 +13,7 @@ package assets.rivalrebels.client.model;
 
 import assets.rivalrebels.client.renderhelper.RenderHelper;
 import assets.rivalrebels.client.renderhelper.Vertice;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class ModelAstroBlasterBody {
 
@@ -34,15 +34,15 @@ public class ModelAstroBlasterBody {
     Vertice vz3 = new Vertice(0, 0.25f, 0.75f).normalize();
 
     public void render(float size, float red, float green, float blue, float alpha) {
-        GL11.glPushMatrix();
-        GL11.glColor4f(red, green, blue, alpha);
+        GlStateManager.pushMatrix();
+        GlStateManager.color(red, green, blue, alpha);
 
-        GL11.glScalef(size, size, size);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.scale(size, size, size);
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableLighting();
         for (int p = 0; p < 4; p++) {
-            GL11.glPushMatrix();
-            GL11.glRotatef(p * 90, 0, 1, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(p * 90, 0, 1, 0);
 
             RenderHelper.addTri(vy, vy1, vy3);
             RenderHelper.addTri(vy1, vyz, vy2);
@@ -61,10 +61,10 @@ public class ModelAstroBlasterBody {
             RenderHelper.addTri(vxz, vx2, vz2);
             RenderHelper.addTri(vx2, vy2, vz2);
 
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glPopMatrix();
+        GlStateManager.enableLighting();
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
     }
 }

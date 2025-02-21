@@ -27,15 +27,7 @@ public class TileEntityGore extends TileEntity {
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-    }
-
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count ticks and creates a new spawn inside its implementation.
-     */
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
+        return super.writeToNBT(par1NBTTagCompound);
     }
 }

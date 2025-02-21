@@ -47,9 +47,9 @@ public class ModelRod {
 
     public void render() {
         for (float i = 0; i < 360; i += 360 / numOfSegs) {
-            GL11.glPushMatrix();
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glRotatef(i, 0, 1, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.disableLighting();
+            GlStateManager.rotate(i, 0, 1, 0);
             RenderHelper.addFace(v0, vd1, v1, v0, t1, t3, t2, t1);
             RenderHelper.addFace(vd1, vd2, v2, v1, t2, t4, t5, t3);
             RenderHelper.addFace(vd2, vd3, v3, v2, t4, t6, t7, t5);
@@ -60,7 +60,7 @@ public class ModelRod {
                 RenderHelper.addFace(v5, v4, vd4, vd5, t4, t6, t7, t5);
             }
 
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 }

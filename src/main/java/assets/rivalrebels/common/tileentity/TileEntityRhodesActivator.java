@@ -27,7 +27,7 @@ public class TileEntityRhodesActivator extends TileEntityMachineBase {
 
     @Override
     public float powered(float power, float distance) {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (charge == 100) {
                 // all 4 main charge points are valid
                 boolean buildrhodes = true;
@@ -41,8 +41,8 @@ public class TileEntityRhodesActivator extends TileEntityMachineBase {
                     int fy = 2 - (i / 9);
                     int fx1 = -10 + (i % 9);
                     int fx2 = +7 - (i % 9);
-                    Block s1 = worldObj.getBlock(x + fx1, y + fy, z);
-                    Block s2 = worldObj.getBlock(x + fx2, y + fy, z);
+                    Block s1 = world.getBlock(x + fx1, y + fy, z);
+                    Block s2 = world.getBlock(x + fx2, y + fy, z);
                     if (b == 1 && (s1 != RivalRebels.conduit || s2 != RivalRebels.conduit)) {
                         buildrhodes = false;
                         break;
@@ -61,8 +61,8 @@ public class TileEntityRhodesActivator extends TileEntityMachineBase {
                         fy *= 2;
                         fx1 *= 2;
                         fx2 *= 2;
-                        Block s1 = worldObj.getBlock(x + fx1, y + fy, z);
-                        Block s2 = worldObj.getBlock(x + fx2, y + fy, z);
+                        Block s1 = world.getBlock(x + fx1, y + fy, z);
+                        Block s2 = world.getBlock(x + fx2, y + fy, z);
                         if (b == 1 && (s1 != RivalRebels.conduit || s2 != RivalRebels.conduit)) {
                             buildrhodes1 = false;
                             break;

@@ -12,8 +12,8 @@
 package assets.rivalrebels.client.model;
 
 import assets.rivalrebels.client.renderhelper.Vertice;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
@@ -33,8 +33,8 @@ public class ModelSteel {
     Vertice v8 = new Vertice(-s, -s, s);
 
     public void renderModel() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
 
         tessellator.startDrawingQuads();
         addVertex(v1, 0, 0, true);
@@ -78,7 +78,7 @@ public class ModelSteel {
         addVertex(v8, 0, 1, true);
         tessellator.draw();
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     private void addVertex(Vertice v, double t, double t2, boolean offset) {

@@ -37,7 +37,7 @@ public class RenderNuclearBlast extends Render {
     }
 
     public void renderNuclearBlast(EntityNuclearBlast enb, double x, double y, double z, float yaw, float pitch) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         if (enb.ticksExisted == 0) {
             ring1 = 0;
             ring2 = 0;
@@ -87,12 +87,12 @@ public class RenderNuclearBlast extends Render {
         float par7 = (textureCoordy + 128) / 128.0F;
         float par8 = (textureCoordy) / 128.0F;
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         GL11.glTranslated(x, y - 10, z);
-        GL11.glScalef(RivalRebels.shroomScale, RivalRebels.shroomScale, RivalRebels.shroomScale);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glScalef(0.5F + (float) enb.motionY * 0.3F, 2.6F + (float) enb.motionY * 0.3F, 0.5F + (float) enb.motionY * 0.3F);
+        GlStateManager.scale(RivalRebels.shroomScale, RivalRebels.shroomScale, RivalRebels.shroomScale);
+        GlStateManager.disableLighting();
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.scale(0.5F + (float) enb.motionY * 0.3F, 2.6F + (float) enb.motionY * 0.3F, 0.5F + (float) enb.motionY * 0.3F);
         if (enb.motionX == 1) {
             Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.ettroll);
         } else {
@@ -241,9 +241,9 @@ public class RenderNuclearBlast extends Render {
 
         }
 
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+        GlStateManager.enableLighting();
+        GlStateManager.popMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

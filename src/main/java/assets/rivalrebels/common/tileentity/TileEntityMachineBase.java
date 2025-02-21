@@ -52,10 +52,10 @@ public abstract class TileEntityMachineBase extends TileEntity {
     @Override
     public void invalidate() {
         super.invalidate();
-        TileEntity connectedTo = worldObj.getTileEntity(x, y, z);
+        TileEntity connectedTo = world.getTileEntity(x, y, z);
         if (connectedTo instanceof TileEntityReactor)
             ((TileEntityReactor) connectedTo).machines.remove(this);
     }
 
-    abstract public float powered(float power, float distance);
+    public abstract float powered(float power, float distance);
 }

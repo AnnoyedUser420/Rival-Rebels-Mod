@@ -14,15 +14,15 @@ package assets.rivalrebels.client.gui;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.container.ContainerTsar;
 import assets.rivalrebels.common.tileentity.TileEntityTsarBomba;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.io.IOException;
@@ -58,21 +58,21 @@ public class GuiTsar extends GuiContainer {
             milli = "" + millis;
         }
         if (tsar.countdown % 20 >= 10) {
-            fontRendererObj.drawString(StatCollector.translateToLocal("RivalRebels.tsar.timer") + ": -" + seconds + ":" + milli, 6, ySize - 107, 0xFFFFFF);
+            fontRenderer.drawString(I18n.translateToLocal("RivalRebels.tsar.timer") + ": -" + seconds + ":" + milli, 6, ySize - 107, 0xFFFFFF);
         } else {
-            fontRendererObj.drawString(StatCollector.translateToLocal("RivalRebels.tsar.timer") + ": -" + seconds + ":" + milli, 6, ySize - 107, 0xFF0000);
+            fontRenderer.drawString(I18n.translateToLocal("RivalRebels.tsar.timer") + ": -" + seconds + ":" + milli, 6, ySize - 107, 0xFF0000);
         }
         float scalef = 0.666f;
-        GL11.glPushMatrix();
-        GL11.glScalef(scalef, scalef, scalef);
-        fontRendererObj.drawString(StatCollector.translateToLocal("RivalRebels.tsar.tsar"), 18, 16, 4210752);
-        GL11.glPopMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(scalef, scalef, scalef);
+        fontRenderer.drawString(I18n.translateToLocal("RivalRebels.tsar.tsar"), 18, 16, 4210752);
+        GlStateManager.popMatrix();
         if (tsar.nuclear != tsar.hydrogen) {
-            fontRendererObj.drawString(StatCollector.translateToLocal("RivalRebels.tsar.unbalanced"), 6, ySize - 97, 0xFF0000);
+            fontRenderer.drawString(I18n.translateToLocal("RivalRebels.tsar.unbalanced"), 6, ySize - 97, 0xFF0000);
         } else if (tsar.hasExplosive && tsar.hasFuse && tsar.hasAntennae) {
-            fontRendererObj.drawString(StatCollector.translateToLocal("RivalRebels.tsar.armed"), 6, ySize - 97, 0xFF0000);
+            fontRenderer.drawString(I18n.translateToLocal("RivalRebels.tsar.armed"), 6, ySize - 97, 0xFF0000);
         } else {
-            fontRendererObj.drawString(tsar.megaton + " " + StatCollector.translateToLocal("RivalRebels.tsar.megatons"), 6, ySize - 97, 0xFFFFFF);
+            fontRenderer.drawString(tsar.megaton + " " + I18n.translateToLocal("RivalRebels.tsar.megatons"), 6, ySize - 97, 0xFFFFFF);
         }
 
         int mousex = par1;
@@ -86,8 +86,8 @@ public class GuiTsar extends GuiContainer {
         if (mousex > coordx && mousey > coordy && mousex < coordx + widthx && mousey < coordy + widthy) {
             mousex -= posx;
             mousey -= posy;
-            drawGradientRect(mousex, mousey, mousex + fontRendererObj.getStringWidth("rivalrebels.com") + 3, mousey + 12, 0xaa111111, 0xaa111111);
-            fontRendererObj.drawString("rivalrebels.com", mousex + 2, mousey + 2, 0xFFFFFF);
+            drawGradientRect(mousex, mousey, mousex + fontRenderer.getStringWidth("rivalrebels.com") + 3, mousey + 12, 0xaa111111, 0xaa111111);
+            fontRenderer.drawString("rivalrebels.com", mousex + 2, mousey + 2, 0xFFFFFF);
             if (Desktop.isDesktopSupported() && !buttondown && Mouse.isButtonDown(0)) {
                 try {
                     Desktop.getDesktop().browse(new URI("http://rivalrebels.com"));
@@ -103,7 +103,7 @@ public class GuiTsar extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        GL11.glColor3f(1, 1, 1);
+        GlStateManager.color(1, 1, 1);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.guittsar);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;

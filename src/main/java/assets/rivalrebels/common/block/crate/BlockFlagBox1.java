@@ -12,8 +12,8 @@
 package assets.rivalrebels.common.block.crate;
 
 import assets.rivalrebels.RivalRebels;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,7 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -63,7 +63,7 @@ public class BlockFlagBox1 extends Block {
             return false;
         }
         if (!player.isSneaking() && !world.isRemote) {
-            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("RivalRebels.Orders") + " " + StatCollector.translateToLocal("RivalRebels.sneak")));
+            player.addChatMessage(new ChatComponentText(I18n.translateToLocal("RivalRebels.Orders") + " " + I18n.translateToLocal("RivalRebels.sneak")));
             world.setBlock(x, y, z, RivalRebels.flagbox5);
             return false;
         }

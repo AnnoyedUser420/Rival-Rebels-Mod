@@ -27,28 +27,28 @@ public class TileEntityNukeCrateRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderAModelAt(TileEntityNukeCrate tile, double d, double d1, double d2, float f) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
         int metadata = tile.getBlockMetadata();
         if (metadata == 0) {
-            GL11.glRotatef(180, 1, 0, 0);
+            GlStateManager.rotate(180, 1, 0, 0);
         }
 
         if (metadata == 2) {
-            GL11.glRotatef(-90, 1, 0, 0);
+            GlStateManager.rotate(-90, 1, 0, 0);
         }
 
         if (metadata == 3) {
-            GL11.glRotatef(90, 1, 0, 0);
+            GlStateManager.rotate(90, 1, 0, 0);
         }
 
         if (metadata == 4) {
-            GL11.glRotatef(90, 0, 0, 1);
+            GlStateManager.rotate(90, 0, 0, 1);
         }
 
         if (metadata == 5) {
-            GL11.glRotatef(-90, 0, 0, 1);
+            GlStateManager.rotate(-90, 0, 0, 1);
         }
         if (tile.getWorldObj().getBlock(tile.xCoord, tile.yCoord, tile.zCoord) == RivalRebels.nukeCrateBottom)
             Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btnukebottom);
@@ -57,7 +57,7 @@ public class TileEntityNukeCrateRenderer extends TileEntitySpecialRenderer {
         model.renderModelA();
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btcrate);
         model.renderModelB();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

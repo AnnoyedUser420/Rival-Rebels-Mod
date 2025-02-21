@@ -14,8 +14,8 @@ package assets.rivalrebels.client.model;
 import assets.rivalrebels.client.renderhelper.RenderHelper;
 import assets.rivalrebels.client.renderhelper.TextureVertice;
 import assets.rivalrebels.client.renderhelper.Vertice;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -35,20 +35,20 @@ public class ModelNukeCrate {
     TextureVertice t4 = new TextureVertice(0, 1);
 
     public void renderModelA() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
         RenderHelper.addFace(v4, v8, v5, v1, t1, t2, t3, t4);
         RenderHelper.addFace(v3, v7, v8, v4, t1, t2, t3, t4);
         RenderHelper.addFace(v2, v6, v7, v3, t1, t2, t3, t4);
         RenderHelper.addFace(v1, v5, v6, v2, t1, t2, t3, t4);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     public void renderModelB() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
         RenderHelper.addFace(v1, v2, v3, v4, t1, t2, t3, t4);
         RenderHelper.addFace(v8, v7, v6, v5, t1, t2, t3, t4);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

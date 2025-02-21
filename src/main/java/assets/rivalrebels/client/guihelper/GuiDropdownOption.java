@@ -12,10 +12,10 @@
 package assets.rivalrebels.client.guihelper;
 
 import assets.rivalrebels.client.gui.GuiTray;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Mouse;
 
 @SideOnly(Side.CLIENT)
@@ -50,7 +50,7 @@ public class GuiDropdownOption extends net.minecraft.client.gui.GuiButton {
             if (team == 2) color = 0x5555ff;
         }
         if (inside && on) color = 0xffffff;
-        drawString(Minecraft.getMinecraft().fontRenderer, StatCollector.translateToLocal(text), bbox.xMin + 1, bbox.yMin + 1, color);
+        drawString(Minecraft.getMinecraft().fontRenderer, I18n.translateToLocal(text), bbox.xMin + 1, bbox.yMin + 1, color);
         mouseDown = current;
     }
 }

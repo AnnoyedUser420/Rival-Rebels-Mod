@@ -13,11 +13,17 @@ package assets.rivalrebels.client.renderentity;
 
 import assets.rivalrebels.RivalRebels;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.GL_QUADS;
 
 public class RenderBullet extends Render {
     /**
@@ -25,7 +31,8 @@ public class RenderBullet extends Render {
      */
     private final String path;
 
-    public RenderBullet(String par1) {
+    public RenderBullet(RenderManager renderManager, String par1) {
+        super(renderManager);
         path = par1;
     }
 
@@ -37,30 +44,29 @@ public class RenderBullet extends Render {
     @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
         if (par1Entity.ticksExisted > 1) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-            GL11.glScalef(0.5F, 0.5F, 0.5F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) par2, (float) par4, (float) par6);
+            GlStateManager.scale(0.5F, 0.5F, 0.5F);
             if (path == "flame") Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etflame);
             if (path == "fire") Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etfire);
-            Tessellator var10 = Tessellator.instance;
+            BufferBuilder var10 = Tessellator.getInstance().getBuffer();
             this.func_77026_a(var10);
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 
-    private void func_77026_a(Tessellator par1Tessellator) {
+    private void func_77026_a(BufferBuilder buf) {
         float var7 = 1.0F;
         float var8 = 0.5F;
         float var9 = 0.25F;
-        GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        par1Tessellator.addVertexWithUV((0.0F - var8), (0.0F - var9), 0.0D, 0, 0);
-        par1Tessellator.addVertexWithUV((var7 - var8), (0.0F - var9), 0.0D, 1, 0);
-        par1Tessellator.addVertexWithUV((var7 - var8), (var7 - var9), 0.0D, 1, 1);
-        par1Tessellator.addVertexWithUV((0.0F - var8), (var7 - var9), 0.0D, 0, 1);
-        par1Tessellator.draw();
+        GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        buf.pos((0.0F - var8), (0.0F - var9), 0.0D).tex(0, 0).normal(0.0F, 1.0F, 0.0F).endVertex();
+        buf.pos((var7 - var8), (0.0F - var9), 0.0D).tex(1, 0).normal(0.0F, 1.0F, 0.0F).endVertex();
+        buf.pos((var7 - var8), (var7 - var9), 0.0D).tex(1, 1).normal(0.0F, 1.0F, 0.0F).endVertex();
+        buf.pos((0.0F - var8), (var7 - var9), 0.0D).tex(0, 1).normal(0.0F, 1.0F, 0.0F).endVertex();
+        Tessellator.getInstance().draw();
     }
 
     @Override

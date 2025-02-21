@@ -25,7 +25,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 
@@ -75,7 +75,7 @@ public class ItemTesla extends ItemTool {
             player.addChatMessage(new ChatComponentText("§cOut of batteries"));
         }
         if (message && world.isRemote) {
-            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("RivalRebels.Orders") + " " + StatCollector.translateToLocal("RivalRebels.message.use") + " [R]."));
+            player.addChatMessage(new ChatComponentText(I18n.translateToLocal("RivalRebels.Orders") + " " + I18n.translateToLocal("RivalRebels.message.use") + " [R]."));
             message = false;
         }
         return item;

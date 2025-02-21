@@ -11,6 +11,7 @@
  *******************************************************************************/
 package assets.rivalrebels.client.objfileloader;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 
 public class Vertice {
@@ -18,7 +19,7 @@ public class Vertice {
     public Vec3 n;
     public Vec2 t;
 
-    private final Tessellator tes = Tessellator.instance;
+    private final BufferBuilder tes = Tessellator.getInstance().getBuffer();
 
     public Vertice(float a, float b, float c, float d, float e, float f, float g, float h) {
         p = new Vec3(a, b, c);
@@ -45,13 +46,11 @@ public class Vertice {
     }
 
     public void render() {
-        tes.setTextureUV(t.x, t.y);
-        tes.setNormal(n.x, n.y, n.z);
-        tes.addVertex(p.x, p.y, p.z);
+        tes.pos(p.x, p.y, p.z).tex(t.x, t.y).normal(n.x, n.y, n.z).endVertex();
     }
 
     public void renderWireframe() {
-        tes.addVertex(p.x, p.y, p.z);
+        tes.pos(p.x, p.y, p.z).endVertex();
     }
 
     @Override

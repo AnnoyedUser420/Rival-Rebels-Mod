@@ -37,18 +37,18 @@ public class RodDiskRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etdisk0);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.5f, 0.25f, 0f);
-        GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(-25, 1.0F, 0.0F, 0.0F);
-        GL11.glScalef(0.5f, 0.5f, 0.5f);
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5f, 0.25f, 0f);
+        GlStateManager.rotate(35, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(-25, 1.0F, 0.0F, 0.0F);
+        GlStateManager.scale(0.5f, 0.5f, 0.5f);
+        GlStateManager.pushMatrix();
 
         md.render();
 
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+        GlStateManager.popMatrix();
     }
 }

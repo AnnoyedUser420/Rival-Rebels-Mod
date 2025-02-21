@@ -28,7 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 
@@ -157,7 +157,7 @@ public class ItemFlameThrower extends ItemTool {
             par3EntityPlayer.addChatMessage(new ChatComponentText("§cOut of fuel"));
         }
         if (message && par2World.isRemote) {
-            par3EntityPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("RivalRebels.Orders") + " " + StatCollector.translateToLocal("RivalRebels.message.use") + " [R]."));
+            par3EntityPlayer.addChatMessage(new ChatComponentText(I18n.translateToLocal("RivalRebels.Orders") + " " + I18n.translateToLocal("RivalRebels.message.use") + " [R]."));
             message = false;
         }
         return par1ItemStack;

@@ -14,34 +14,36 @@ package assets.rivalrebels.common.command;
 import assets.rivalrebels.common.core.RivalRebelsSoundPlayer;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.List;
 
 public class CommandPlaySound extends CommandBase {
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rrsoundsystem";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName();
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName();
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1) {
+    public boolean checkPermission(MinecraftServer server, ICommandSender par1) {
         return true;
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) {
         if (array.length == 4) {
             int dir = 0;
             int num = 0;
@@ -53,12 +55,12 @@ public class CommandPlaySound extends CommandBase {
                 vol = Float.parseFloat(array[2].trim());
                 pit = Float.parseFloat(array[3].trim());
             } catch (Exception E) {
-                sender.addChatMessage(new ChatComponentText("No!"));
+                sender.sendMessage(new TextComponentString("No!"));
             }
-            ChunkCoordinates cc = sender.getPlayerCoordinates();
-            RivalRebelsSoundPlayer.playSound(sender.getEntityWorld(), dir, num, cc.posX, cc.posY, cc.posZ, vol, pit);
+            Vec3d cc = sender.getPositionVector();
+            RivalRebelsSoundPlayer.playSound(sender.getEntityWorld(), dir, num, cc.x, cc.y, cc.z, vol, pit);
         } else {
-            sender.addChatMessage(new ChatComponentText("No!"));
+            sender.sendMessage(new TextComponentString("No!"));
         }
     }
 
@@ -66,7 +68,7 @@ public class CommandPlaySound extends CommandBase {
      * Adds the strings available in this command to the given list of tab completion options.
      */
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] par2ArrayOfStr, BlockPos pos) {
         return null;
     }
 }

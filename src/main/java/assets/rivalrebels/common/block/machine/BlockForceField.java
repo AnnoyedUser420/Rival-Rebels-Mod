@@ -12,8 +12,8 @@
 package assets.rivalrebels.common.block.machine;
 
 import assets.rivalrebels.RivalRebels;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,7 +29,7 @@ public class BlockForceField extends Block {
     IIcon icon;
 
     public BlockForceField() {
-        super(Material.glass);
+        super(Material.GLASS);
         setBlockBounds(0.0F, 0.0F, 0.4375f, 1.0F, 1.0F, 1.0F - 0.4375f);
     }
 

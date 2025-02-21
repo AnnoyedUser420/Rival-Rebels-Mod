@@ -21,12 +21,7 @@ public class TileEntityJumpBlock extends TileEntity {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-    }
-
-    @Override
-    public boolean canUpdate() {
-        return false;
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
+        return super.writeToNBT(par1NBTTagCompound);
     }
 }

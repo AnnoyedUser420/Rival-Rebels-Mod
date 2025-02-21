@@ -12,17 +12,16 @@
 package assets.rivalrebels.common.packet;
 
 import assets.rivalrebels.common.tileentity.TileEntityLaptop;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 
 public class LaptopRefreshPacket implements IMessage {
-    int x;
-    int y;
-    int z;
+    BlockPos pos;
     int tasks;
     int carpet;
 
@@ -30,28 +29,24 @@ public class LaptopRefreshPacket implements IMessage {
 
     }
 
-    public LaptopRefreshPacket(int X, int Y, int Z, int T, int C) {
-        x = X;
-        y = Y;
-        z = Z;
-        tasks = T;
-        carpet = C;
+    public LaptopRefreshPacket(BlockPos pos, int T, int C) {
+        this.pos = pos;
+        this.tasks = T;
+        this.carpet = C;
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        x = buf.readInt();
-        y = buf.readInt();
-        z = buf.readInt();
+        pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
         tasks = buf.readInt();
         carpet = buf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
+        buf.writeInt(pos.getX());
+        buf.writeInt(pos.getY());
+        buf.writeInt(pos.getZ());
         buf.writeInt(tasks);
         buf.writeInt(carpet);
     }
@@ -59,7 +54,7 @@ public class LaptopRefreshPacket implements IMessage {
     public static class Handler implements IMessageHandler<LaptopRefreshPacket, IMessage> {
         @Override
         public IMessage onMessage(LaptopRefreshPacket m, MessageContext ctx) {
-            TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(m.x, m.y, m.z);
+            TileEntity te = Minecraft.getMinecraft().world.getTileEntity(m.pos);
             //System.out.println("packet recieved");
             if (te instanceof TileEntityLaptop) {
                 ((TileEntityLaptop) te).b2spirit = m.tasks;

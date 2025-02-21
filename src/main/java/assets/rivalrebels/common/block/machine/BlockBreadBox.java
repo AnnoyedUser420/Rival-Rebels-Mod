@@ -11,8 +11,10 @@
  *******************************************************************************/
 package assets.rivalrebels.common.block.machine;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -41,7 +43,7 @@ public class BlockBreadBox extends Block {
     @SideOnly(Side.CLIENT)
     IIcon icon6;
     public BlockBreadBox() {
-        super(Material.iron);
+        super(Material.IRON);
     }
 
     @Override
@@ -50,23 +52,23 @@ public class BlockBreadBox extends Block {
     }
 
     @Override
-    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
-        blockActivated(world, x, y, z, player);
+    public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
+        blockActivated(world, pos, player);
     }
 
-    public boolean blockActivated(World world, int x, int y, int z, EntityPlayer player) {
+    public boolean blockActivated(World world, BlockPos pos, EntityPlayer player) {
         if (!player.isSneaking()) {
-            EntityItem ei = new EntityItem(world, x + .5, y + 1, z + .5, new ItemStack(Items.bread, 1));
+            EntityItem ei = new EntityItem(world, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, new ItemStack(Items.BREAD, 1));
             if (!world.isRemote) {
-                world.spawnEntityInWorld(ei);
+                world.spawnEntity(ei);
                 if (world.rand.nextInt(64) == 0)
-                    player.addChatMessage(new ChatComponentText("§7[§4Orders§7] §cShift-click (Sneak) to pack up toaster."));
+                    player.sendMessage(new TextComponentString("§7[§4Orders§7] §cShift-click (Sneak) to pack up toaster."));
             }
         } else {
-            world.setBlock(x, y, z, Blocks.air);
-            EntityItem ei = new EntityItem(world, x + .5, y + .5, z + .5, new ItemStack(this));
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            EntityItem ei = new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, new ItemStack(this));
             if (!world.isRemote) {
-                world.spawnEntityInWorld(ei);
+                world.spawnEntity(ei);
             }
         }
         return true;

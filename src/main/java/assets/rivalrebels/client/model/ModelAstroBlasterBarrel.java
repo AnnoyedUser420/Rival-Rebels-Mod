@@ -15,7 +15,7 @@ package assets.rivalrebels.client.model;
 import assets.rivalrebels.client.renderhelper.RenderHelper;
 import assets.rivalrebels.client.renderhelper.TextureVertice;
 import assets.rivalrebels.client.renderhelper.Vertice;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class ModelAstroBlasterBarrel {
     private final float i = 0.035714286f;
@@ -30,12 +30,12 @@ public class ModelAstroBlasterBarrel {
     private final float add = 360 / segments;
 
     public void render() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_CULL_FACE);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
+        GlStateManager.disableCull();
         for (float i = 0; i < segments; i++) {
-            GL11.glPushMatrix();
-            GL11.glRotatef(add * i, 0, 1, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(add * i, 0, 1, 0);
             for (int f = 1; f < barrelx.length; f++) {
                 TextureVertice t1 = new TextureVertice((1f / segments) * i, tsart[f]);
                 TextureVertice t2 = new TextureVertice((1f / segments) * i, tsart[f - 1]);
@@ -46,8 +46,8 @@ public class ModelAstroBlasterBarrel {
                         new Vertice(barrelx[f - 1] * sin, barrely[f - 1], barrelx[f - 1] * cos),
                         new Vertice(barrelx[f] * sin, barrely[f], barrelx[f] * cos), t1, t2, t3, t4);
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

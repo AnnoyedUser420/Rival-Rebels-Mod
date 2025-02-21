@@ -13,9 +13,19 @@ package assets.rivalrebels;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class ASMTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
+        try {
+            Files.write(FileSystems.getDefault().getPath("/home/alpha/github/Rival-Rebels-Mod/transformed/old.class"), bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (transformedName.equals("net.minecraft.network.NetHandlerPlayServer")) {
             int d = 3;
             for (int i = 0; i < bytes.length - 8 && d != 0; i++) {
@@ -68,6 +78,11 @@ public class ASMTransformer implements IClassTransformer {
 			}
 		}
 		//*/
+        try {
+            Files.write(FileSystems.getDefault().getPath("/home/alpha/github/Rival-Rebels-Mod/transformed/new.class"), bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return bytes;
     }
 }

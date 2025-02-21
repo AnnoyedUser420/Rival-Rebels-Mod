@@ -15,23 +15,24 @@ import assets.rivalrebels.RivalRebels;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.List;
 
 public class CommandMotD extends CommandBase {
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rrmotd";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName() + " <player>";
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName() + " <player>";
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
@@ -41,8 +42,8 @@ public class CommandMotD extends CommandBase {
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
-        if (array.length == 0) sender.addChatMessage(new ChatComponentText(RivalRebels.round.getMotD()));
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) {
+        if (array.length == 0) sender.sendMessage(new TextComponentString(RivalRebels.round.getMotD()));
         else RivalRebels.round.setMotD(array);
     }
 
@@ -50,7 +51,7 @@ public class CommandMotD extends CommandBase {
      * Adds the strings available in this command to the given list of tab completion options.
      */
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
-        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames()) : null;
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] par2ArrayOfStr, BlockPos pos) {
+        return par2ArrayOfStr.length >= 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, server.getOnlinePlayerNames()) : null;
     }
 }

@@ -23,8 +23,9 @@ import assets.rivalrebels.common.packet.PacketDispatcher;
 import assets.rivalrebels.common.packet.ReactorUpdatePacket;
 import assets.rivalrebels.common.packet.TextPacket;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -69,8 +70,8 @@ public class TileEntityReactor extends TileEntity implements IInventory {
             int x = par1NBTTagCompound.getInteger("mx" + i);
             int y = par1NBTTagCompound.getInteger("my" + i);
             int z = par1NBTTagCompound.getInteger("mz" + i);
-            if (worldObj != null) {
-                TileEntity te = worldObj.getTileEntity(x, y, z);
+            if (world != null) {
+                TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
                 if (te instanceof TileEntityMachineBase) {
                     machines.add(te);
                 }
@@ -80,19 +81,20 @@ public class TileEntityReactor extends TileEntity implements IInventory {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        if (core != null) par1NBTTagCompound.setInteger("core", Item.getIdFromItem(core.getItem()));
-        if (fuel != null) par1NBTTagCompound.setInteger("fuel", Item.getIdFromItem(fuel.getItem()));
-        par1NBTTagCompound.setInteger("consumed", (int) consumed);
-        par1NBTTagCompound.setBoolean("on", on);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        nbt = super.writeToNBT(nbt);
+        if (core != null) nbt.setInteger("core", Item.getIdFromItem(core.getItem()));
+        if (fuel != null) nbt.setInteger("fuel", Item.getIdFromItem(fuel.getItem()));
+        nbt.setInteger("consumed", (int) consumed);
+        nbt.setBoolean("on", on);
         if (on) for (int i = 0; i < machines.getSize(); i++) {
             TileEntityMachineBase te = (TileEntityMachineBase) machines.get(i);
             if (te == null || te instanceof TileEntityReactive) continue;
-            par1NBTTagCompound.setInteger("mx" + i, te.xCoord);
-            par1NBTTagCompound.setInteger("my" + i, te.yCoord);
-            par1NBTTagCompound.setInteger("mz" + i, te.zCoord);
+            nbt.setInteger("mx" + i, te.getPos().getX());
+            nbt.setInteger("my" + i, te.getPos().getY());
+            nbt.setInteger("mz" + i, te.getPos().getZ());
         }
+        return nbt;
     }
 
     @Override
@@ -138,7 +140,7 @@ public class TileEntityReactor extends TileEntity implements IInventory {
             if (melt) {
                 if (core != null) {
                     for (int i = 0; i < 4; i++) {
-                        worldObj.spawnParticle("smoke", xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, Math.random() - 0.5, Math.random() / 2, Math.random() - 0.5);
+                        world.spawnParticle("smoke", xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, Math.random() - 0.5, Math.random() / 2, Math.random() - 0.5);
                     }
                 } else {
                     melt = false;
@@ -152,7 +154,7 @@ public class TileEntityReactor extends TileEntity implements IInventory {
                 if (core != null) {
                     consumed = 0;
                     lasttickconsumed = 0;
-                    worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 1, zCoord + 0.5, core));
+                    world.spawnEntity(new EntityItem(worldObj, xCoord + 0.5, yCoord + 1, zCoord + 0.5, core));
                     fuel = null;
                     core = null;
                     melt = false;
@@ -164,7 +166,7 @@ public class TileEntityReactor extends TileEntity implements IInventory {
             if (melt) {
                 if (core != null) {
                     if (meltTick % 20 == 0)
-                        RivalRebelsSoundPlayer.playSound(worldObj, 21, 1, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+                        RivalRebelsSoundPlayer.playSound(world, 21, 1, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                     on = true;
                     meltTick++;
                     if (meltTick == 300) meltDown(10);

@@ -82,8 +82,8 @@ public class ModelReactor {
     Vertice v16 = new Vertice(-0.5f, 0.8125f, 0.5f);
 
     public void renderModel() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
         addFace(v13, v14, v15, v16, t14, t2, t3, t17);
         addFace(v9, v5, v6, v10, t7, t4, t18, t12);
         addFace(v10, v6, v7, v11, t15, t19, t22, t16);
@@ -124,7 +124,7 @@ public class ModelReactor {
         addFace(v8, v4, v1, v5, t9v, t10v, t12v, t11v);
         addFace(v5, v6, v7, v8, t9v, t10v, t12v, t11v);
         xoff = yoff = zoff = 1F;
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     private void addFace(Vertice v1, Vertice v2, Vertice v3, Vertice v4, TextureVertice t1, TextureVertice t2, TextureVertice t3, TextureVertice t4) {

@@ -28,17 +28,17 @@ public class RenderLaserBurst extends Render {
         int distance = 4;
         Tessellator tessellator = Tessellator.instance;
 
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glTranslatef((float) x, (float) y, (float) z);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableCull();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GlStateManager.translate((float) x, (float) y, (float) z);
         // Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btsteel);
         // RenderHelper.drawPoint(new Vertice(0, 0, 0), 1);
 
-        GL11.glRotatef(ell.rotationYaw, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-ell.rotationPitch, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(ell.rotationYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-ell.rotationPitch, 1.0F, 0.0F, 0.0F);
 
         for (float o = 0; o <= radius; o += radius / 8) {
             float color = 1f - (o * 8.333f);
@@ -72,9 +72,9 @@ public class RenderLaserBurst extends Render {
             tessellator.addVertex(0 + o, 0 + o, distance);
             tessellator.draw();
         }
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
     }
 
     @Override

@@ -17,10 +17,14 @@ import assets.rivalrebels.common.packet.ItemUpdate;
 import assets.rivalrebels.common.packet.PacketDispatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
+
+import static org.lwjgl.opengl.GL11.GL_QUADS;
 
 public class GuiFlameThrower extends GuiScreen {
     private final int xSizeOfTexture = 256;
@@ -55,24 +59,25 @@ public class GuiFlameThrower extends GuiScreen {
 
     @Override
     public void drawScreen(int x, int y, float d) {
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
         float f = 0.00390625F;
         mc = Minecraft.getMinecraft();
         mc.renderEngine.bindTexture(RivalRebels.guiflamethrower);
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(posX, posY + ySizeOfTexture, zLevel, 0, ySizeOfTexture * f);
-        tessellator.addVertexWithUV(posX + xSizeOfTexture, posY + ySizeOfTexture, zLevel, xSizeOfTexture * f, ySizeOfTexture * f);
-        tessellator.addVertexWithUV(posX + xSizeOfTexture, posY, zLevel, xSizeOfTexture * f, 0);
-        tessellator.addVertexWithUV(posX, posY, zLevel, 0, 0);
+        BufferBuilder buf = tessellator.getBuffer();
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buf.pos(posX, posY + ySizeOfTexture, zLevel).tex(0, ySizeOfTexture * f).endVertex();
+        buf.pos(posX + xSizeOfTexture, posY + ySizeOfTexture, zLevel).tex(xSizeOfTexture * f, ySizeOfTexture * f).endVertex();
+        buf.pos(posX + xSizeOfTexture, posY, zLevel).tex(xSizeOfTexture * f, 0).endVertex();
+        buf.pos(posX, posY, zLevel).tex(0, 0).endVertex();
         tessellator.draw();
         super.drawScreen(x, y, d);
         if (!(RivalRebels.altRkey ? Keyboard.isKeyDown(Keyboard.KEY_F) : Keyboard.isKeyDown(Keyboard.KEY_R))) {
             mc.displayGuiScreen(null);
             mc.setIngameFocus();
-            ItemStack itemstack = mc.thePlayer.inventory.getStackInSlot(mc.thePlayer.inventory.currentItem);
-            if (itemstack.stackTagCompound == null) itemstack.stackTagCompound = new NBTTagCompound();
-            itemstack.stackTagCompound.setInteger("mode", knob.getDegree());
-            PacketDispatcher.packetsys.sendToServer(new ItemUpdate(mc.thePlayer.inventory.currentItem, knob.getDegree()));
+            ItemStack itemstack = mc.player.inventory.getStackInSlot(mc.player.inventory.currentItem);
+            if (!itemstack.hasTagCompound()) itemstack.setTagCompound(new NBTTagCompound());
+            itemstack.getTagCompound().setInteger("mode", knob.getDegree());
+            PacketDispatcher.packetsys.sendToServer(new ItemUpdate(mc.player.inventory.currentItem, knob.getDegree()));
         }
     }
 }

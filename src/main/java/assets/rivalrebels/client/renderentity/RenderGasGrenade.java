@@ -26,11 +26,11 @@ public class RenderGasGrenade extends Render {
 
     public void renderGasGrenade(EntityGasGrenade par1EntityArrow, double par2, double par4, double par6, float par8, float par9) {
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etgasgrenade);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-        GL11.glRotatef(par1EntityArrow.prevRotationYaw + (par1EntityArrow.rotationYaw - par1EntityArrow.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(par1EntityArrow.prevRotationPitch + (par1EntityArrow.rotationPitch - par1EntityArrow.prevRotationPitch) * par9, 0.0F, 0.0F, 1.0F);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) par2, (float) par4, (float) par6);
+        GlStateManager.rotate(par1EntityArrow.prevRotationYaw + (par1EntityArrow.rotationYaw - par1EntityArrow.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(par1EntityArrow.prevRotationPitch + (par1EntityArrow.rotationPitch - par1EntityArrow.prevRotationPitch) * par9, 0.0F, 0.0F, 1.0F);
         Tessellator var10 = Tessellator.instance;
         byte var11 = 0;
         float var12 = 0.0F;
@@ -43,9 +43,9 @@ public class RenderGasGrenade extends Render {
         float var19 = (10 + var11 * 10) / 32.0F;
         float var20 = 0.05625F;
 
-        GL11.glRotatef(45.0F, 1.0F, 0.0F, 0.0F);
-        GL11.glScalef(var20, var20, var20);
-        GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.scale(var20, var20, var20);
+        GlStateManager.translate(-4.0F, 0.0F, 0.0F);
         GL11.glNormal3f(var20, 0.0F, 0.0F);
         var10.startDrawingQuads();
         var10.addVertexWithUV(-7.0D, -2.0D, -2.0D, var16, var18);
@@ -62,7 +62,7 @@ public class RenderGasGrenade extends Render {
         var10.draw();
 
         for (int var23 = 0; var23 < 4; ++var23) {
-            GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
             GL11.glNormal3f(0.0F, 0.0F, var20);
             var10.startDrawingQuads();
             var10.addVertexWithUV(-8.0D, -2.0D, 0.0D, var12, var14);
@@ -72,7 +72,7 @@ public class RenderGasGrenade extends Render {
             var10.draw();
         }
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     /**

@@ -34,18 +34,18 @@ public class RenderRoddiskOfficer extends Render {
         er += 13.46;
         EntityRoddiskOfficer erd = (EntityRoddiskOfficer) var1;
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etdisk2);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) var2, (float) var4, (float) var6);
-        GL11.glRotatef(erd.rotationPitch, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(erd.rotationYaw - 90.0f + er, 0.0F, 1.0F, 0.0F);
-        GL11.glScalef(0.4f, 0.4f, 0.4f);
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) var2, (float) var4, (float) var6);
+        GlStateManager.rotate(erd.rotationPitch, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(erd.rotationYaw - 90.0f + er, 0.0F, 1.0F, 0.0F);
+        GlStateManager.scale(0.4f, 0.4f, 0.4f);
+        GlStateManager.pushMatrix();
 
         model.render();
 
-        GL11.glPopMatrix();
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
 
     @Override

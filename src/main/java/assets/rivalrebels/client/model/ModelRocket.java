@@ -13,8 +13,8 @@ package assets.rivalrebels.client.model;
 
 import assets.rivalrebels.client.renderhelper.RenderHelper;
 import assets.rivalrebels.client.renderhelper.Vertice;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -55,8 +55,8 @@ public class ModelRocket {
     float ty3 = 0.1875f;
 
     public void render(boolean fins) {
-        GL11.glPushMatrix();
-        GL11.glScalef(0.125f, 0.25f, 0.125f);
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(0.125f, 0.25f, 0.125f);
 
         RenderHelper.addFace(vpx1, vpx2, vpxpz2, vpxpz1, tx1, tx2, ty1, ty2);
         RenderHelper.addFace(vpxpz1, vpxpz2, vpz2, vpz1, tx1, tx2, ty1, ty2);
@@ -84,6 +84,6 @@ public class ModelRocket {
             RenderHelper.addFace(vpz3, vnz3, vnz4, vpz4, tx3, tx4, ty1, ty3);
         }
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

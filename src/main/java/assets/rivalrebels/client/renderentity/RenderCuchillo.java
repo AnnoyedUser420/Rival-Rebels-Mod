@@ -14,24 +14,30 @@ package assets.rivalrebels.client.renderentity;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.common.entity.EntityCuchillo;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
-public class RenderCuchillo extends Render {
-    public RenderCuchillo() {
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+
+public class RenderCuchillo extends Render<EntityCuchillo> {
+    public RenderCuchillo(RenderManager renderManagerIn) {
+        super(renderManagerIn);
     }
 
-    public void renderKnife(EntityCuchillo par1EntityArrow, double par2, double par4, double par6, float par8, float par9) {
+    @Override
+    public void doRender(EntityCuchillo par1EntityArrow, double par2, double par4, double par6, float par8, float par9) {
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etknife);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-        GL11.glRotatef(par1EntityArrow.prevRotationYaw + (par1EntityArrow.rotationYaw - par1EntityArrow.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(par1EntityArrow.prevRotationPitch + (par1EntityArrow.rotationPitch - par1EntityArrow.prevRotationPitch) * par9, 0.0F, 0.0F, 1.0F);
-        Tessellator var10 = Tessellator.instance;
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) par2, (float) par4, (float) par6);
+        GlStateManager.rotate(par1EntityArrow.prevRotationYaw + (par1EntityArrow.rotationYaw - par1EntityArrow.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(par1EntityArrow.prevRotationPitch + (par1EntityArrow.rotationPitch - par1EntityArrow.prevRotationPitch) * par9, 0.0F, 0.0F, 1.0F);
+        Tessellator t = Tessellator.getInstance();
         byte var11 = 0;
         float var12 = 0.0F;
         float var13 = 0.5F;
@@ -41,54 +47,44 @@ public class RenderCuchillo extends Render {
         float var17 = 0.15625F;
         float var18 = (5 + var11 * 10) / 32.0F;
         float var19 = (10 + var11 * 10) / 32.0F;
-        float var20 = 0.05625F;
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        float normal = 0.05625F;
+        GlStateManager.enableRescaleNormal();
 
-        GL11.glRotatef(45.0F, 1.0F, 0.0F, 0.0F);
-        GL11.glScalef(var20, var20, var20);
-        GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-        GL11.glNormal3f(var20, 0.0F, 0.0F);
-        var10.startDrawingQuads();
-        var10.addVertexWithUV(-7.0D, -2.0D, -2.0D, var16, var18);
-        var10.addVertexWithUV(-7.0D, -2.0D, 2.0D, var17, var18);
-        var10.addVertexWithUV(-7.0D, 2.0D, 2.0D, var17, var19);
-        var10.addVertexWithUV(-7.0D, 2.0D, -2.0D, var16, var19);
-        var10.draw();
-        GL11.glNormal3f(-var20, 0.0F, 0.0F);
-        var10.startDrawingQuads();
-        var10.addVertexWithUV(-7.0D, 2.0D, -2.0D, var16, var18);
-        var10.addVertexWithUV(-7.0D, 2.0D, 2.0D, var17, var18);
-        var10.addVertexWithUV(-7.0D, -2.0D, 2.0D, var17, var19);
-        var10.addVertexWithUV(-7.0D, -2.0D, -2.0D, var16, var19);
-        var10.draw();
+        GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.scale(normal, normal, normal);
+        GlStateManager.translate(-4.0F, 0.0F, 0.0F);
+        BufferBuilder buf = t.getBuffer();
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        buf.pos(-7.0D, -2.0D, -2.0D).tex(var16, var18).normal(normal, 0.0F, 0.0F).endVertex();
+        buf.pos(-7.0D, -2.0D, 2.0D).tex(var17, var18).normal(normal, 0.0F, 0.0F).endVertex();
+        buf.pos(-7.0D, 2.0D, 2.0D).tex(var17, var19).normal(normal, 0.0F, 0.0F).endVertex();
+        buf.pos(-7.0D, 2.0D, -2.0D).tex(var16, var19).normal(normal, 0.0F, 0.0F).endVertex();
+        t.draw();
+        GL11.glNormal3f(-normal, 0.0F, 0.0F);
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        buf.pos(-7.0D, 2.0D, -2.0D).tex(var16, var18).normal(-normal, 0.0F, 0.0F).endVertex();
+        buf.pos(-7.0D, 2.0D, 2.0D).tex(var17, var18).normal(-normal, 0.0F, 0.0F).endVertex();
+        buf.pos(-7.0D, -2.0D, 2.0D).tex(var17, var19).normal(-normal, 0.0F, 0.0F).endVertex();
+        buf.pos(-7.0D, -2.0D, -2.0D).tex(var16, var19).normal(-normal, 0.0F, 0.0F).endVertex();
+        t.draw();
 
         for (int var23 = 0; var23 < 4; ++var23) {
-            GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glNormal3f(0.0F, 0.0F, var20);
-            var10.startDrawingQuads();
-            var10.addVertexWithUV(-8.0D, -2.0D, 0.0D, var12, var14);
-            var10.addVertexWithUV(8.0D, -2.0D, 0.0D, var13, var14);
-            var10.addVertexWithUV(8.0D, 2.0D, 0.0D, var13, var15);
-            var10.addVertexWithUV(-8.0D, 2.0D, 0.0D, var12, var15);
-            var10.draw();
+            GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glNormal3f(0.0F, 0.0F, normal);
+            buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+            buf.pos(-8.0D, -2.0D, 0.0D).tex(var12, var14).normal(0.0F, 0.0F, normal).endVertex();
+            buf.pos(8.0D, -2.0D, 0.0D).tex(var13, var14).normal(0.0F, 0.0F, normal).endVertex();
+            buf.pos(8.0D, 2.0D, 0.0D).tex(var13, var15).normal(0.0F, 0.0F, normal).endVertex();
+            buf.pos(-8.0D, 2.0D, 0.0D).tex(var12, var15).normal(0.0F, 0.0F, normal).endVertex();
+            t.draw();
         }
 
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-    }
-
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then handing it off to a worker function which does the actual work. In all
-     * probabilty, the class Render is generic (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1, double d2, float f, float f1). But JAD is pre
-     * 1.5 so doesn't do that.
-     */
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.renderKnife((EntityCuchillo) par1Entity, par2, par4, par6, par8, par9);
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
+    protected ResourceLocation getEntityTexture(EntityCuchillo entity) {
         return null;
     }
 }

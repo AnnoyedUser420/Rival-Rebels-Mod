@@ -37,12 +37,12 @@ public class LoaderRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, 0.05F, 0.0F);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.0F, 0.05F, 0.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etloader);
         ml.renderA();
         ml.renderB(0);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

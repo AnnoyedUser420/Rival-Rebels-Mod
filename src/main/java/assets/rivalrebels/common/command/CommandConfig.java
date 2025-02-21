@@ -17,20 +17,22 @@ import assets.rivalrebels.common.item.weapon.ItemRoda;
 import assets.rivalrebels.common.tileentity.TileEntityReciever;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandConfig extends CommandBase {
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rrconfig";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName();
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName();
     }
 
     /**
@@ -42,12 +44,12 @@ public class CommandConfig extends CommandBase {
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) {
         if (array.length == 2) {
             String str = array[0];
             if (str.equals("nuketime")) {
@@ -55,75 +57,75 @@ public class CommandConfig extends CommandBase {
                 int i = Integer.parseInt(str2);
                 if (i < 1) i = 1;
                 RivalRebels.nuclearBombCountdown = i;
-                sender.addChatMessage(new ChatComponentText("§cnuketime has been set to " + i));
+                sender.sendMessage(new TextComponentString("§cnuketime has been set to " + i));
                 return;
             }
             if (str.equals("b2trash")) {
                 String str2 = array[1];
                 boolean i = Boolean.parseBoolean(str2);
                 EntityB2Spirit.trash = i;
-                sender.addChatMessage(new ChatComponentText("§cb2trash has been set to " + i));
+                sender.sendMessage(new TextComponentString("§cb2trash has been set to " + i));
                 return;
             }
             if (str.equals("flash")) {
                 String str2 = array[1];
                 boolean i = Boolean.parseBoolean(str2);
                 RivalRebels.antimatterFlash = i;
-                sender.addChatMessage(new ChatComponentText("§cflash has been set to " + i));
+                sender.sendMessage(new TextComponentString("§cflash has been set to " + i));
                 return;
             }
             if (str.equals("bignuke")) {
                 String str2 = array[1];
                 float i = Float.parseFloat(str2);
                 RivalRebels.nukeScale = i;
-                sender.addChatMessage(new ChatComponentText("§cNuke scale is " + i + "x"));
+                sender.sendMessage(new TextComponentString("§cNuke scale is " + i + "x"));
                 return;
             }
             if (str.equals("bigshroom")) {
                 String str2 = array[1];
                 float i = Float.parseFloat(str2);
                 RivalRebels.shroomScale = i;
-                sender.addChatMessage(new ChatComponentText("§cMushroom scale is " + i + "x"));
+                sender.sendMessage(new TextComponentString("§cMushroom scale is " + i + "x"));
                 return;
             }
             if (str.equals("b2leave")) {
                 String str2 = array[1];
                 boolean i = Boolean.parseBoolean(str2);
                 EntityB2Spirit.leave = i;
-                sender.addChatMessage(new ChatComponentText("§cb2leave has been set to " + i));
+                sender.sendMessage(new TextComponentString("§cb2leave has been set to " + i));
                 return;
             }
             if (str.equals("nukepancake")) {
                 String str2 = array[1];
                 if (str2.equals("off")) {
                     RivalRebels.elevation = true;
-                    sender.addChatMessage(new ChatComponentText("§cNew Pancake off"));
+                    sender.sendMessage(new TextComponentString("§cNew Pancake off"));
                 } else if (str2.equals("on")) {
                     RivalRebels.elevation = false;
-                    sender.addChatMessage(new ChatComponentText("§cNew Pancake on"));
-                } else sender.addChatMessage(new ChatComponentText("§cPlease give a value of either on or off."));
+                    sender.sendMessage(new TextComponentString("§cNew Pancake on"));
+                } else sender.sendMessage(new TextComponentString("§cPlease give a value of either on or off."));
                 return;
             }
             if (str.equals("nukedrop")) {
                 String str2 = array[1];
                 if (str2.equals("off")) {
                     RivalRebels.nukedrop = false;
-                    sender.addChatMessage(new ChatComponentText("§cNuke drop off"));
+                    sender.sendMessage(new TextComponentString("§cNuke drop off"));
                 } else if (str2.equals("on")) {
                     RivalRebels.nukedrop = true;
-                    sender.addChatMessage(new ChatComponentText("§cNuke drop on"));
-                } else sender.addChatMessage(new ChatComponentText("§cPlease give a value of either on or off."));
+                    sender.sendMessage(new TextComponentString("§cNuke drop on"));
+                } else sender.sendMessage(new TextComponentString("§cPlease give a value of either on or off."));
                 return;
             }
             if (str.equals("b2chance")) {
                 String str2 = array[1];
                 if (str2.equals("off")) {
                     EntityB2Spirit.randchance = false;
-                    sender.addChatMessage(new ChatComponentText("§cB2 chance off"));
+                    sender.sendMessage(new TextComponentString("§cB2 chance off"));
                 } else if (str2.equals("on")) {
                     EntityB2Spirit.randchance = true;
-                    sender.addChatMessage(new ChatComponentText("§cB2 chance on"));
-                } else sender.addChatMessage(new ChatComponentText("§cPlease give a value of either on or off."));
+                    sender.sendMessage(new TextComponentString("§cB2 chance on"));
+                } else sender.sendMessage(new TextComponentString("§cPlease give a value of either on or off."));
                 return;
             }
             if (str.equals("dragon") || str.equals("b2")) {
@@ -142,19 +144,19 @@ public class CommandConfig extends CommandBase {
                         EntityB2Spirit.staticEntityIndex = index;
                     }
                 } else {
-                    sender.addChatMessage(new ChatComponentText("§cPlease give a value of " + String.join(", ", ItemRoda.entities) + "."));
+                    sender.sendMessage(new TextComponentString("§cPlease give a value of " + String.join(", ", ItemRoda.entities) + "."));
                 }
                 return;
             }
         }
-        sender.addChatMessage(new ChatComponentText("§cUsage: /rrconfig nuketime|nukedrop|bignuke|bigshroom|flash|b2chance|nukepancake|dragon|b2"));
+        sender.sendMessage(new TextComponentString("§cUsage: /rrconfig nuketime|nukedrop|bignuke|bigshroom|flash|b2chance|nukepancake|dragon|b2"));
     }
 
     /**
      * Adds the strings available in this command to the given list of tab completion options.
      */
-    public List addTabCompletionOptions(ICommandSender p, String[] s) {
-        List l = new ArrayList();
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender p, String[] s, BlockPos pos) {
+        List<String> l = new ArrayList<>();
         l.add("nuketime");
         l.add("nukedrop");
         l.add("nukepancake");

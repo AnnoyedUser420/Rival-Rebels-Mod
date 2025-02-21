@@ -126,8 +126,8 @@ public class ModelRocketLauncherBody {
     TextureVertice rs12 = new TextureVertice((u + r) / 2f + 0.25f, k + p * 2);
 
     public void render() {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
         RenderHelper.addFace(llauncher1, llauncher12, rlauncher12, rlauncher1, l1f, l12s, r12s, r1f);
         RenderHelper.addFace(llauncher2, llauncher1, rlauncher1, rlauncher2, l2, l1s, r1s, r2);
         RenderHelper.addFace(llauncher3, llauncher2, rlauncher2, rlauncher3, l3f, l2, r2, r3f);
@@ -152,6 +152,6 @@ public class ModelRocketLauncherBody {
         RenderHelper.addFace(rlauncher4, rlauncher3, rlauncher10, rlauncher9, rs10, rs9, rs4, rs3);
         RenderHelper.addFace(rlauncher5, rlauncher4, rlauncher9, rlauncher8, rs11, rs10, rs3, rs2);
         RenderHelper.addFace(rlauncher6, rlauncher5, rlauncher8, rlauncher7, rs12, rs11, rs2, rs1);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

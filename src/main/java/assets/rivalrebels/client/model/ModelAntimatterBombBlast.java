@@ -15,6 +15,7 @@ package assets.rivalrebels.client.model;
 import assets.rivalrebels.client.renderhelper.RenderHelper;
 import assets.rivalrebels.client.renderhelper.TextureVertice;
 import assets.rivalrebels.client.renderhelper.Vertice;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
@@ -58,11 +59,11 @@ public class ModelAntimatterBombBlast {
         index %= time.length;
         if (timer > 0) timer--;
         texanim += texadd;
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableCull();
         for (float i = 0; i < segments; i++) {
-            GL11.glPushMatrix();
-            GL11.glRotatef(add * i, 0, 1, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(add * i, 0, 1, 0);
             for (int f = 1; f < tsart; f++) {
                 int ind0 = (time.length + index - 1) % time.length;
                 float x0 = tsarx[ind0][f - 1] + (((tsarx[index][f - 1] - tsarx[ind0][f - 1]) / time[ind0]) * timer);
@@ -78,8 +79,8 @@ public class ModelAntimatterBombBlast {
                         new Vertice(x0 * sin, y0, x0 * cos),
                         new Vertice(x1 * sin, y1, x1 * cos), t1, t2, t3, t4);
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

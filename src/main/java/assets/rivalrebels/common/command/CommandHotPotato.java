@@ -14,7 +14,8 @@ package assets.rivalrebels.common.command;
 import assets.rivalrebels.common.entity.EntityHotPotato;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -28,13 +29,13 @@ public class CommandHotPotato extends CommandBase {
     public static boolean roundinprogress = false;
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rrhotpotato";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender) {
-        return "/" + getCommandName();
+    public String getUsage(ICommandSender par1ICommandSender) {
+        return "/" + getName();
     }
 
     /**
@@ -46,43 +47,43 @@ public class CommandHotPotato extends CommandBase {
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return null;
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] array) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] array) {
         if (world == null) {
-            sender.addChatMessage(new ChatComponentText("§cPlace a jump block and use pliers on it to set the hot potato drop point."));
+            sender.sendMessage(new TextComponentString("§cPlace a jump block and use pliers on it to set the hot potato drop point."));
             return;
         }
         if (array.length == 1) {
             String str = array[0];
             if ("stop".equals(str)) {
                 roundinprogress = false;
-                sender.addChatMessage(new ChatComponentText("§cRound stopped."));
+                sender.sendMessage(new TextComponentString("§cRound stopped."));
                 return;
             } else {
                 if (roundinprogress) {
-                    sender.addChatMessage(new ChatComponentText("§cRound already in progress! Do /rrhotpotato stop to end the current round."));
+                    sender.sendMessage(new TextComponentString("§cRound already in progress! Do /rrhotpotato stop to end the current round."));
                     return;
                 }
                 int n = Integer.parseInt(array[0]);
-                sender.addChatMessage(new ChatComponentText("§cLet the Hot Potato games begin! " + n + " rounds."));
+                sender.sendMessage(new TextComponentString("§cLet the Hot Potato games begin! " + n + " rounds."));
                 EntityHotPotato tsar = new EntityHotPotato(world, x, y, z, n);
-                world.spawnEntityInWorld(tsar);
+                world.spawnEntity(tsar);
                 roundinprogress = true;
                 return;
             }
         }
-        sender.addChatMessage(new ChatComponentText("§cUsage: /rrhotpotato [number of rounds]"));
+        sender.sendMessage(new TextComponentString("§cUsage: /rrhotpotato [number of rounds]"));
     }
 
     /**
      * Adds the strings available in this command to the given list of tab completion options.
      */
-    public List addTabCompletionOptions(ICommandSender p, String[] s) {
-        List l = new ArrayList();
+    public List<String> addTabCompletionOptions(ICommandSender p, String[] s) {
+        List<String> l = new ArrayList<>();
         l.add("nuketime");
         return l;
     }

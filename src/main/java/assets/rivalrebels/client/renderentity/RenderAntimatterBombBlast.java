@@ -17,35 +17,37 @@ import assets.rivalrebels.client.model.ModelBlastRing;
 import assets.rivalrebels.client.model.ModelBlastSphere;
 import assets.rivalrebels.common.entity.EntityAntimatterBombBlast;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class RenderAntimatterBombBlast extends Render {
+public class RenderAntimatterBombBlast extends Render<EntityAntimatterBombBlast> {
     private final ModelBlastSphere modelsphere;
     private final ModelBlastRing modelring;
     private final ModelAntimatterBombBlast modelabomb;
 
-    public RenderAntimatterBombBlast() {
+    public RenderAntimatterBombBlast(RenderManager renderManagerIn) {
+        super(renderManagerIn);
         modelsphere = new ModelBlastSphere();
         modelabomb = new ModelAntimatterBombBlast();
         modelring = new ModelBlastRing();
     }
 
     @Override
-    public void doRender(Entity var1, double x, double y, double z, float var8, float var9) {
-        EntityAntimatterBombBlast tsar = (EntityAntimatterBombBlast) var1;
+    public void doRender(EntityAntimatterBombBlast tsar, double x, double y, double z, float var8, float var9) {
         tsar.time++;
         double radius = (((tsar.motionX * 10) - 1) * ((tsar.motionX * 10) - 1) * 2) + RivalRebels.tsarBombaStrength;
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glScalef(RivalRebels.shroomScale, RivalRebels.shroomScale, RivalRebels.shroomScale);
-        GL11.glColor3f(0.0f, 0.0f, 0.2f);
+        GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(RivalRebels.shroomScale, RivalRebels.shroomScale, RivalRebels.shroomScale);
+        GlStateManager.color(0.0f, 0.0f, 0.2f);
         float size = (tsar.time % 100) * 2.0f;
         modelring.renderModel(size, 64, 6f, 2f, 0f, 0f, 0f, (float) x, (float) y, (float) z);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         if (tsar.time < 60) {
             double elev = tsar.time / 5f;
             GL11.glTranslated(x, y + elev, z);
@@ -56,55 +58,55 @@ public class RenderAntimatterBombBlast extends Render {
             //double hnoisy = noisy * 0.5f;
             GL11.glTranslated(x, y, z);
             GL11.glScaled(radius * 0.06f, radius * 0.06f, radius * 0.06f);
-            GL11.glColor3f(1.0f, 1.0f, 1.0f);
+            GlStateManager.color(1.0f, 1.0f, 1.0f);
             Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etantimatterblast);
             modelabomb.render();
 			/*modelsphere.renderModel(50.0f, 0.0f, 0.0f, 0.0f, 1.0f, false);
-			GL11.glPushMatrix();
+			GlStateManager.pushMatrix();
 			//GL11.glTranslated(Math.random() * noisy - hnoisy, Math.random() * noisy - hnoisy, Math.random() * noisy - hnoisy);
-			GL11.glRotatef((float) (elev * 2), 0, 1, 0);
-			GL11.glRotatef((float) (elev * 3), 1, 0, 0);
+			GlStateManager.rotate((float) (elev * 2), 0, 1, 0);
+			GlStateManager.rotate((float) (elev * 3), 1, 0, 0);
 			modelsphere.renderModel((float) elev, 0.2f, 0.6f, 1, 1f);
-			GL11.glPopMatrix();
-			GL11.glPushMatrix();
+			GlStateManager.popMatrix();
+			GlStateManager.pushMatrix();
 			//GL11.glTranslated(Math.random() * noisy - hnoisy, Math.random() * noisy - hnoisy, Math.random() * noisy - hnoisy);
-			GL11.glRotatef((float) (elev * -2), 0, 1, 0);
-			GL11.glRotatef((float) (elev * 4), 0, 0, 1);
+			GlStateManager.rotate((float) (elev * -2), 0, 1, 0);
+			GlStateManager.rotate((float) (elev * 4), 0, 0, 1);
 			modelsphere.renderModel((float) (elev - 0.2f), 0.6f, 0.2f, 1, 1f);
-			GL11.glPopMatrix();
-			GL11.glPushMatrix();
+			GlStateManager.popMatrix();
+			GlStateManager.pushMatrix();
 			//GL11.glTranslated(Math.random() * noisy - hnoisy, Math.random() * noisy - hnoisy, Math.random() * noisy - hnoisy);
-			GL11.glRotatef((float) (elev * -3), 1, 0, 0);
-			GL11.glRotatef((float) (elev * 2), 0, 0, 1);
+			GlStateManager.rotate((float) (elev * -3), 1, 0, 0);
+			GlStateManager.rotate((float) (elev * 2), 0, 0, 1);
 			modelsphere.renderModel((float) (elev - 0.4f), 0.4f, 0, 1, 1f);
-			GL11.glPopMatrix();
-			GL11.glPushMatrix();
+			GlStateManager.popMatrix();
+			GlStateManager.pushMatrix();
 			//GL11.glTranslated(Math.random() * noisy - hnoisy, Math.random() * noisy - hnoisy, Math.random() * noisy - hnoisy);
-			GL11.glRotatef((float) (elev * -1), 0, 1, 0);
-			GL11.glRotatef((float) (elev * 3), 0, 0, 1);
+			GlStateManager.rotate((float) (elev * -1), 0, 1, 0);
+			GlStateManager.rotate((float) (elev * 3), 0, 0, 1);
 			modelsphere.renderModel((float) (elev - 0.6f), 0, 0.4f, 1, 1);
-			GL11.glPopMatrix();*/
+			GlStateManager.popMatrix();*/
             ///summon rivalrebels.rivalrebelsentity51 ~ ~-2 ~ {charge:5}
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         if (RivalRebels.antimatterFlash) {
             int ran = (int) (Math.random() * 10f - 5f);
             for (int i = 0; i < ran; i++) {
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
             }
             for (int i = -5; i < 0; i++) {
-                GL11.glPushMatrix();
+                GlStateManager.pushMatrix();
             }
-            GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+            GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
             GL11.glScaled(Math.random(), Math.random(), Math.random());
-            GL11.glRotated(Math.random() * 360.0f, Math.random(), Math.random(), Math.random());
+            GlStateManager.rotate((float) (Math.random() * 360.0f), (float) Math.random(), (float) Math.random(), (float) Math.random());
             GL11.glTranslated(Math.random() * 10.0f - 5.0f, Math.random() * 10.0f - 5.0f, Math.random() * 10.0f - 5.0f);
             modelsphere.renderModel(tsar.time, (float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
         }
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
+    protected ResourceLocation getEntityTexture(EntityAntimatterBombBlast entity) {
         return null;
     }
 }

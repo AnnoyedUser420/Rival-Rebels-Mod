@@ -12,8 +12,8 @@
 package assets.rivalrebels.client.guihelper;
 
 import assets.rivalrebels.RivalRebels;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -43,15 +43,15 @@ public class GuiDial extends GuiButton {
         if (degree > maxdegreelimit) degree = maxdegreelimit;
         if (degree < mindegreelimit) degree = mindegreelimit;
         par1Minecraft.renderEngine.bindTexture(RivalRebels.guitbutton);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int state = 0;
         if (pressed || mousePressed(par1Minecraft, par2, par3)) state = 11;
-        GL11.glPushMatrix();
-        GL11.glTranslatef(this.xPosition + (width / 2f), this.yPosition + (height / 2f), 0);
-        GL11.glRotatef(degree, 0, 0, 1);
-        GL11.glTranslatef(-(this.xPosition + (width / 2f)), -(this.yPosition + (height / 2f)), 0);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(this.xPosition + (width / 2f), this.yPosition + (height / 2f), 0);
+        GlStateManager.rotate(degree, 0, 0, 1);
+        GlStateManager.translate(-(this.xPosition + (width / 2f)), -(this.yPosition + (height / 2f)), 0);
         this.drawTexturedModalRect(this.xPosition, this.yPosition, 65, state, this.width, this.height);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     /**

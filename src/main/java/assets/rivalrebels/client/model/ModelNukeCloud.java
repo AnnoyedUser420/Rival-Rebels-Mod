@@ -31,8 +31,8 @@ public class ModelNukeCloud {
 
     public void renderTop() {
         for (float i = 0; i < segments; i++) {
-            GL11.glPushMatrix();
-            GL11.glRotatef(add * i, 0, 1, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(add * i, 0, 1, 0);
             for (int f = 1; f < topx.length; f++) {
                 TextureVertice t1 = new TextureVertice((1f / segments) * (i - 1), (1f / topx.length) * f);
                 TextureVertice t2 = new TextureVertice((1f / segments) * (i - 1), (1f / topx.length) * (f - 1));
@@ -43,14 +43,14 @@ public class ModelNukeCloud {
                         new Vertice(topx[f - 1] * sin, topy[f - 1], topx[f - 1] * cos),
                         new Vertice(topx[f] * sin, topy[f], topx[f] * cos), t1, t2, t3, t4);
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 
     public void renderBottom() {
         for (float i = 0; i < segments; i++) {
-            GL11.glPushMatrix();
-            GL11.glRotatef(add * i, 0, 1, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(add * i, 0, 1, 0);
             for (int f = 1; f < bottomx.length; f++) {
                 TextureVertice t1 = new TextureVertice((1f / segments) * (i - 1), (1f / bottomx.length) * f);
                 TextureVertice t2 = new TextureVertice((1f / segments) * (i - 1), (1f / bottomx.length) * (f - 1));
@@ -61,7 +61,7 @@ public class ModelNukeCloud {
                         new Vertice(bottomx[f - 1] * sin, bottomy[f - 1], bottomx[f - 1] * cos),
                         new Vertice(bottomx[f] * sin, bottomy[f], bottomx[f] * cos), t1, t2, t3, t4);
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 }

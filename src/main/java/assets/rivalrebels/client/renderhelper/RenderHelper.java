@@ -12,13 +12,14 @@
 package assets.rivalrebels.client.renderhelper;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderHelper {
     public static void renderBox(float length, float height, float depth, float texLocX, float texLocY, float texXsize, float texYsize, float resolution) {
-        GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(90, 0.0F, 1.0F, 0.0F);
         texLocX /= texXsize;
         texLocY /= texYsize;
         float hl = (length / 2f) / resolution;
@@ -61,13 +62,13 @@ public class RenderHelper {
     }
 
     public static void drawPoint(Vertice v1, float size) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(v1.x, v1.y, v1.z);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(v1.x, v1.y, v1.z);
+        GlStateManager.enableRescaleNormal();
         size /= 2;
-        Tessellator t = Tessellator.instance;
-        GL11.glRotatef(180 - Minecraft.getMinecraft().thePlayer.rotationYaw, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(90 - Minecraft.getMinecraft().thePlayer.rotationPitch, 1.0F, 0.0F, 0.0F);
+        Tessellator t = Tessellator.getInstance();
+        GlStateManager.rotate(180 - Minecraft.getMinecraft().player.rotationYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(90 - Minecraft.getMinecraft().player.rotationPitch, 1.0F, 0.0F, 0.0F);
         t.startDrawingQuads();
         t.setNormal(0.0F, 1.0F, 0.0F);
         t.addVertexWithUV(-size, 0, -size, 0, 0);
@@ -75,19 +76,19 @@ public class RenderHelper {
         t.addVertexWithUV(size, 0, size, 1, 1);
         t.addVertexWithUV(-size, 0, size, 0, 1);
         t.draw();
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
 
     public static void drawLine(Vertice v1, float size1, Vertice v2, float size2) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(v1.x, v1.y, v1.z);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(v1.x, v1.y, v1.z);
+        GlStateManager.enableRescaleNormal();
         size1 /= 2;
         size2 /= 2;
         Tessellator t = Tessellator.instance;
-        GL11.glRotatef(180 - Minecraft.getMinecraft().thePlayer.rotationYaw, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(90 - Minecraft.getMinecraft().thePlayer.rotationPitch, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(180 - Minecraft.getMinecraft().thePlayer.rotationYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(90 - Minecraft.getMinecraft().thePlayer.rotationPitch, 1.0F, 0.0F, 0.0F);
         t.startDrawingQuads();
         t.setNormal(0.0F, 1.0F, 0.0F);
         t.addVertexWithUV(-size1, 0, -size1, 0, 0);
@@ -95,12 +96,12 @@ public class RenderHelper {
         t.addVertexWithUV(size1, 0, size1, 1, 1);
         t.addVertexWithUV(-size1, 0, size1, 0, 1);
         t.draw();
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
 
     public static void renderBox(float length, float height, float depth) {
-        GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(90, 0.0F, 1.0F, 0.0F);
         float hl = (length / 2f);
         float hh = (height / 2f);
         float hd = (depth / 2f);

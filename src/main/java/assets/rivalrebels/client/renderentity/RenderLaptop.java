@@ -29,16 +29,16 @@ public class RenderLaptop extends Render {
 
     @Override
     public void doRender(Entity var1, double d, double d1, double d2, float var8, float var9) {
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
         EntityLaptop tile = (EntityLaptop) var1;
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) d, (float) d1, (float) d2);
-        GL11.glRotatef(180 - var1.rotationYaw, 0, 1, 0);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) d, (float) d1, (float) d2);
+        GlStateManager.rotate(180 - var1.rotationYaw, 0, 1, 0);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etlaptop);
         ml.renderModel((float) -tile.slide);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etubuntu);
         ml.renderScreen((float) -tile.slide);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

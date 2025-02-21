@@ -12,46 +12,41 @@
 package assets.rivalrebels.common.packet;
 
 import assets.rivalrebels.common.tileentity.TileEntityLaptop;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 
 public class LaptopButtonPacket implements IMessage {
-    int x;
-    int y;
-    int z;
+    BlockPos pos;
 
     public LaptopButtonPacket() {
 
     }
 
-    public LaptopButtonPacket(int X, int Y, int Z) {
-        x = X;
-        y = Y;
-        z = Z;
+    public LaptopButtonPacket(BlockPos pos) {
+        this.pos = pos;
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        x = buf.readInt();
-        y = buf.readInt();
-        z = buf.readInt();
+        this.pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
+        buf.writeInt(pos.getX());
+        buf.writeInt(pos.getY());
+        buf.writeInt(pos.getZ());
     }
 
     public static class Handler implements IMessageHandler<LaptopButtonPacket, IMessage> {
         @Override
         public IMessage onMessage(LaptopButtonPacket m, MessageContext ctx) {
-            if (ctx.getServerHandler().playerEntity.getDistanceSq(m.x, m.y, m.z) < 100) {
-                TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(m.x, m.y, m.z);
+            if (ctx.getServerHandler().player.getDistanceSq(m.pos) < 100) {
+                TileEntity te = ctx.getServerHandler().player.world.getTileEntity(m.pos);
                 if (te instanceof TileEntityLaptop) {
                     ((TileEntityLaptop) te).onGoButtonPressed();
                 }

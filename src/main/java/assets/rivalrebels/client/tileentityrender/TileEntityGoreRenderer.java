@@ -14,17 +14,17 @@ package assets.rivalrebels.client.tileentityrender;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.renderhelper.Vertice;
 import assets.rivalrebels.common.tileentity.TileEntityGore;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityGoreRenderer extends TileEntitySpecialRenderer {
+public class TileEntityGoreRenderer extends TileEntitySpecialRenderer<TileEntityGore> {
     float s = 0.5F;
 
     Vertice v1 = new Vertice(s, s, s);
@@ -37,19 +37,20 @@ public class TileEntityGoreRenderer extends TileEntitySpecialRenderer {
     Vertice v7 = new Vertice(-s, -s, -s);
     Vertice v8 = new Vertice(-s, -s, s);
 
-    public void renderAModelAt(TileEntityGore tile, double x, double y, double z, float f) {
-        World world = tile.getWorldObj();
+    @Override
+    public void render(TileEntityGore tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        World world = tile.getWorld();
 
-        boolean ceil = world.isBlockNormalCubeDefault(tile.xCoord, tile.yCoord + 1, tile.zCoord, false);
-        boolean floor = world.isBlockNormalCubeDefault(tile.xCoord, tile.yCoord - 1, tile.zCoord, false);
-        boolean side1 = world.isBlockNormalCubeDefault(tile.xCoord, tile.yCoord, tile.zCoord + 1, false);
-        boolean side2 = world.isBlockNormalCubeDefault(tile.xCoord - 1, tile.yCoord, tile.zCoord, false);
-        boolean side3 = world.isBlockNormalCubeDefault(tile.xCoord, tile.yCoord, tile.zCoord - 1, false);
-        boolean side4 = world.isBlockNormalCubeDefault(tile.xCoord + 1, tile.yCoord, tile.zCoord, false);
-        int meta = tile.blockMetadata;
+        boolean ceil = world.isBlockNormalCube(tile.getPos().add(0, 1, 0), false);
+        boolean floor = world.isBlockNormalCube(tile.getPos().add(0, -1, 0), false);
+        boolean side1 = world.isBlockNormalCube(tile.getPos().add(0, 0, 1), false);
+        boolean side2 = world.isBlockNormalCube(tile.xCoord - 1, tile.yCoord, tile.zCoord, false);
+        boolean side3 = world.isBlockNormalCube(tile.xCoord, tile.yCoord, tile.zCoord - 1, false);
+        boolean side4 = world.isBlockNormalCube(tile.xCoord + 1, tile.yCoord, tile.zCoord, false);
+        int meta = tile.getBlockMetadata(); // TODO: PORT use block state
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
         if (meta == 0) Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btsplash1);
         else if (meta == 1) Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btsplash2);
         else if (meta == 2) Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btsplash3);
@@ -57,8 +58,8 @@ public class TileEntityGoreRenderer extends TileEntitySpecialRenderer {
         else if (meta == 4) Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btsplash5);
         else if (meta == 5) Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btsplash6);
         else Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.btsplash1);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        Tessellator tessellator = Tessellator.instance;
+        GlStateManager.disableLighting();
+        Tessellator tessellator = Tessellator.getInstance();
 
         if (side1) {
             tessellator.startDrawingQuads();
@@ -114,7 +115,7 @@ public class TileEntityGoreRenderer extends TileEntitySpecialRenderer {
             tessellator.draw();
         }
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

@@ -14,8 +14,10 @@ package assets.rivalrebels.client.renderentity;
 import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.objfileloader.ModelFromObj;
 import assets.rivalrebels.common.entity.EntityB2Spirit;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -28,7 +30,8 @@ public class RenderB2Spirit extends Render {
     public static ModelFromObj tupolev;
     ModelFromObj b2;
 
-    public RenderB2Spirit() {
+    public RenderB2Spirit(RenderManager renderManager) {
+        super(renderManager);
         try {
             b2 = ModelFromObj.readObjFile("d.obj");
             b2.scale(3, 3, 3);
@@ -40,14 +43,14 @@ public class RenderB2Spirit extends Render {
     }
 
     public void renderB2Spirit(EntityB2Spirit b2spirit, double x, double y, double z, float par8, float par9) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x, (float) y, (float) z);
-        GL11.glRotatef(b2spirit.rotationYaw, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(b2spirit.rotationPitch, 1.0F, 0.0F, 0.0F);
-        GL11.glDisable(GL11.GL_CULL_FACE);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x, (float) y, (float) z);
+        GlStateManager.rotate(b2spirit.rotationYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(b2spirit.rotationPitch, 1.0F, 0.0F, 0.0F);
+        GlStateManager.disableCull();
         if (RivalRebels.bombertype.equals("sh")) {
-            GL11.glScalef(3.0f, 3.0f, 3.0f);
+            GlStateManager.scale(3.0f, 3.0f, 3.0f);
             Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
             shuttle.render();
         } else if (RivalRebels.bombertype.equals("tu")) {
@@ -57,7 +60,7 @@ public class RenderB2Spirit extends Render {
             Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etb2spirit);
             b2.render();
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     /**

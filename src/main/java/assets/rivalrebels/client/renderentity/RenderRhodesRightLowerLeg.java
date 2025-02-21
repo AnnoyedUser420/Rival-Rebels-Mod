@@ -12,8 +12,8 @@
 package assets.rivalrebels.client.renderentity;
 
 import assets.rivalrebels.common.entity.EntityRhodesRightLowerLeg;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -26,17 +26,17 @@ public class RenderRhodesRightLowerLeg extends Render {
     }
 
     public void renderRhodes(EntityRhodesRightLowerLeg rhodes, double x, double y, double z, float par8, float ptt) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x, (float) y, (float) z);
-        GL11.glScalef(rhodes.scale, rhodes.scale, rhodes.scale);
-        GL11.glColor3f(RenderRhodes.colors[rhodes.color * 3], RenderRhodes.colors[rhodes.color * 3 + 1], RenderRhodes.colors[rhodes.color * 3 + 2]);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x, (float) y, (float) z);
+        GlStateManager.scale(rhodes.scale, rhodes.scale, rhodes.scale);
+        GlStateManager.color(RenderRhodes.colors[rhodes.color * 3], RenderRhodes.colors[rhodes.color * 3 + 1], RenderRhodes.colors[rhodes.color * 3 + 2]);
         Minecraft.getMinecraft().renderEngine.bindTexture(RenderRhodes.texture);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glRotatef(rhodes.rotationYaw, 0, 1, 0);
-        GL11.glRotatef(rhodes.rotationPitch, 1, 0, 0);
-        GL11.glTranslatef(-3, 4f, 0);
+        GlStateManager.disableCull();
+        GlStateManager.rotate(rhodes.rotationYaw, 0, 1, 0);
+        GlStateManager.rotate(rhodes.rotationPitch, 1, 0, 0);
+        GlStateManager.translate(-3, 4f, 0);
         RenderRhodes.shin.renderAll();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     /**

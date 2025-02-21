@@ -12,24 +12,35 @@
 package assets.rivalrebels.client.renderentity;
 
 import assets.rivalrebels.RivalRebels;
+import assets.rivalrebels.common.entity.EntityBlood;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class RenderBlood extends Render {
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+
+public class RenderBlood extends Render<EntityBlood> {
+    protected RenderBlood(RenderManager p_i46179_1_) {
+        super(p_i46179_1_);
+    }
+
     @Override
-    public void doRender(Entity entity, double x, double y, double z, float f, float f1) {
-        GL11.glEnable(GL11.GL_LIGHTING);
+    public void doRender(EntityBlood entity, double x, double y, double z, float f, float f1) {
+        GlStateManager.enableLighting();
         if (entity.ticksExisted > 1) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) x, (float) y, (float) z);
-            GL11.glScalef(0.25F, 0.25F, 0.25F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) x, (float) y, (float) z);
+            GlStateManager.scale(0.25F, 0.25F, 0.25F);
             Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etblood);
             renderFaceMe();
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -37,20 +48,20 @@ public class RenderBlood extends Render {
         float var7 = 1.0F;
         float var8 = 0.5F;
         float var9 = 0.25F;
-        Tessellator t = Tessellator.instance;
-        GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-        t.startDrawingQuads();
-        t.setNormal(0.0F, 1.0F, 0.0F);
-        t.addVertexWithUV((0.0F - var8), (0.0F - var9), 0.0D, 0, 0);
-        t.addVertexWithUV((var7 - var8), (0.0F - var9), 0.0D, 1, 0);
-        t.addVertexWithUV((var7 - var8), (var7 - var9), 0.0D, 1, 1);
-        t.addVertexWithUV((0.0F - var8), (var7 - var9), 0.0D, 0, 1);
+        Tessellator t = Tessellator.getInstance();
+        GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+        BufferBuilder buf = t.getBuffer();
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        buf.pos((0.0F - var8), (0.0F - var9), 0.0D).tex(0, 0).normal(0.0F, 1.0F, 0.0F).endVertex();
+        buf.pos((var7 - var8), (0.0F - var9), 0.0D).tex(1, 0).normal(0.0F, 1.0F, 0.0F).endVertex();
+        buf.pos((var7 - var8), (var7 - var9), 0.0D).tex(1, 1).normal(0.0F, 1.0F, 0.0F).endVertex();
+        buf.pos((0.0F - var8), (var7 - var9), 0.0D).tex(0, 1).normal(0.0F, 1.0F, 0.0F).endVertex();
         t.draw();
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
+    protected ResourceLocation getEntityTexture(EntityBlood entity) {
         return null;
     }
 }

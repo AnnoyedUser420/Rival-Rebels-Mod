@@ -13,6 +13,7 @@ package assets.rivalrebels.client.renderentity;
 
 import assets.rivalrebels.common.entity.EntityDebris;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -32,7 +33,7 @@ public class RenderDebris extends Render {
 
     @Override
     public void doRender(Entity e, double x, double y, double z, float pitch, float yaw) {
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
         if (e.isDead) return;
         EntityDebris debris = (EntityDebris) e;
         World world = debris.worldObj;
@@ -42,10 +43,10 @@ public class RenderDebris extends Render {
         int j = MathHelper.floor_double(debris.posY);
         int k = MathHelper.floor_double(debris.posZ);
         if (block != null) {
-            GL11.glPushMatrix();
+            GlStateManager.pushMatrix();
             GL11.glTranslated(x, y, z);
             bindEntityTexture(debris);
-            GL11.glDisable(GL11.GL_LIGHTING);
+            GlStateManager.disableLighting();
             Tessellator tessellator = Tessellator.instance;
             blockrenderer.blockAccess = world;
             block.setBlockBoundsBasedOnState(world, i, j, k);
@@ -67,8 +68,8 @@ public class RenderDebris extends Render {
             blockrenderer.renderFaceXNeg(block, -0.5D, -0.5D, -0.5D, blockrenderer.getBlockIconFromSideAndMetadata(block, 4, m));
             blockrenderer.renderFaceXPos(block, -0.5D, -0.5D, -0.5D, blockrenderer.getBlockIconFromSideAndMetadata(block, 5, m));
             tessellator.draw();
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glPopMatrix();
+            GlStateManager.enableLighting();
+            GlStateManager.popMatrix();
         }
     }
 

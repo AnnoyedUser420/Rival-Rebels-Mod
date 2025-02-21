@@ -15,14 +15,16 @@ import assets.rivalrebels.RivalRebels;
 import assets.rivalrebels.client.renderhelper.RenderHelper;
 import assets.rivalrebels.common.noise.RivalRebelsCellularNoise;
 import assets.rivalrebels.common.tileentity.TileEntityForceFieldNode;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
@@ -30,8 +32,10 @@ import org.lwjgl.opengl.GL11;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+
 @SideOnly(Side.CLIENT)
-public class TileEntityForceFieldNodeRenderer extends TileEntitySpecialRenderer {
+public class TileEntityForceFieldNodeRenderer extends TileEntitySpecialRenderer<TileEntityForceFieldNode> {
     public static int frames = 28;
     public static int[] id = new int[frames];
     RenderHelper model;
@@ -50,49 +54,50 @@ public class TileEntityForceFieldNodeRenderer extends TileEntitySpecialRenderer 
         if (tile.pInR <= 0 || !RivalRebels.goodRender) return;
 
         count++;
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
         if (tile.getBlockMetadata() == 2) {
-            GL11.glRotatef(90, 0, 1, 0);
+            GlStateManager.rotate(90, 0, 1, 0);
         }
 
         if (tile.getBlockMetadata() == 3) {
-            GL11.glRotatef(-90, 0, 1, 0);
+            GlStateManager.rotate(-90, 0, 1, 0);
         }
 
         if (tile.getBlockMetadata() == 4) {
-            GL11.glRotatef(180, 0, 1, 0);
+            GlStateManager.rotate(180, 0, 1, 0);
         }
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, id[(int) ((getTime() / 100) % frames)]);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(0, 0, 0.5f);
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GlStateManager.disableLighting();
+        GlStateManager.rotate(90, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(0, 0, 0.5f);
+        Tessellator tess = Tessellator.getInstance();
+        BufferBuilder buf = tess.getBuffer();
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-        tess.addVertexWithUV(-0.0625f, 3.5f, 0f, 0, 0);
-        tess.addVertexWithUV(-0.0625f, -3.5f, 0f, 0, 1);
-        tess.addVertexWithUV(-0.0625f, -3.5f, 35f, 5, 1);
-        tess.addVertexWithUV(-0.0625f, 3.5f, 35f, 5, 0);
+        buf.pos(-0.0625f, 3.5f, 0f).tex(0, 0).endVertex();
+        buf.pos(-0.0625f, -3.5f, 0f).tex(0, 1).endVertex();
+        buf.pos(-0.0625f, -3.5f, 35f).tex(5, 1).endVertex();
+        buf.pos(-0.0625f, 3.5f, 35f).tex(5, 0).endVertex();
         tess.draw();
 
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(0.0625f, -3.5f, 0f, 0, 1);
-        tess.addVertexWithUV(0.0625f, 3.5f, 0f, 0, 0);
-        tess.addVertexWithUV(0.0625f, 3.5f, 35f, 5, 0);
-        tess.addVertexWithUV(0.0625f, -3.5f, 35f, 5, 1);
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buf.pos(0.0625f, -3.5f, 0f).tex(0, 1).endVertex();
+        buf.pos(0.0625f, 3.5f, 0f).tex(0, 0).endVertex();
+        buf.pos(0.0625f, 3.5f, 35f).tex(5, 0).endVertex();
+        buf.pos(0.0625f, -3.5f, 35f).tex(5, 1).endVertex();
         tess.draw();
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableLighting();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && RivalRebels.optiFineWarn) {
-            FMLNetworkHandler.openGui(Minecraft.getMinecraft().thePlayer, RivalRebels.instance, 24, tile.getWorldObj(), 0, 0, 0);
+            FMLNetworkHandler.openGui(Minecraft.getMinecraft().player, RivalRebels.instance, 24, tile.getWorld(), 0, 0, 0);
             // Minecraft.getMinecraft().thePlayer.openGui(RivalRebels.instance, 24, tile.getWorldObj(), 0, 0, 0);
             RivalRebels.optiFineWarn = false;
         }
@@ -118,7 +123,7 @@ public class TileEntityForceFieldNodeRenderer extends TileEntitySpecialRenderer 
             }
             bb.flip();
             int id = GL11.glGenTextures();
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GlStateManager.enableTexture2D();
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -135,7 +140,7 @@ public class TileEntityForceFieldNodeRenderer extends TileEntitySpecialRenderer 
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
-        renderAModelAt((TileEntityForceFieldNode) tileentity, d, d1, d2, f);
+    public void render(TileEntityForceFieldNode tileentity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        renderAModelAt(tileentity, x, y, z, partialTicks);
     }
 }

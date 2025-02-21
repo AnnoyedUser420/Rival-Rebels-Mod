@@ -11,13 +11,15 @@
  *******************************************************************************/
 package assets.rivalrebels.client.objfileloader;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Triangle {
     public Vertice[] pa;
-    private final Tessellator tes = Tessellator.instance;
+    private final BufferBuilder tes = Tessellator.getInstance().getBuffer();
 
     public Triangle(Vertice[] PA) {
         if (PA.length != 3)
@@ -26,20 +28,20 @@ public class Triangle {
     }
 
     public void render() {
-        tes.startDrawing(GL_TRIANGLES);
+        tes.begin(GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
         for (int i = 0; i < pa.length; i++) {
             pa[i].render();
         }
-        tes.draw();
+        Tessellator.getInstance().draw();
     }
 
     public void renderWireframe() {
         glLineWidth(2);
-        tes.startDrawing(GL_LINE_LOOP);
+        tes.begin(GL_LINE_LOOP, DefaultVertexFormats.POSITION);
         for (int i = 0; i < pa.length; i++) {
             pa[i].renderWireframe();
         }
-        tes.draw();
+        Tessellator.getInstance().draw();
     }
 
     public void normalize() {

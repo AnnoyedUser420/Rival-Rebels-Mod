@@ -16,12 +16,16 @@ import assets.rivalrebels.client.guihelper.GuiButton;
 import assets.rivalrebels.client.guihelper.GuiScroll;
 import assets.rivalrebels.common.round.RivalRebelsClass;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.GL_QUADS;
 
 public class GuiClass extends GuiScreen {
     private final int xSizeOfTexture = 256;
@@ -74,46 +78,47 @@ public class GuiClass extends GuiScreen {
     @Override
     public void drawScreen(int x, int y, float d) {
         if (rrclass == RivalRebelsClass.NONE) rrclass = RivalRebelsClass.REBEL;
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
         float f = 0.00390625F;
         drawDefaultBackground();
         drawGradientRect(posX, posY, posX + xSizeOfTexture, posY + ySizeOfTexture, 0xFF000000, 0xFF000000);
         drawPanel(posX + 162, posY + 40, 80, 74, gameScroll.getScroll(), gameScroll.limit, rrclass.name + ".description");
         drawGradientRect(posX + 160, posY + 9, posX + 244, posY + 38, 0xFF000000, 0xFF000000);
-        GL11.glColor3f(1F, 1F, 1F);
+        GlStateManager.color(1F, 1F, 1F);
         this.mc.renderEngine.bindTexture(RivalRebels.guitclass);
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(posX, posY + ySizeOfTexture, zLevel, 0, ySizeOfTexture * f);
-        tessellator.addVertexWithUV(posX + xSizeOfTexture, posY + ySizeOfTexture, zLevel, xSizeOfTexture * f, ySizeOfTexture * f);
-        tessellator.addVertexWithUV(posX + xSizeOfTexture, posY, zLevel, xSizeOfTexture * f, 0);
-        tessellator.addVertexWithUV(posX, posY, zLevel, 0, 0);
+        BufferBuilder buf = tessellator.getBuffer();
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buf.pos(posX, posY + ySizeOfTexture, zLevel).tex(0, ySizeOfTexture * f).endVertex();
+        buf.pos(posX + xSizeOfTexture, posY + ySizeOfTexture, zLevel).tex(xSizeOfTexture * f, ySizeOfTexture * f).endVertex();
+        buf.pos(posX + xSizeOfTexture, posY, zLevel).tex(xSizeOfTexture * f, 0).endVertex();
+        buf.pos(posX, posY, zLevel).tex(0, 0).endVertex();
         tessellator.draw();
 
         this.mc.renderEngine.bindTexture(rrclass.resource);
 
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(posX + 12, posY + 140, zLevel, 0, ySizeOfTexture * f);
-        tessellator.addVertexWithUV(posX + 140, posY + 140, zLevel, xSizeOfTexture * f, ySizeOfTexture * f);
-        tessellator.addVertexWithUV(posX + 140, posY + 12, zLevel, xSizeOfTexture * f, 0);
-        tessellator.addVertexWithUV(posX + 12, posY + 12, zLevel, 0, 0);
+        buf.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buf.pos(posX + 12, posY + 140, zLevel).tex(0, ySizeOfTexture * f).endVertex();
+        buf.pos(posX + 140, posY + 140, zLevel).tex(xSizeOfTexture * f, ySizeOfTexture * f).endVertex();
+        buf.pos(posX + 140, posY + 12, zLevel).tex(xSizeOfTexture * f, 0).endVertex();
+        buf.pos(posX + 12, posY + 12, zLevel).tex(0, 0).endVertex();
         tessellator.draw();
 
         float scalefactor = 1.5f;
-        GL11.glScalef(scalefactor * 1.2f, scalefactor, scalefactor);
-        drawCenteredString(fontRendererObj, rrclass.name, (int) ((posX + 76) / (scalefactor * 1.2f)), (int) ((posY + 16) / scalefactor), rrclass.color);
-        GL11.glScalef(1 / (scalefactor * 1.2f), 1 / scalefactor, 1 / scalefactor);
+        GlStateManager.scale(scalefactor * 1.2f, scalefactor, scalefactor);
+        drawCenteredString(fontRenderer, rrclass.name, (int) ((posX + 76) / (scalefactor * 1.2f)), (int) ((posY + 16) / scalefactor), rrclass.color);
+        GlStateManager.scale(1 / (scalefactor * 1.2f), 1 / scalefactor, 1 / scalefactor);
 
         scalefactor = 0.666f;
-        GL11.glScalef(scalefactor, scalefactor, scalefactor);
-        drawCenteredString(fontRendererObj, StatCollector.translateToLocal("RivalRebels.class." + rrclass.name + ".minidesc"), (int) ((posX + 76) / scalefactor), (int) ((posY + 28) / scalefactor), rrclass.color);
-        GL11.glScalef(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
+        GlStateManager.scale(scalefactor, scalefactor, scalefactor);
+        drawCenteredString(fontRenderer, I18n.translateToLocal("RivalRebels.class." + rrclass.name + ".minidesc"), (int) ((posX + 76) / scalefactor), (int) ((posY + 28) / scalefactor), rrclass.color);
+        GlStateManager.scale(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
 
         scalefactor = 0.666f;
-        GL11.glScalef(scalefactor, scalefactor, scalefactor);
-        drawCenteredString(fontRendererObj, StatCollector.translateToLocal("RivalRebels.class.description"), (int) ((posX + 181) / scalefactor), (int) ((posY + 28) / scalefactor), rrclass.color);
-        GL11.glScalef(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
+        GlStateManager.scale(scalefactor, scalefactor, scalefactor);
+        drawCenteredString(fontRenderer, I18n.translateToLocal("RivalRebels.class.description"), (int) ((posX + 181) / scalefactor), (int) ((posY + 28) / scalefactor), rrclass.color);
+        GlStateManager.scale(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
 
-        GL11.glColor3f(1F, 1F, 1F);
+        GlStateManager.color(1F, 1F, 1F);
 
         for (int i = 0; i < sizelookup.length; i++) {
             int X = posX + 18 + (i % 9) * 22;
@@ -128,35 +133,35 @@ public class GuiClass extends GuiScreen {
             }
             sizelookup[i] = size;
         }
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GlStateManager.disableLighting();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         for (int i = rrclass.inventory.length - 1; i >= 0; i--) {
             int X = posX + 18 + (i % 9) * 22;
             int Y = posY + 158 + 22 * (i / 9);
-            GL11.glPushMatrix();
-            GL11.glTranslatef(X + 8, Y + 8, 0);
-            GL11.glScaled(sizelookup[i], sizelookup[i], sizelookup[i]);
-            GL11.glTranslatef(-X - 8, -Y - 8, 0);
-            RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.getTextureManager(), rrclass.inventory[i], X, Y, false);
-            GL11.glPopMatrix();
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(X + 8, Y + 8, 0);
+            GlStateManager.scale(sizelookup[i], sizelookup[i], sizelookup[i]);
+            GlStateManager.translate(-X - 8, -Y - 8, 0);
+            itemRender.renderItemIntoGUI(rrclass.inventory[i], X, Y);
+            GlStateManager.popMatrix();
+            GlStateManager.disableLighting();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         }
         for (int i = rrclass.inventory.length - 1; i >= 0; i--) {
             int X = posX + 18 + (i % 9) * 22;
             int Y = posY + 158 + 22 * (i / 9);
-            GL11.glPushMatrix();
-            GL11.glTranslatef(X + 8, Y + 8, 20);
-            GL11.glScaled(sizelookup[i], sizelookup[i], sizelookup[i]);
-            GL11.glTranslatef(-X - 8, -Y - 8, 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(X + 8, Y + 8, 20);
+            GlStateManager.scale(sizelookup[i], sizelookup[i], sizelookup[i]);
+            GlStateManager.translate(-X - 8, -Y - 8, 0);
             ItemStack itemstack = rrclass.inventory[i];
-            if (itemstack.stackSize > 1)
-                fontRendererObj.drawStringWithShadow("" + itemstack.stackSize, X + 17 - fontRendererObj.getStringWidth("" + itemstack.stackSize), Y + 9, 0xFFFFFF);
+            if (itemstack.getCount() > 1)
+                fontRenderer.drawStringWithShadow("" + itemstack.getCount(), X + 17 - fontRenderer.getStringWidth("" + itemstack.getCount()), Y + 9, 0xFFFFFF);
             if (sizelookup[i] > 1) {
-                drawGradientRect(X + 17, Y + 3, (int) (X + ((fontRendererObj.getStringWidth(itemstack.getDisplayName()) + 4) * (sizelookup[i] - 1) * 2) + 15), Y + 13, 0xaa111111, 0xaa111111);
-                fontRendererObj.drawStringWithShadow(itemstack.getDisplayName(), X + 18, Y + 4, 0xFFFFFF);
+                drawGradientRect(X + 17, Y + 3, (int) (X + ((fontRenderer.getStringWidth(itemstack.getDisplayName()) + 4) * (sizelookup[i] - 1) * 2) + 15), Y + 13, 0xaa111111, 0xaa111111);
+                fontRenderer.drawStringWithShadow(itemstack.getDisplayName(), X + 18, Y + 4, 0xFFFFFF);
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
 
         super.drawScreen(x, y, d);
@@ -190,8 +195,8 @@ public class GuiClass extends GuiScreen {
         int length = 10;
         int dist = (int) (-((float) scroll / (float) scrolllimit) * (((length) * 10) - height));
         float scalefactor = 0.6666f;
-        GL11.glScalef(scalefactor, scalefactor, scalefactor);
-        fontRendererObj.drawSplitString(StatCollector.translateToLocal("RivalRebels.class." + display), (int) (x * 1.5), (int) ((y + dist) * 1.5), (int) (width * 1.5), 0xffffff);
-        GL11.glScalef(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
+        GlStateManager.scale(scalefactor, scalefactor, scalefactor);
+        fontRenderer.drawSplitString(I18n.translateToLocal("RivalRebels.class." + display), (int) (x * 1.5), (int) ((y + dist) * 1.5), (int) (width * 1.5), 0xffffff);
+        GlStateManager.scale(1 / scalefactor, 1 / scalefactor, 1 / scalefactor);
     }
 }

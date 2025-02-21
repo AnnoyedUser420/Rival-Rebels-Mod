@@ -13,8 +13,8 @@ package assets.rivalrebels.client.renderentity;
 
 import assets.rivalrebels.client.model.ModelTsarBomba;
 import assets.rivalrebels.common.entity.EntityTsar;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -29,14 +29,14 @@ public class RenderTsar extends Render {
     }
 
     public void renderB83(EntityTsar b83, double x, double y, double z, float par8, float par9) {
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x, (float) y, (float) z);
-        GL11.glRotatef(b83.rotationYaw - 90.0f, 0.0F, 1.0F, 0.0F);
-        //GL11.glRotatef(90.0f, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(b83.rotationPitch - 90.0f, 0.0F, 0.0F, 1.0F);
+        GlStateManager.disableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x, (float) y, (float) z);
+        GlStateManager.rotate(b83.rotationYaw - 90.0f, 0.0F, 1.0F, 0.0F);
+        //GlStateManager.rotate(90.0f, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(b83.rotationPitch - 90.0f, 0.0F, 0.0F, 1.0F);
         model.render();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     /**

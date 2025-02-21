@@ -48,7 +48,7 @@ public class GuiScroll extends GuiButton {
         if (scroll > limit) scroll = limit;
         if (scroll < 0) scroll = 0;
         par1Minecraft.renderEngine.bindTexture(RivalRebels.guitbutton);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int state = 0;
         if (pressed || mousePressed(par1Minecraft, par2, par3)) state = 11;
         this.drawTexturedModalRect(this.xPosition, this.yPosition + scroll, 0, state, this.width, this.height);

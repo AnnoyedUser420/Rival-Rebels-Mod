@@ -44,27 +44,27 @@ public class RodaRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etrust);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.5f, 0.5f, -0.03f);
-        GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
-        GL11.glScalef(0.35f, 0.35f, 0.35f);
-        if (type != ItemRenderType.EQUIPPED_FIRST_PERSON) GL11.glScalef(-1, 1, 1);
-        GL11.glTranslatef(0.2f, -0.55f, 0.1f);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5f, 0.5f, -0.03f);
+        GlStateManager.rotate(35, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(90, 0.0F, 1.0F, 0.0F);
+        GlStateManager.scale(0.35f, 0.35f, 0.35f);
+        if (type != ItemRenderType.EQUIPPED_FIRST_PERSON) GlStateManager.scale(-1, 1, 1);
+        GlStateManager.translate(0.2f, -0.55f, 0.1f);
 
         model.render();
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, TileEntityForceFieldNodeRenderer.id[(int) ((TileEntityForceFieldNodeRenderer.getTime() / 100) % TileEntityForceFieldNodeRenderer.frames)]);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GlStateManager.disableLighting();
         model.render();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.enableLighting();
+        GlStateManager.popMatrix();
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

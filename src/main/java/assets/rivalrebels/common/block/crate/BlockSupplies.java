@@ -12,8 +12,8 @@
 package assets.rivalrebels.common.block.crate;
 
 import assets.rivalrebels.RivalRebels;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,7 +24,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -58,16 +58,16 @@ public class BlockSupplies extends Block {
 
     public boolean blockActivated(World world, int x, int y, int z, EntityPlayer player) {
         if (world.isRemote) {
-            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("RivalRebels.Inventory")));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.armyshovel.getUnlocalizedName() + ".name") + ". §9(" + "Ideal for special blocks." + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.jump.getUnlocalizedName() + ".name") + ". §9(" + "Use at your own risk." + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.quicksand.getUnlocalizedName() + ".name") + ". §9(" + "Sand that is quick" + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.mario.getUnlocalizedName() + ".name") + ". §9(" + "For trap making." + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.loader.getUnlocalizedName() + ".name") + ". §9(" + "Modular item container." + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.steel.getUnlocalizedName() + ".name") + ". §9(" + "Climbable and blast resistant." + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.expill.getUnlocalizedName() + ".name") + ". §9(" + "Take at your own risk." + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.safepill.getUnlocalizedName() + ".name") + ". §9(" + "Restores health." + ")"));
-            player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.breadbox.getUnlocalizedName() + ".name") + ". §9(" + "Unlimited toast! You don't say..." + ")"));
+            player.addChatMessage(new ChatComponentText(I18n.translateToLocal("RivalRebels.Inventory")));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.armyshovel.getUnlocalizedName() + ".name") + ". §9(" + "Ideal for special blocks." + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.jump.getUnlocalizedName() + ".name") + ". §9(" + "Use at your own risk." + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.quicksand.getUnlocalizedName() + ".name") + ". §9(" + "Sand that is quick" + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.mario.getUnlocalizedName() + ".name") + ". §9(" + "For trap making." + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.loader.getUnlocalizedName() + ".name") + ". §9(" + "Modular item container." + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.steel.getUnlocalizedName() + ".name") + ". §9(" + "Climbable and blast resistant." + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.expill.getUnlocalizedName() + ".name") + ". §9(" + "Take at your own risk." + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.safepill.getUnlocalizedName() + ".name") + ". §9(" + "Restores health." + ")"));
+            player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.breadbox.getUnlocalizedName() + ".name") + ". §9(" + "Unlimited toast! You don't say..." + ")"));
         }
         if (!world.isRemote) {
             EntityItem ei = new EntityItem(world, x + .5, y + .5, z + .5, new ItemStack(RivalRebels.breadbox, 1));
@@ -93,7 +93,7 @@ public class BlockSupplies extends Block {
             world.setBlock(x, y, z, Blocks.air);
             if (world.rand.nextInt(5) == 0) {
                 world.spawnEntityInWorld(new EntityItem(world, x + .5, y + .5, z + .5, new ItemStack(RivalRebels.nuclearelement, 1)));
-                player.addChatMessage(new ChatComponentText("§a" + StatCollector.translateToLocal(RivalRebels.nuclearelement.getUnlocalizedName() + ".name") + ". §9" + "(Used in nuclear weapons)"));
+                player.addChatMessage(new ChatComponentText("§a" + I18n.translateToLocal(RivalRebels.nuclearelement.getUnlocalizedName() + ".name") + ". §9" + "(Used in nuclear weapons)"));
             }
             return true;
         }

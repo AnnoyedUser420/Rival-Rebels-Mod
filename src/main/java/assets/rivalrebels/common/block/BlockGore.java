@@ -14,8 +14,9 @@ package assets.rivalrebels.common.block;
 import assets.rivalrebels.common.entity.EntityBlood;
 import assets.rivalrebels.common.entity.EntityGoo;
 import assets.rivalrebels.common.tileentity.TileEntityGore;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -108,7 +109,7 @@ public class BlockGore extends BlockContainer {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 

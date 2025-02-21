@@ -12,13 +12,13 @@
 package assets.rivalrebels.common.packet;
 
 import assets.rivalrebels.common.core.FileRW;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class TextPacket implements IMessage {
     String text;
@@ -55,7 +55,7 @@ public class TextPacket implements IMessage {
                 String[] s = m.text.split(" ");
                 StringBuilder strb = new StringBuilder();
                 for (int i = 0; i < s.length; i++) {
-                    strb.append(StatCollector.translateToLocal(s[i]));
+                    strb.append(I18n.translateToLocal(s[i]));
                     strb.append(" ");
                 }
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(strb.toString()));

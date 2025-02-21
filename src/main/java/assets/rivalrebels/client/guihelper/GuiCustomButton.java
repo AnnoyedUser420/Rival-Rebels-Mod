@@ -11,8 +11,8 @@
  *******************************************************************************/
 package assets.rivalrebels.client.guihelper;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -57,7 +57,7 @@ public class GuiCustomButton extends net.minecraft.client.gui.GuiButton {
 
         if (isPressed) {
             par1Minecraft.renderEngine.bindTexture(resloc);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             drawTexturedModalRect(bbox.xMin, bbox.yMin, tbox.x, tbox.y, bbox.xMax - bbox.xMin, bbox.yMax - bbox.yMin);
         }
     }

@@ -40,18 +40,18 @@ public class ReactorRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.5F, 1.1875F, 0.5F);
+        GlStateManager.enableLighting();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5F, 1.1875F, 0.5F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etlaptop);
         ml.renderModel(0);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etscreen);
         ml.renderScreen(0);
-        GL11.glPopMatrix();
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5F, 0.5F, 0.5F);
         Minecraft.getMinecraft().renderEngine.bindTexture(RivalRebels.etreactor);
         mr.renderModel();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }
